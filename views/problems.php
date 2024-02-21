@@ -12,11 +12,58 @@
     <title>Document</title>
 </head>
 <body>
-<?php
-    $PAGE_NAME = 'Problems';
+<?php include 'partials/header.php'; ?>
 
-    include 'partials/header.php';
-    include 'partials/footer.php';
-?>
+<div class="container">
+    <form class="row">
+        <div class="col-2">
+            <select class="form-select">
+                <option>All</option>
+                <option>Easy</option>
+                <option>Medium</option>
+                <option>Hard</option>
+            </select>
+        </div>
+        <div class="col-2">
+            <select class="form-select">
+                <option>None</option>
+                <option>Tag1</option>
+                <option>Tag2</option>
+                <option>Tag3</option>
+            </select>
+        </div>
+
+        <div class="col-2">
+            <select class="form-select">
+                <option>All</option>
+                <option>Not even tried</option>
+                <option>Tried</option>
+                <option>Solved</option>
+            </select>
+        </div>
+        <div class="col-6">
+
+        <div class="input-group">
+            <span class="input-group-text bi bi-search"></span>
+            <input class="form-control" placeholder="Enter problem name">
+        </div>
+        </div>
+    </form>'
+
+    <div>
+        <ul class="list-group">
+            <?php
+                for($i = 0; $i < 10; $i++){
+                    echo "<li class=\"list-group-item\">
+                            <i class='bi bi-completed'></i>
+                            <div>Task {$i}</div>
+                            </li>";
+                }
+            ?>
+        </ul>
+    </div>
+</div>
+
+<?php include 'partials/footer.php'; ?>
 </body>
 </html>
