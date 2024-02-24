@@ -90,8 +90,8 @@ secring.*
 *.evcd
 *.fsdb
 
-# Default name of the simulation executable.  A different name can be
-# specified with this switch (the associated daidir database name is
+# Default name.txt of the simulation executable.  A different name.txt can be
+# specified with this switch (the associated daidir database name.txt is
 # also taken from here):  -o <path>/<filename>
 simv
 

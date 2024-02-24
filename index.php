@@ -1,23 +1,7 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <?php
-    include 'views/partials/styleincludes.php'
-    ?>
-
-    <title>Platform</title>
-</head>
-<body>
 <?php
-include 'views/partials/header.php';
 
-include 'views/partials/footer.php';
-?>
+// Core of the project
 
+// configure all services, create router and start redirection
 
-</body>
-</html>
+header("Location: views/problem.php");

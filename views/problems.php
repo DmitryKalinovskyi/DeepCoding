@@ -56,7 +56,12 @@
                 for($i = 0; $i < 10; $i++){
                     echo "<li class=\"list-group-item\">
                             <i class='bi bi-completed'></i>
-                            <div>Task {$i}</div>
+                            <div>
+                                <a href='problem.php?id=$i'>
+                                    Task {$i}
+                                </a>
+                            
+                            </div>
                             </li>";
                 }
             ?>
