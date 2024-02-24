@@ -3,7 +3,7 @@
 function getDataFromFile($path): string{
     $file = fopen($path, 'r');
 
-    $data = fread($path, filesize($path));
+    $data = fread($file, filesize($path));
 
     fclose($file);
 
