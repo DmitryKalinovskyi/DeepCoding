@@ -2,7 +2,7 @@
 
     function getCodeTemplate(): string{
 
-        $path = "../code-templates/c++.txt";
+        $path = "code-templates/c++.txt";
         $file = fopen($path, 'r');
 
         $data = fread($file, filesize($path));

@@ -57,7 +57,7 @@
                     echo "<li class=\"list-group-item\">
                             <i class='bi bi-completed'></i>
                             <div>
-                                <a href='problem.php?id=$i'>
+                                <a href='problem?id=$i'>
                                     Task {$i}
                                 </a>
                             

@@ -1,6 +1,6 @@
 <?php
 
-include_once "../utils/filehelper.php";
+include_once "utils/filehelper.php";
 
 
 if($_SERVER['REQUEST_METHOD'] == "GET"){
@@ -14,7 +14,7 @@ if($_SERVER['REQUEST_METHOD'] == "GET"){
 function getProblemData(): array{
     $problem_id = 1;
 
-    $path = '../data/problems/' . $problem_id;
+    $path = 'data/problems/' . $problem_id;
     return ["name" => getDataFromFile($path."/name.txt"),
         "description" => getDataFromFile($path.'/description.txt')];
 }

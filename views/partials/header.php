@@ -13,8 +13,8 @@ $USERID = 10;
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="/index.php"><img width="150px" height="60px" src="/public/img/logo.jpg"></a></li>
-                <li class="d-flex align-items-center"><a href="/views/problems.php" class="nav-link  px-2 <?php echo SelectedPageStyle("problems")?> ">Problems</a></li>
+                <li><a href="/"><img width="150px" height="60px" src="/public/img/logo.jpg"></a></li>
+                <li class="d-flex align-items-center"><a href="/problems" class="nav-link  px-2 <?php echo SelectedPageStyle("problems")?> ">Problems</a></li>
             </ul>
 
             <div class="dropdown text-end">
@@ -22,7 +22,7 @@ $USERID = 10;
                     <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
                 </a>
                 <ul class="dropdown-menu text-small" style="">
-                    <li><a class="dropdown-item" href="/views/profile.php?id=<?php echo $USERID?>">Profile</a></li>
+                    <li><a class="dropdown-item" href="/profile?id=<?php echo $USERID?>">Profile</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="#">Sign out</a></li>
                 </ul>

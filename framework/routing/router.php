@@ -17,10 +17,14 @@ class Router{
     }
 
     public function HandleRoute($url): void{
-        if(isset($this->routes[$url]) === false){
+        $parts = explode('?', $url);
+        $path = $parts[0];
+        $args = $parts[1] ?? '';
+
+        if(isset($this->routes[$path]) === false){
             throw new InvalidArgumentException("Unresolved url address.");
         }
 
-        $this->routes[$url]();
+        $this->routes[$path]();
     }
 }
