@@ -1,5 +1,7 @@
 <?php
 
+namespace DeepCode\utils;
+
 function getDataFromFile($path): string{
     $file = fopen($path, 'r');
 

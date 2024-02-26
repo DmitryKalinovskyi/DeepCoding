@@ -1,7 +1,10 @@
 <?php
 
 function write($var): void{
-    var_dump(get_defined_vars());
+    echo $GLOBALS["_VIEW"][$var] ??  "<div class='text-light bg-danger p-2 rounded-2'>Variable with name \"$var\" is unset</div>";
+}
 
-    echo $$var ??  "<div class='text-light bg-danger p-2 rounded-2'>Variable with name \"$var\" is unset</div>";
+function get($var): void
+{
+    echo $var ?? "VAR IS UNDEFINED";
 }

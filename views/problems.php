@@ -51,21 +51,59 @@
     </form>'
 
     <div>
-        <ul class="list-group">
+        <table class="table">
+            <tr>
+                <th>
+                    Status:
+                </th>
+                <th>
+                    Name:
+                </th>
+            </tr>
+
+
             <?php
-                for($i = 0; $i < 10; $i++){
-                    echo "<li class=\"list-group-item\">
-                            <i class='bi bi-completed'></i>
-                            <div>
-                                <a href='problem?id=$i'>
-                                    Task {$i}
-                                </a>
-                            
-                            </div>
-                            </li>";
+                foreach($problems as $problem){
+                    $id = $problem->Id;
+                    $name = $problem->Name;
+                    $desc = $problem->Description;
+
+                    echo "
+                    <tr>
+                        <td>
+                            OK
+                        </td>
+                        <td>
+                            <a href='problem?id=$id' class='link-dark text-decoration-none'>
+                            $name
+                            </a>
+                        </td>
+                    </tr>
+                    ";
                 }
             ?>
-        </ul>
+        </table>
+
+<!--        Old way of displaying problems-->
+<!--        <ul class="list-group">-->
+<!--            --><?php //foreach($problems as $problem){
+//                $id = $problem->Id;
+//                $name = $problem->Name;
+//                $desc = $problem->Description;
+//
+//                echo "<li class=\"list-group-item\">
+//                            <i class='bi bi-completed'></i>
+//                            <div>
+//                                <a href='problem?id=$id' class='link-dark text-decoration-none'>
+//                                    $name
+//                                </a>
+//                            </div>
+//                            </li>";
+//            }
+//
+//            ?>
+<!---->
+<!--        </ul>-->
     </div>
 
     <nav class="d-flex justify-content-center mt-3" aria-label="...">

@@ -1,17 +1,9 @@
 <?php
 
-require_once "server/server.php";
-require_once "controllers/homeController.php";
+require_once "vendor/autoload.php";
 
-//$msg = "test 12";
-//function write($var): void{
-//    global $$var;
-//    echo $$var ??  "<div class='text-light bg-danger p-2 rounded-2'>Variable with name \"$var\" is unset</div>";
-//}
-//
-//write("msg");
-//die();
-
+use DeepCode\controllers as Controllers;
+use DeepCode\server\Server;
 
 // Core of the project
 
@@ -23,16 +15,20 @@ if(Server::IsInitialized() === false){
     $server = Server::GetInstance();
 
     $server->Router->AddRoute("/", function() {
-        $controller = new HomeController();
+        $controller = new Controllers\HomeController();
 
         $controller->Index();
     });
 
     $server->Router->AddRoute("/problems", function() {
-        include "views/problems.php";
+        $controller = new Controllers\ProblemsController();
+
+        $controller->Index();
     });
     $server->Router->AddRoute("/problem", function() {
-        include "views/problem.php";
+        $controller = new Controllers\ProblemsController();
+
+        $controller->GetProblem(3);
     });
 
     $server->Router->AddRoute("/profile", function() {

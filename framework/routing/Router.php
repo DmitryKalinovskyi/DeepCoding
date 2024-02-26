@@ -1,5 +1,9 @@
 <?php
 
+namespace Framework\routing;
+
+use InvalidArgumentException;
+
 class Router{
 
     private array $routes;

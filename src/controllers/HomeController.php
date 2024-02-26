@@ -1,6 +1,8 @@
 <?php
 
-require_once "framework/mvc/controllerBase.php";
+namespace DeepCode\controllers;
+
+use Framework\mvc\ControllerBase;
 
 class HomeController extends ControllerBase{
     public function __construct(){

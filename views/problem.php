@@ -1,27 +1,4 @@
-<?php
-
-include_once "utils/filehelper.php";
-
-
-if($_SERVER['REQUEST_METHOD'] == "GET"){
-    if(isset($_GET['id']) === false) {
-        header('Location: problems.php');
-        exit();
-    }
-}
-
-// load problem data
-function getProblemData(): array{
-    $problem_id = 1;
-
-    $path = 'data/problems/' . $problem_id;
-    return ["name" => getDataFromFile($path."/name.txt"),
-        "description" => getDataFromFile($path.'/description.txt')];
-}
-
-$problem = getProblemData();
-
-?>
+<?php require_once 'partials/viewbase.php'?>
 
 
 <!doctype html>
@@ -44,11 +21,12 @@ $problem = getProblemData();
     <div class="row">
         <div class="col-6">
             <div class="bg-body-tertiary p-3 rounded-2 shadow-sm">
+
                 <div class="h4">
-                    Problem name:  <?php echo $problem["name"]?>
+                    Problem name:  <?php echo $problem->Name?>
                 </div>
                 <div>
-                    <?php echo $problem["description"]?>
+                    <?php echo $problem->Description?>
                 </div>
             </div>
         </div>

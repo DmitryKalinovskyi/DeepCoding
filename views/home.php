@@ -1,5 +1,6 @@
 <?php require_once "partials/viewbase.php" ?>
 
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -17,9 +18,7 @@
 <?php include 'partials/header.php'; ?>
 
 <div class="container">
-    <?php
-    var_dump(get_defined_vars());
-    write("msg") ?>
+    <?php write("msg") ?>
 </div>
 
 <?php include 'partials/footer.php'; ?>
