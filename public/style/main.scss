@@ -1,8 +1,12 @@
 @import "../bootstrap/scss/functions";
 @import "../bootstrap/scss/variables";
 
+
+// assign custom colors
 $custom-colors: (
-  "indigo": $indigo-500
+        "indigo": $indigo-500,
+        "activity": $orange-500,
+        "solved": $red-500
 );
 
 $theme-colors: map-merge($theme-colors, $custom_colors);
@@ -13,6 +17,22 @@ $nav-tabs-link-active-bg: $light;
 $nav-tabs-border-width: 0px;
 
 //$nav-link-focus-box-shadow: $box-shadow;
+
+// custom table
+table tr{
+  td:first-child{
+    width: 120px;
+    padding: 16px;
+    //font-size: 18px;
+  }
+
+  th{
+    font-weight: normal;
+  }
+}
+
+
+
 
 
 @import "../bootstrap/scss/bootstrap";

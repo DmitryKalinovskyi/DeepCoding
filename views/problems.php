@@ -15,7 +15,7 @@
 <?php include 'partials/header.php'; ?>
 
 <div class="container">
-    <form class="row">
+    <form class="row mb-2">
         <div class="col-2">
             <select class="form-select">
                 <option>All</option>
@@ -48,7 +48,7 @@
             <input class="form-control" placeholder="Enter problem name">
         </div>
         </div>
-    </form>'
+    </form>
 
     <div>
         <table class="table">
@@ -63,6 +63,18 @@
 
 
             <?php
+                function getStatusHTML($status):string{
+                    if($status == 'solved'){
+                        return "<i class='bi bi-check-circle text-activity'></i>";
+                    }
+
+                    if($status == "tried"){
+                        return "<i class='bi bi-activity text-solved'></i>";
+                    }
+
+                    return "";
+                }
+
                 foreach($problems as $problem){
                     $id = $problem->Id;
                     $name = $problem->Name;
@@ -70,13 +82,13 @@
 
                     echo "
                     <tr>
+                        <td>"
+                            .GetStatusHTML('solved').
+                        "</td>
                         <td>
-                            OK
-                        </td>
-                        <td>
-                            <a href='problem?id=$id' class='link-dark text-decoration-none'>
-                            $name
-                            </a>
+                                <a href='problem?id=$id' class='link text-decoration-none'>
+                                $name
+                                </a>
                         </td>
                     </tr>
                     ";
