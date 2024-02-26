@@ -32,7 +32,9 @@ if(Server::IsInitialized() === false){
     });
 
     $server->Router->AddRoute("/profile", function() {
-        include "views/profile.php";
+        $controller = new Controllers\ProfileController();
+
+        $controller->Index();
     });
 }
 

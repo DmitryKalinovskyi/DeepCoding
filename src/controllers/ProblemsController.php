@@ -16,6 +16,8 @@ class ProblemsController extends ControllerBase{
 
         $data = [];
         $data['problems'] = [];
+        $data['page'] = 0;
+        $data['pageCount'] = 4;
 
         for($i = 0; $i < 10; $i++){
             $model = new Models\Problem();

@@ -108,17 +108,14 @@
 
     <nav class="d-flex justify-content-center mt-3" aria-label="...">
         <ul class="pagination">
-            <li class="page-item disabled">
-                <a class="page-link">Previous</a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item active" aria-current="page">
-                <a class="page-link" href="#">2</a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#">Next</a>
-            </li>
+            <?php
+
+                for($i = 0; $i < $pageCount; $i++){
+                    $active = $i == $page? 'active': '';
+
+                    echo "<li class='page-item $active'><a class='page-link' href=\"problems?page=$i\">$i</a></li>";
+                }
+            ?>
         </ul>
     </nav>
 </div>

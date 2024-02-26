@@ -25,12 +25,13 @@ $USER_TITLE = "RED"
     <div class="row gx-5">
         <div class="col-4">
             <div class="bg-body-tertiary p-3 rounded-2 shadow-sm">
-                <img width="64px" height="64px" class="rounded-2" alt='avatar' src="/public/img/testAvatar.png">
+                <img width="64px" height="64px" class="rounded-2" alt='avatar' src="<?php echo $profile->AvatarUrl ?>">
                 <div class="h3">
-                    Dmytro Kalinovskyi
+                    <?php echo $profile->FullName ?>
                 </div>
                 <div>
-                    DeeperXD <span class="badge text-bg-danger"><?php echo $USER_TITLE ?></span>
+                    <?php echo $profile->Login ?>
+                    <span class="badge text-bg-danger"><?php echo $USER_TITLE ?></span>
                 </div>
 
                 <div>
@@ -38,7 +39,7 @@ $USER_TITLE = "RED"
                 </div>
 
                 <div>
-                    hello there!
+                    <?php echo $profile->Description ?>
                 </div>
                 <hr>
                 <div>
