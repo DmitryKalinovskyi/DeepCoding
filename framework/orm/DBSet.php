@@ -78,4 +78,15 @@ class DBSet extends DBSetQuery
 
         return $res['count'];
     }
+
+    public function clone(): IQueryable
+    {
+        $clone = new DBSet($this->_modelClass, $this->_context);
+
+        $clone->_wheres = $this->_wheres;
+        $clone->_offset = $this->_offset;
+        $clone->_limit = $this->_limit;
+
+        return $clone;
+    }
 }

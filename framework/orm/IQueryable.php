@@ -19,6 +19,14 @@ interface IQueryable
 
     public function limit(int $limit): IQueryable;
 
+    public function offsetModify(int $offset): IQueryable;
+
+    public function orderByModify(string $orderBy): IQueryable;
+
+    public function whereModify(string $condition): IQueryable;
+
+    public function limitModify(int $limit): IQueryable;
+
     public function offset(int $offset): IQueryable;
 
     public function select(): array;
@@ -26,4 +34,6 @@ interface IQueryable
     public function first(): mixed;
 
     public function buildQueryBody(): string;
+
+    public function clone(): self;
 }

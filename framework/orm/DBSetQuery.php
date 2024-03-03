@@ -6,33 +6,37 @@ use InvalidArgumentException;
 
 abstract class DBSetQuery implements IQueryable
 {
-    protected array $wheres = [];
-    protected int $limit = -1;
+    protected array $_wheres = [];
+    protected int $_limit = -1;
 
-    protected int $offset = -1;
+    protected int $_offset = -1;
 
-    public function where(string $condition): IQueryable{
-        $this->wheres[] = $condition;
-
+    public function whereModify(string $condition): IQueryable{
+        $this->_wheres[] = $condition;
         return $this;
     }
 
-    public function limit(int $limit): IQueryable{
+    public function limitModify(int $limit): IQueryable{
         if($limit <= 0) throw new InvalidArgumentException("Limit is always positive number.");
 
-        $this->limit = $limit;
+        $this->_limit = $limit;
 
         return $this;
     }
 
-    public function offset(int $offset): IQueryable{
+    public function offsetModify(int $offset): IQueryable{
         if($offset < 0) throw new InvalidArgumentException("Offset is always non-negative number.");
 
         if($offset == 0)
-            $this->offset = -1;
+            $this->_offset = -1;
         else
-            $this->offset = $offset;
+            $this->_offset = $offset;
 
+        return $this;
+    }
+
+    public function orderByModify(string $orderBy): IQueryable
+    {
         return $this;
     }
 
@@ -50,18 +54,18 @@ abstract class DBSetQuery implements IQueryable
     public function buildQueryBody(): string
     {
         $query = "";
-        foreach($this->wheres as $whereCond){
+        foreach($this->_wheres as $whereCond){
             $query .= " WHERE $whereCond";
         }
 
         // add limit and offset if needed
 
-        if($this->limit > 0){
-            $query .= " LIMIT $this->limit";
+        if($this->_limit > 0){
+            $query .= " LIMIT $this->_limit";
         }
 
-        if($this->offset > 0){
-            $query .= " OFFSET $this->offset";
+        if($this->_offset > 0){
+            $query .= " OFFSET $this->_offset";
         }
 
 
@@ -70,6 +74,20 @@ abstract class DBSetQuery implements IQueryable
 
     public function orderBy(string $orderBy): IQueryable
     {
-        // TODO: Implement orderBy() method.
+        return $this->clone()->orderByModify($orderBy);
+    }
+
+    public function where(string $condition): IQueryable{
+        return $this->clone()->whereModify($condition);
+    }
+
+    public function limit(int $limit): IQueryable
+    {
+        return $this->clone()->limitModify($limit);
+    }
+
+    public function offset(int $offset): IQueryable
+    {
+        return $this->clone()->offsetModify($offset);
     }
 }

@@ -15,7 +15,7 @@
 <?php include 'partials/header.php'; ?>
 
 <div class="container">
-    <form class="row mb-2">
+    <form class="row mb-2" method="get">
         <div class="col-2">
             <select class="form-select">
                 <option>All</option>
@@ -44,10 +44,14 @@
         <div class="col-6">
 
         <div class="input-group">
-            <span class="input-group-text bi bi-search"></span>
-            <input class="form-control" placeholder="Enter problem name">
+            <button class="input-group-text ">
+                <span class="bi bi-search"></span>
+            </button>
+            <input class="form-control" name="search" placeholder="Enter problem name">
         </div>
         </div>
+
+        <input name="page" hidden value="<?php $page?>">
     </form>
 
     <div>

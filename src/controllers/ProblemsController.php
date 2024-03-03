@@ -16,14 +16,22 @@ class ProblemsController extends ControllerBase{
         $page_size = 25;
         $data = [];
         $data['page'] = $_GET['page'] ?? 0;
+        if(!is_numeric($data['page']))
+            $data['page'] = 0;
 
         $data['pageCount'] = ceil($this->_context->problems
         ->count() / $page_size);
 
-        $data['problems'] = $this->_context->problems
+        $search = trim($_GET['search'] ?? "");
+
+        $query = $this->_context->problems
             ->limit($page_size)
-            ->offset($page_size * $data['page'])
-            ->select();
+            ->offset($page_size * $data['page']);
+
+        if(!empty($search))
+            $query = $query->where("name like \"$search%\"");
+
+        $data['problems'] = $query->select();
 
 
         $this->render('problems.php', $data);
