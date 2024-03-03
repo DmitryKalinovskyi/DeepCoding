@@ -9,7 +9,13 @@ class PlatformUser
     #[Key]
     public int $Id;
     public string $Login;
-    public string $FullName;
+
+    public string $FirstName;
+    public string $LastName;
     public string $AvatarUrl;
     public string $Description;
+
+    public function GetFullName(): string{
+        return "$this->FirstName $this->LastName";
+    }
 }

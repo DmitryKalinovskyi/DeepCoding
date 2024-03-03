@@ -27,7 +27,7 @@ $USER_TITLE = "RED"
             <div class="bg-body-tertiary p-3 rounded-2 shadow-sm">
                 <img width="64px" height="64px" class="rounded-2" alt='avatar' src="<?php echo $profile->AvatarUrl ?>">
                 <div class="h3">
-                    <?php echo $profile->FullName ?>
+                    <?php echo $profile->GetFullName() ?>
                 </div>
                 <div>
                     <?php echo $profile->Login ?>

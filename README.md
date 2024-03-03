@@ -18,7 +18,12 @@ to solve different problems related to algorithms and data structures
 - Publishing/Removing problems in website
 - Adding solution to the problem
 
-# Project will include
+# Roadmap for building web-page framework 
 
-- Custom Router 
-- Custom ORM
+- [x] Create basic router
+- [x] Controller base
+- [X] Custom orm
+- [ ] Authentication/ Authorization (JWT Token based)
+- [ ] Dependency injection
+- [ ] Caching system
+- [ ] Custom autoloader

@@ -2,24 +2,20 @@
 
 namespace DeepCode\controllers;
 
+use DeepCode\db\DeepCodeContext;
 use DeepCode\models\PlatformUser;
 use Framework\mvc\ControllerBase;
 
 class ProfileController extends ControllerBase{
-    public function __construct(){
+    private DeepCodeContext $_context;
 
+    public function __construct(DeepCodeContext $context){
+        $this->_context = $context;
     }
 
     public function Index(){
-        $data['profile'] = new PlatformUser();
+        $data['profile'] = $this->_context->platformUsers->first();
 
-        $data['profile']->Id=0;
-        $data['profile']->FullName="Dmytro Kalinovskyi";
-        $data['profile']->Description="Hello there!";
-        $data['profile']->Login="DeeperXD";
-
-        $data['profile']->AvatarUrl="public/img/testAvatar.png";
-
-        $this->Render('profile.php', $data);
+        $this->render('profile.php', $data);
     }
 }

@@ -12,7 +12,7 @@ class Router{
         $this->routes = [];
     }
 
-    public function AddRoute($url, callable $callback): void{
+    public function addRoute($url, callable $callback): void{
         if(isset($this->routes[$url])){
             throw new InvalidArgumentException("Current url address already taken.");
         }
@@ -20,7 +20,7 @@ class Router{
         $this->routes[$url] = $callback;
     }
 
-    public function HandleRoute($url): void{
+    public function handleRoute($url): void{
         $parts = explode('?', $url);
         $path = $parts[0];
         $args = $parts[1] ?? '';

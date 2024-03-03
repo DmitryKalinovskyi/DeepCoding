@@ -10,6 +10,6 @@ class HomeController extends ControllerBase{
     }
 
     public function Index(){
-        $this->Render('home.php', ['msg' => "Hello and welcome to the DeepCoding!"]);
+        $this->render('home.php', ['msg' => "Hello and welcome to the DeepCoding!"]);
     }
 }
