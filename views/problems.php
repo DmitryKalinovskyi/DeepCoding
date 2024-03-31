@@ -47,11 +47,11 @@
             <button class="input-group-text ">
                 <span class="bi bi-search"></span>
             </button>
-            <input class="form-control" name="search" placeholder="Enter problem name">
+            <input class="form-control" name="search" placeholder="Enter problem name" value="<?php echo $_GET['search'] ?? "" ?>">
         </div>
         </div>
 
-        <input name="page" hidden value="<?php $page?>">
+        <input name="page" hidden value="<?php echo $page?>">
     </form>
 
     <div>
@@ -79,7 +79,8 @@
                     return "";
                 }
 
-                foreach($problems as $problem){
+            /** @var array $problems */
+            foreach($problems as $problem){
                     $id = $problem->Id;
                     $name = $problem->Name;
                     $desc = $problem->Description;
@@ -99,27 +100,6 @@
                 }
             ?>
         </table>
-
-<!--        Old way of displaying problems-->
-<!--        <ul class="list-group">-->
-<!--            --><?php //foreach($problems as $problem){
-//                $id = $problem->Id;
-//                $name = $problem->Name;
-//                $desc = $problem->Description;
-//
-//                echo "<li class=\"list-group-item\">
-//                            <i class='bi bi-completed'></i>
-//                            <div>
-//                                <a href='problem?id=$id' class='link-dark text-decoration-none'>
-//                                    $name
-//                                </a>
-//                            </div>
-//                            </li>";
-//            }
-//
-//            ?>
-<!---->
-<!--        </ul>-->
     </div>
 
     <nav class="d-flex justify-content-center mt-3" aria-label="...">

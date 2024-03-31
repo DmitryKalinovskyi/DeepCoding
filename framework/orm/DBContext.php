@@ -11,7 +11,7 @@ class DBContext
         $this->_pdo = new PDO($connectionString, "root", "");
     }
 
-    public function execute($query){
+    public function execute($query,){
         return $this->_pdo->query($query);
     }
 }

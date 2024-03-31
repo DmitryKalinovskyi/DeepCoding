@@ -19,24 +19,30 @@ if(Server::isInitialized() === false){
 
     $server->deepCodeContext = new DeepCodeContext("mysql:host=127.0.0.1;dbname=deep_code");
 
-    $server->router->addRoute("/", function() {
+    $server->router->get->addRoute("/", function() {
         $controller = new Controllers\HomeController();
 
         $controller->Index();
     });
 
-    $server->router->addRoute("/problems", function() use ($server) {
+    $server->router->get->addRoute("/problems", function() use ($server) {
         $controller = new Controllers\ProblemsController($server->deepCodeContext);
 
         $controller->Index();
     });
-    $server->router->addRoute("/problem", function() use ($server) {
+    $server->router->get->addRoute("/problem", function() use ($server) {
         $controller = new Controllers\ProblemsController($server->deepCodeContext);
 
-        $controller->GetProblem(1);
+        $controller->GetProblem();
     });
 
-    $server->router->addRoute("/profile", function() use($server) {
+    $server->router->post->addRoute("/problem", function() use ($server) {
+        $controller = new Controllers\ProblemsController($server->deepCodeContext);
+
+        $controller->SubmitProblem();
+    });
+
+    $server->router->get->addRoute("/profile", function() use($server) {
         $controller = new Controllers\ProfileController($server->deepCodeContext);
 
         $controller->Index();
@@ -46,7 +52,7 @@ if(Server::isInitialized() === false){
 $server = Server::getInstance();
 
 try{
-    $server->router->handleRoute($_SERVER['REQUEST_URI']);
+    $server->router->redirect($_SERVER['REQUEST_URI']);
 }catch(Exception $e){
     if($GLOBALS['IS_DEBUG']){
         var_dump($e);

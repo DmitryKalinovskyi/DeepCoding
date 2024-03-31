@@ -9,7 +9,6 @@ use PDO;
 
 /**
  * Manages entities inside the table
- *
  */
 class DBSet extends DBSetQuery
 {

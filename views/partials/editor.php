@@ -14,7 +14,7 @@
 
 ?>
 
-<form class="h-100">
+<form class="h-100" method="post">
 
 <div class="d-flex flex-column h-100">
     <div class="bg-light rounded-2">
@@ -22,17 +22,17 @@
             <div class="input-group-text">
                 Select your compiler:
             </div>
-            <select class="form-control">
+            <select class="form-control" name="compiler">
                 <option>C</option>
                 <option>C++</option>
             </select>
         </div>
     </div>
 
-    <textarea placeholder="Enter your code here..." class="form-control editor-area flex-grow-1 mb-2"><?php echo getCodeTemplate()?></textarea>
+    <textarea name="code" placeholder="Enter your code here..." class="form-control editor-area flex-grow-1 mb-2"><?php echo getCodeTemplate()?></textarea>
 
     <div>
-    <button class="btn btn-indigo">Send</button>
+    <button class="btn btn-indigo" type="submit">Send</button>
     </div>
 
 </div>

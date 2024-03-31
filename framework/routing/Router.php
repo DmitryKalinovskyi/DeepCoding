@@ -2,33 +2,46 @@
 
 namespace Framework\routing;
 
-use InvalidArgumentException;
+use Exception;
 
 class Router{
 
-    private array $routes;
+    public RouterMethod $post;
+    public RouterMethod $get;
+    public RouterMethod $patch;
+    public RouterMethod $delete;
+    public RouterMethod $put;
 
     public function __construct(){
-        $this->routes = [];
+        $this->post = new RouterMethod();
+        $this->put = new RouterMethod();
+        $this->delete = new RouterMethod();
+        $this->patch = new RouterMethod();
+        $this->get = new RouterMethod();
     }
 
-    public function addRoute($url, callable $callback): void{
-        if(isset($this->routes[$url])){
-            throw new InvalidArgumentException("Current url address already taken.");
+    /**
+     * @throws Exception
+     */
+    public function redirect($url){
+        switch($_SERVER['REQUEST_METHOD'] ){
+            case "POST":
+                $this->post->handleRoute($url);
+                break;
+            case "GET":
+                $this->get->handleRoute($url);
+                break;
+            case "PATCH":
+                $this->patch->handleRoute($url);
+                break;
+            case "PUT":
+                $this->put->handleRoute($url);
+                break;
+            case "DELETE":
+                $this->delete->handleRoute($url);
+                break;
+            default:
+                throw new Exception("Unsupported request method exception");
         }
-
-        $this->routes[$url] = $callback;
-    }
-
-    public function handleRoute($url): void{
-        $parts = explode('?', $url);
-        $path = $parts[0];
-        $args = $parts[1] ?? '';
-
-        if(isset($this->routes[$path]) === false){
-            throw new InvalidArgumentException("Unresolved url address.");
-        }
-
-        $this->routes[$path]();
     }
 }

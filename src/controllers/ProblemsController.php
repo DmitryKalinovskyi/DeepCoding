@@ -22,6 +22,8 @@ class ProblemsController extends ControllerBase{
         $data['pageCount'] = ceil($this->_context->problems
         ->count() / $page_size);
 
+        if($data['pageCount'] == 1) $data['pageCount'] = 0;
+
         $search = trim($_GET['search'] ?? "");
 
         $query = $this->_context->problems
@@ -32,7 +34,6 @@ class ProblemsController extends ControllerBase{
             $query = $query->where("name like \"$search%\"");
 
         $data['problems'] = $query->select();
-
 
         $this->render('problems.php', $data);
     }
@@ -47,5 +48,17 @@ class ProblemsController extends ControllerBase{
             ->first();
 
         $this->render('problem.php', $data);
+    }
+
+    public function SubmitProblem(): void{
+        $code = $_POST['code'];
+        $compiler = $_POST['code'];
+
+        // create submission, post to the testing service, then update information in the database
+
+
+
+        echo $code;
+        echo $compiler;
     }
 }
