@@ -1,4 +1,9 @@
 <?php
+/** @var Problem $problem */
+
+use DeepCode\models\Problem;
+
+
 
     function getCodeTemplate(): string{
 
@@ -30,7 +35,7 @@
     </div>
 
     <textarea name="code" placeholder="Enter your code here..." class="form-control editor-area flex-grow-1 mb-2"><?php echo getCodeTemplate()?></textarea>
-
+    <input name="problemId" value="<?php echo $problem->Id ?> " hidden>
     <div>
     <button class="btn btn-indigo" type="submit">Send</button>
     </div>

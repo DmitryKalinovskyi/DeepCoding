@@ -1,5 +1,9 @@
-<?php require_once 'partials/viewbase.php'?>
+<?php
+/** @var Problem $problem */
 
+use DeepCode\models\Problem;
+
+?>
 
 <!doctype html>
 <html lang="en">

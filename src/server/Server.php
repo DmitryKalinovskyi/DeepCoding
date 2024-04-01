@@ -9,7 +9,6 @@ use Framework\routing\Router;
 class Server{
     private static ?Server $_instance = null;
     public Router $router;
-
     public DeepCodeContext $deepCodeContext;
 
     private function __construct(){

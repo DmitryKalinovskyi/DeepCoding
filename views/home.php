@@ -1,5 +1,8 @@
-<?php require_once "partials/viewbase.php" ?>
+<?php
 
+/** @var string $msg */
+
+?>
 
 <!doctype html>
 <html lang="en">
@@ -18,7 +21,7 @@
 <?php include 'partials/header.php'; ?>
 
 <div class="container">
-    <?php write("msg") ?>
+    <?php echo $msg ?>
 </div>
 
 <?php include 'partials/footer.php'; ?>

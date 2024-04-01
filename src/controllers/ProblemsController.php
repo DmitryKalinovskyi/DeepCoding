@@ -3,12 +3,13 @@
 namespace DeepCode\controllers;
 
 use DeepCode\db\DeepCodeContext;
+use DeepCode\models\Submission;
 use Framework\mvc\ControllerBase;
 
 class ProblemsController extends ControllerBase{
-    private DeepCodeContext $_context;
+    private DeepCodeContext $_db;
     public function __construct(DeepCodeContext $context){
-        $this->_context = $context;
+        $this->_db = $context;
     }
 
     public function Index(): void{
@@ -19,15 +20,13 @@ class ProblemsController extends ControllerBase{
         if(!is_numeric($data['page']))
             $data['page'] = 0;
 
-//        $data['pageCount'] = ceil($this->_context->problems
-//        ->count() / $page_size);
-        $data['pageCount'] = ceil($this->_context->problems->count() / $page_size);
+        $data['pageCount'] = ceil($this->_db->problems->count() / $page_size);
 
         if($data['pageCount'] == 1) $data['pageCount'] = 0;
 
         $search = trim($_GET['search'] ?? "");
 
-        $query = $this->_context->problems->select()
+        $query = $this->_db->problems->select()
             ->limit($page_size)
             ->offset($page_size * $data['page']);
 
@@ -44,7 +43,7 @@ class ProblemsController extends ControllerBase{
         $id = $_GET['id'];
         $data = [];
 
-        $data['problem'] = $this->_context->problems->select()
+        $data['problem'] = $this->_db->problems->select()
             ->where("Id = :id")
             ->execute(["id" => $id])[0];
 
@@ -53,13 +52,16 @@ class ProblemsController extends ControllerBase{
 
     public function SubmitProblem(): void{
         $code = $_POST['code'];
-        $compiler = $_POST['code'];
+        $compiler = $_POST['compiler'];
+        $problemId = $_POST['problemId'];
 
         // create submission, post to the testing service, then update information in the database
+        $submission = new Submission();
+        $submission->ProblemId = $problemId;
+        $submission->Code = $code;
+        $submission->Compiler = $compiler;
 
-
-
-        echo $code;
-        echo $compiler;
+        $this->_db->submissions->insert($submission);
+        echo "Submitted!";
     }
 }

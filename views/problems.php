@@ -1,3 +1,9 @@
+<?php
+/** @var int $page */
+/** @var int $pageCount */
+
+?>
+
 <!doctype html>
 <html lang="en">
 <head>

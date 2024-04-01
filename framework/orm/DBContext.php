@@ -2,6 +2,8 @@
 
 namespace Framework\orm;
 
+use Exception;
+use Framework\orm\Logger\IDBLogger;
 use Framework\orm\QueryBuilder\IQueryBuilder;
 use Framework\orm\QueryBuilder\MySQL\MySQLInsert;
 use Framework\orm\QueryBuilder\MySQL\MySQLUpdate;
@@ -13,15 +15,37 @@ use PDO;
 class DBContext
 {
     private PDO $_pdo;
+    private ?IDBLogger $_logger;
+
     public function __construct($connectionString, $username = "root", $password = ""){
         $this->_pdo = new PDO($connectionString, $username, $password);
     }
 
-    public function execute(string $query, $params): array|false{
-        $sth = $this->_pdo->prepare($query);
-        $sth->execute($params);
+    public function setLogger(IDBLogger $logger): void{
+        $this->_logger = $logger;
+    }
 
-        return $sth->fetchAll(PDO::FETCH_ASSOC);
+    /**
+     * @throws Exception
+     */
+    public function execute(string $query, $params): array|false{
+        try{
+
+            $sth = $this->_pdo->prepare($query);
+            $sth->execute($params);
+
+            return $sth->fetchAll(PDO::FETCH_ASSOC);
+        }catch(Exception $e){
+            if(empty($this->_logger) === false){
+                $msg = $e->getMessage() . '\n';
+
+                $msg .= $query;
+
+                $this->_logger->log($msg);
+            }
+
+            throw $e;
+        }
     }
 
     public function getDatabaseType(){

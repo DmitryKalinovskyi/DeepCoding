@@ -18,14 +18,25 @@ class DBSet
         $this->_dbContext = $dbContext;
     }
 
-    public function insert(array $values): array|false{
+    public function insert(object $value): array|false{
         // get columns from the class using reflection, then specify them inside query.
 
         $proxy = $this->_dbContext->query()->insert()
-            ->into($this->_tableName)
-            ->addValues($values);
+            ->into($this->_tableName);
 
-        return $proxy->execute();
+        $data = (array)$value;
+
+        $cols = [];
+        $values = [];
+
+        foreach($data as $key => $value){
+            $cols[] = $key;
+            $values[] = $value;
+        }
+
+        $proxy->columns($cols);
+
+        return $proxy->execute($values);
     }
 
     public function select(array $columns = ['*']): ProxySelect

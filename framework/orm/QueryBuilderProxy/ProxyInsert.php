@@ -33,17 +33,11 @@ class ProxyInsert implements IInsertQueryBuilder, IDBExecutable
         return $this;
     }
 
-    public function addValue(object $value): ProxyInsert
-    {
-        $this->_insertService->addValue($value);
-        return $this;
-    }
-
-    public function addValues(array $values): ProxyInsert
-    {
-        $this->_insertService->addValues($values);
-        return $this;
-    }
+//    public function addValue(object $value): ProxyInsert
+//    {
+//        $this->_insertService->addValue($value);
+//        return $this;
+//    }
 
     public function build(): string
     {
