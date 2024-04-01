@@ -7,16 +7,16 @@ use DeepCode\models\PlatformUser;
 use Framework\mvc\ControllerBase;
 
 class ProfileController extends ControllerBase{
-    private DeepCodeContext $_context;
+    private DeepCodeContext $_db;
 
     public function __construct(DeepCodeContext $context){
-        $this->_context = $context;
+        $this->_db = $context;
     }
 
     public function Index(){
-        $data['profile'] = $this->_context->query()->select(['*'])
-            ->from('platformusers')
-            ->execute()[0];
+        $data['profile'] = $this->_db->platformUsers
+            ->select()
+            ->first();
 
         $this->render('profile.php', $data);
     }

@@ -93,7 +93,7 @@ class ProxySelect implements ISelectQueryBuilder, IDBExecutable
         return $this->_dbContext->execute($this->build(), $params);
     }
 
-    public function first($params){
+    public function first($params = []){
 
         $oldLimit = $this->getLimit();
 

@@ -4,12 +4,14 @@ namespace Framework\orm\QueryBuilderProxy;
 
 use Framework\orm\DBContext;
 use Framework\orm\QueryBuilder\IDeleteQueryBuilder;
+use Framework\orm\QueryBuilder\IInsertQueryBuilder;
 use Framework\orm\QueryBuilder\IQueryBuilder;
 use Framework\orm\QueryBuilder\ISelectQueryBuilder;
 use Framework\orm\QueryBuilder\IUpdateQueryBuilder;
 
 class ProxyQueryBuilder implements IQueryBuilder
 {
+    private IInsertQueryBuilder $_insertService;
     private ISelectQueryBuilder $_selectService;
     private IUpdateQueryBuilder $_updateService;
     private IDeleteQueryBuilder $_deleteService;
@@ -17,15 +19,22 @@ class ProxyQueryBuilder implements IQueryBuilder
     private DBContext $_dbContext;
 
     // initialize with default query builder services
-    public function __construct(ISelectQueryBuilder $selectService,
+    public function __construct(IInsertQueryBuilder $insertQueryBuilder,
+                                ISelectQueryBuilder $selectService,
                                 IUpdateQueryBuilder $updateService,
                                 IDeleteQueryBuilder $deleteService,
                                 DBContext $dbContext
     ){
+        $this->_insertService = $insertQueryBuilder;
         $this->_selectService = $selectService;
         $this->_updateService = $updateService;
         $this->_deleteService = $deleteService;
         $this->_dbContext = $dbContext;
+    }
+
+    public function insert(): ProxyInsert
+    {
+        return new ProxyInsert($this->_insertService, $this->_dbContext);
     }
 
     public function select(array $columns): ProxySelect

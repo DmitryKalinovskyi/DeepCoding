@@ -3,6 +3,7 @@
 namespace Framework\orm;
 
 use Framework\orm\QueryBuilder\IQueryBuilder;
+use Framework\orm\QueryBuilder\MySQL\MySQLInsert;
 use Framework\orm\QueryBuilder\MySQL\MySQLUpdate;
 use Framework\orm\QueryBuilder\MySQL\MySQLSelect;
 use Framework\orm\QueryBuilder\MySQL\MySQLDelete;
@@ -49,7 +50,9 @@ class DBContext
 
         // TODO: several database bindings instead of mysql by default.
 
-        return new ProxyQueryBuilder(new MySQLSelect(),
+        return new ProxyQueryBuilder(
+            new MySQLInsert(),
+            new MySQLSelect(),
             new MySQLUpdate(),
             new MySQLDelete(),
             $this);
