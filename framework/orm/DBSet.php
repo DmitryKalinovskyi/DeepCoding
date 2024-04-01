@@ -2,90 +2,53 @@
 
 namespace Framework\orm;
 
-use Exception;
-use Framework\utils\NamingUtils;
-use PDO;
+use Framework\orm\QueryBuilderProxy\ProxyDelete;
+use Framework\orm\QueryBuilderProxy\ProxySelect;
+use Framework\orm\QueryBuilderProxy\ProxyUpdate;
 
-
-/**
- * Manages entities inside the table
- */
-class DBSet extends DBSetQuery
+class DBSet
 {
-    private string $_modelClass;
     private string $_tableName;
+    private string $_className;
+    private DBContext $_dbContext;
 
-    private DBContext $_context;
-
-    public function __construct(string $modelClass, DBContext $context)
-    {
-        $this->_modelClass = $modelClass;
-        $this->_tableName = NamingUtils::getTableByClassname($modelClass);
-        $this->_context = $context;
+    public function __construct($tableName, $className, $dbContext){
+        $this->_tableName = $tableName;
+        $this->_className = $className;
+        $this->_dbContext = $dbContext;
     }
 
-
-    public function select(): array
+    public function select(array $columns = ['*']): ProxySelect
     {
+        $proxy = $this->_dbContext->query();
+        $proxySelect = $proxy->select($columns);
 
-        $query = $this->buildSelectQuery();
+        $proxySelect->from($this->_tableName);
+        $proxySelect->asClass($this->_className);
 
-        try{
-
-            // cast query result to collection
-            $pdoStatement = $this->_context->execute($query);
-
-            $res = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
-
-            // convert all to the table
-            $mapped = [];
-
-            foreach($res as $entity){
-                $clsEntity = new $this->_modelClass();
-                foreach($entity as $prop => $val){
-                    $clsEntity->{$prop} = $val;
-                }
-                $mapped[] = $clsEntity;
-            }
-
-            return $mapped;
-        }
-        catch(Exception $e){
-            echo $e->getMessage();
-        }
-
-        return [];
+        return $proxySelect;
     }
 
-    public function buildSelectQuery(): string
+    public function update(): ProxyUpdate
     {
-        $query = "SELECT * FROM $this->_tableName";
-
-        $query .= $this->buildQueryBody();
-
-        return $query;
+        $proxy = $this->_dbContext->query();
+        return $proxy->update([$this->_tableName]);
     }
 
-    public function count(): int
+    public function delete(): ProxyDelete
     {
-        $query = "SELECT COUNT(*) as count FROM $this->_tableName ";
+        $proxy = $this->_dbContext->query();
+        $proxyDelete = $proxy->delete();
+        $proxyDelete->from($this->_tableName);
 
-        $query .= $this->buildQueryBody();
-
-        $pdoStatement = $this->_context->execute($query);
-        $res = $pdoStatement->fetch(PDO::FETCH_ASSOC);
-
-        return $res['count'];
+        return $proxyDelete;
     }
 
-    public function clone(): IQueryable
-    {
-        $clone = new DBSet($this->_modelClass, $this->_context);
+    public function count(): int{
+        $qb = $this->_dbContext->query()
+            ->select(["COUNT(*) as count"])
+            ->from($this->_tableName);
 
-        $clone->_wheres = $this->_wheres;
-        $clone->_offset = $this->_offset;
-        $clone->_limit = $this->_limit;
-
-        return $clone;
+        return $qb->execute()[0]['count'];
     }
 }

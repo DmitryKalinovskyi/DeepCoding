@@ -9,7 +9,7 @@ class HomeController extends ControllerBase{
 
     }
 
-    public function Index(){
+    public function Index(): void{
         $this->render('home.php', ['msg' => "Hello and welcome to the DeepCoding!"]);
     }
 }

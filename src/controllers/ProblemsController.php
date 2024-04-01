@@ -19,21 +19,22 @@ class ProblemsController extends ControllerBase{
         if(!is_numeric($data['page']))
             $data['page'] = 0;
 
-        $data['pageCount'] = ceil($this->_context->problems
-        ->count() / $page_size);
+//        $data['pageCount'] = ceil($this->_context->problems
+//        ->count() / $page_size);
+        $data['pageCount'] = ceil($this->_context->problems->count() / $page_size);
 
         if($data['pageCount'] == 1) $data['pageCount'] = 0;
 
         $search = trim($_GET['search'] ?? "");
 
-        $query = $this->_context->problems
+        $query = $this->_context->problems->select()
             ->limit($page_size)
             ->offset($page_size * $data['page']);
 
         if(!empty($search))
             $query = $query->where("name like \"$search%\"");
 
-        $data['problems'] = $query->select();
+        $data['problems'] = $query->execute();
 
         $this->render('problems.php', $data);
     }
@@ -43,9 +44,9 @@ class ProblemsController extends ControllerBase{
         $id = $_GET['id'];
         $data = [];
 
-        $data['problem'] = $this->_context->problems
-            ->where("Id = $id")
-            ->first();
+        $data['problem'] = $this->_context->problems->select()
+            ->where("Id = :id")
+            ->execute(["id" => $id])[0];
 
         $this->render('problem.php', $data);
     }

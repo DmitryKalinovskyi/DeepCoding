@@ -48,6 +48,7 @@ class MySQLSelect implements ISelectQueryBuilder
     public function offset(int $offset): ISelectQueryBuilder
     {
         $this->offset = $offset;
+        return $this;
     }
 
     public function orderBy(): ISelectQueryBuilder
@@ -106,5 +107,25 @@ class MySQLSelect implements ISelectQueryBuilder
         $copy->columns = $this->columns;
         $copy->sources = $this->sources;
         return $copy;
+    }
+
+    public function getSources(): array
+    {
+        return $this->sources;
+    }
+
+    public function getWhere(): string
+    {
+        return $this->whereCondition;
+    }
+
+    public function getLimit(): int
+    {
+        return $this->limit;
+    }
+
+    public function getOffset(): int
+    {
+        return $this->offset;
     }
 }

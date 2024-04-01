@@ -14,7 +14,9 @@ class ProfileController extends ControllerBase{
     }
 
     public function Index(){
-        $data['profile'] = $this->_context->platformUsers->first();
+        $data['profile'] = $this->_context->query()->select(['*'])
+            ->from('platformusers')
+            ->execute()[0];
 
         $this->render('profile.php', $data);
     }

@@ -9,14 +9,13 @@ use Framework\orm\DBSet;
 
 class DeepCodeContext extends DBContext
 {
-    public DBSet $problems;
     public DBSet $platformUsers;
+    public DBSet $problems;
 
     public function __construct($connectionString)
     {
         parent::__construct($connectionString);
-
-        $this->problems = new DBSet(Problem::class, $this);
-        $this->platformUsers = new DBSet(PlatformUser::class, $this);
+        $this->platformUsers = new DBSet("platformusers", PlatformUser::class, $this);
+        $this->problems = new DBSet("problems", Problem::class, $this);
     }
 }
