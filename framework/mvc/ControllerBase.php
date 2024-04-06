@@ -10,6 +10,10 @@ class ControllerBase{
         include "views/$viewUri";
     }
 
+    public function redirect(string $url): void{
+        header("Location: $url");
+    }
+
     // TODO: write redirect methods
     // TODO: add middlewares
 

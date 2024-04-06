@@ -26,7 +26,7 @@ class RouterMethod
         $args = $parts[1] ?? '';
 
         if(isset($this->routes[$path]) === false){
-            throw new InvalidArgumentException("Unresolved url address.");
+            throw new InvalidArgumentException("Unresolved url address ($url).");
         }
 
         $this->routes[$path]();

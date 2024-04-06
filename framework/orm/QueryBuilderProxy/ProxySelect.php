@@ -85,6 +85,12 @@ class ProxySelect implements ISelectQueryBuilder, IDBExecutable
         return $this;
     }
 
+    // used by default
+    public function asObject(){
+        $this->_asClass = "";
+        return $this;
+    }
+
     public function execute($params = []): array|false
     {
         if(empty($this->_asClass) === false)
@@ -99,11 +105,13 @@ class ProxySelect implements ISelectQueryBuilder, IDBExecutable
 
         $this->limit(1);
 
-        $result = $this->execute($params)[0];
+        $result = $this->execute($params);
+
+        if(empty($result[0])) return null;
 
         $this->limit($oldLimit);
 
-        return $result;
+        return $result[0];
     }
 
     public function getSources(): array

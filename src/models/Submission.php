@@ -11,6 +11,8 @@ class Submission
     public int $Id;
     #[DBColumn]
     public int $ProblemId;
+    #[DBColumn]
+    public int $UserId;
 
     #[DBColumn]
     public string $Code;

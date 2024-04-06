@@ -28,8 +28,10 @@ to solve different problems related to algorithms and data structures
 - [x] Create basic router
 - [x] Controller base
 - [X] Custom orm
-- [ ] Authentication/ Authorization (JWT Token based)
 - [ ] Dependency injection
-- [ ] Routes automapper 
+- [ ] Routes automapper
+- [ ] ORM joins
+- [ ] ORM expressions
+- [ ] Authentication/ Authorization (JWT Token based)
 - [ ] Caching system
 - [ ] Custom autoloader

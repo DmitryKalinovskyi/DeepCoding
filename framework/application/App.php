@@ -1,13 +1,13 @@
 <?php
 
-
-namespace DeepCode\server;
+namespace Framework\application;
 
 use Framework\dependency\IServiceCollection;
 use Framework\dependency\ServiceCollection;
 use Framework\routing\Router;
 
-class Server{
+class App
+{
     public Router $router;
     public IServiceCollection $services;
 

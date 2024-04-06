@@ -48,7 +48,7 @@ use DeepCode\models\Problem;
                         <?php require_once 'partials/editor.php'; ?>
                     </div>
                     <div class="tab-pane fade h-100" id="submissions-tab-page" role="tabpanel" >
-                        list of submissions...
+                        <?php require_once 'partials/submissions.php'; ?>
                     </div>
                 </div>
 

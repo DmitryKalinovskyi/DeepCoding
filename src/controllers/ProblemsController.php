@@ -52,16 +52,20 @@ class ProblemsController extends ControllerBase{
 
     public function SubmitProblem(): void{
         $code = $_POST['code'];
+        $userId = $_POST['userId'] ?? 1;
         $compiler = $_POST['compiler'];
         $problemId = $_POST['problemId'];
 
         // create submission, post to the testing service, then update information in the database
         $submission = new Submission();
         $submission->ProblemId = $problemId;
+        $submission->UserId = $userId;
         $submission->Code = $code;
         $submission->Compiler = $compiler;
 
         $this->_db->submissions->insert($submission);
         echo "Submitted!";
+
+        $this->redirect("problem?id=$problemId");
     }
 }
