@@ -437,7 +437,7 @@ config.codekit3
 ##### Gradle
 .gradle
 **/build/
-!src/**/build/
+!backend/src/**/build/
 
 # Ignore Gradle GUI config
 gradle-app.setting
@@ -453,11 +453,11 @@ gradle-app.setting
 
 ##### Composer
 composer.phar
-/vendor/
+/backend/vendor/
 
 # Commit your application's lock file https://getcomposer.org/doc/01-basic-usage.md#commit-your-composer-lock-file-to-version-control
 # You may choose to ignore a library lock file http://getcomposer.org/doc/02-libraries.md#lock-file
-composer.lock
+backend/composer.lock
 
 ##### PHP CodeSniffer
 # gitignore for the PHP Codesniffer framework
