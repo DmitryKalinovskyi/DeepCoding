@@ -44,4 +44,21 @@ class Router{
                 throw new Exception("Unsupported request method exception");
         }
     }
+
+    public function dump_routes(): void{
+        echo "GET ROUTES: ";
+        var_dump($this->get);
+
+        echo "POST ROUTES: ";
+        var_dump($this->post);
+
+        echo "PATCH ROUTES: ";
+        var_dump($this->patch);
+
+        echo "PUT ROUTES: ";
+        var_dump($this->put);
+
+        echo "DELETE ROUTES: ";
+        var_dump($this->delete);
+    }
 }

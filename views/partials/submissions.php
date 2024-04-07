@@ -25,7 +25,7 @@ use DeepCode\models\Problem;
 
             result += `
                 <div>
-                    <div>Solution <a href="/api/problem/submission?id=${submission['Id']}">${submission['Id']}</a><div>
+                    <div>Solution <a href="/api/submissions?id=${submission['Id']}">${submission['Id']}</a><div>
                 </div>
             `
         }
@@ -34,9 +34,9 @@ use DeepCode\models\Problem;
     }
 
     async function getSubmissions(){
-        const url = `/api/problem/submissions?problemId=<?php echo $problem->Id?>
-        &userId=<?php echo $userId?>`;
+        const url = `/api/submissions/problem?problemId=<?php echo $problem->Id?>&userId=<?php echo $userId?>`;
 
+        console.log("Fetching... " + url);
         const response = await fetch(url);
         return await response.json();
     }

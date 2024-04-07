@@ -4,6 +4,8 @@ namespace DeepCode\controllers;
 
 use DeepCode\db\DeepCodeContext;
 use DeepCode\models\Submission;
+use Framework\attributes\Requests\HttpPost;
+use Framework\attributes\Routing\Route;
 use Framework\mvc\ControllerBase;
 
 class ProblemsController extends ControllerBase{
@@ -12,6 +14,7 @@ class ProblemsController extends ControllerBase{
         $this->_db = $context;
     }
 
+    #[Route("/")]
     public function Index(): void{
 
         $page_size = 25;
@@ -38,6 +41,7 @@ class ProblemsController extends ControllerBase{
         $this->render('problems.php', $data);
     }
 
+    #[Route("problem")]
     public function GetProblem(): void
     {
         $id = $_GET['id'];
@@ -50,6 +54,8 @@ class ProblemsController extends ControllerBase{
         $this->render('problem.php', $data);
     }
 
+    #[Route("submit")]
+    #[HttpPost]
     public function SubmitProblem(): void{
         $code = $_POST['code'];
         $userId = $_POST['userId'] ?? 1;

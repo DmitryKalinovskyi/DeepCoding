@@ -3,6 +3,7 @@
 namespace DeepCode\api;
 
 use DeepCode\db\DeepCodeContext;
+use Framework\attributes\Routing\Route;
 use Framework\mvc\APIController;
 
 class SubmissionsController extends APIController
@@ -12,7 +13,8 @@ class SubmissionsController extends APIController
         $this->_db = $context;
     }
 
-    public function GetSubmissions(): void{
+    #[Route("problem")]
+    public function GetProblemSubmissions(): void{
         if(empty($_GET['problemId'])){
             $this->sendStatus(404);
             die();
@@ -44,6 +46,7 @@ class SubmissionsController extends APIController
         echo json_encode($submissions);
     }
 
+    #[Route("/")]
     public function GetSubmission(): void{
         if(empty($_GET['id'])){
             $this->sendStatus(404);

@@ -97,7 +97,7 @@
                             .GetStatusHTML('solved').
                         "</td>
                         <td>
-                                <a href='problem?id=$id' class='link text-decoration-none'>
+                                <a href='problems/problem?id=$id' class='link text-decoration-none'>
                                 $name
                                 </a>
                         </td>

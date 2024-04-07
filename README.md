@@ -26,12 +26,11 @@ to solve different problems related to algorithms and data structures
 # Roadmap for building web-page framework 
 
 - [x] Create basic router
-- [x] Controller base
-- [X] Custom orm
-- [ ] Dependency injection
-- [ ] Routes automapper
+- [x] Create basic Controller
+- [X] Custom orm (basic structure)
+- [X] Dependency injection (implemented as service collection)
+- [ ] Routes automapper (working on)
 - [ ] ORM joins
 - [ ] ORM expressions
 - [ ] Authentication/ Authorization (JWT Token based)
 - [ ] Caching system
-- [ ] Custom autoloader

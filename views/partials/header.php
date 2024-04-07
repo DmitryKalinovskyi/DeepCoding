@@ -13,7 +13,7 @@ $USERID = 10;
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="/"><img width="150px" height="60px" src="/public/img/logo.jpg"></a></li>
+                <li><a href="/home/index"><img width="150px" height="60px" src="/public/img/logo.jpg"></a></li>
                 <li class="d-flex align-items-center"><a href="/problems" class="nav-link  px-2 <?php echo SelectedPageStyle("problems")?> ">Problems</a></li>
             </ul>
 

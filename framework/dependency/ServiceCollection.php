@@ -2,7 +2,9 @@
 
 namespace Framework\dependency;
 
+use Framework\exceptions\ServiceConflictException;
 use Framework\exceptions\ServiceNotResolvedException;
+use InvalidArgumentException;
 
 class ServiceCollection implements IServiceCollection
 {
@@ -12,32 +14,41 @@ class ServiceCollection implements IServiceCollection
         $this->_services = [];
     }
 
-    public function GetService($serviceInterface): object
+    public function getService($serviceInterface): object
     {
         if(empty($this->_services[$serviceInterface]))
             throw new ServiceNotResolvedException("Service with interface $serviceInterface not resolved.");
 
-        return $this->_services[$serviceInterface];
+        $service = $this->_services[$serviceInterface];
+        if(gettype($service) === "string"){
+            return $this->_services[$serviceInterface] = $this->resolve($service);
+        }
+
+        return $service;
     }
 
-    public function AddTransient($serviceInterface, $serviceClass): void
+    /**
+     * @throws ServiceConflictException
+     */
+    public function addScoped($serviceInterface, $serviceClass): void
     {
+        if(($serviceClass instanceof $serviceInterface) === false){
+            throw new InvalidArgumentException("Service class should implement service interface.");
+        }
+
+        if(empty($this->_services[$serviceInterface]) === false){
+            throw new ServiceConflictException("Service for that interface already defined.");
+        }
+
+        $this->_services[$serviceInterface] = $serviceClass;
     }
 
-    public function AddScoped($serviceInterface, $serviceClass): void
-    {
-        // TODO: Implement AddScoped() method.
-    }
 
-    public function AddSingleton($singleton)
-    {
-        // TODO: Implement AddSingleton() method.
-    }
 
     /**
      * @throws ServiceNotResolvedException
      */
-    public function Resolve($class, $constructorParams = [])
+    public function resolve($class, $constructorParams = [])
     {
         $classReflector = new \ReflectionClass($class);
 
@@ -58,7 +69,7 @@ class ServiceCollection implements IServiceCollection
         foreach ($constructArguments as $argument) {
             $argumentType = $argument->getType()->getName();
 
-            $args[$argument->getName()] = $this->GetService($argumentType);
+            $args[$argument->getName()] = $this->getService($argumentType);
         }
 
         foreach($constructorParams as $key => $value){
@@ -67,5 +78,21 @@ class ServiceCollection implements IServiceCollection
 
         // return instance with given params.
         return new $class(...$args);
+    }
+
+    /**
+     * @throws ServiceConflictException
+     */
+    public function addSingleton($serviceInterface, $serviceInstance): void
+    {
+        if(($serviceInstance instanceof $serviceInterface) === false){
+            throw new InvalidArgumentException("Service class should implement service interface.");
+        }
+
+        if(empty($this->_services[$serviceInterface]) === false){
+            throw new ServiceConflictException("Service for that interface already defined.");
+        }
+
+        $this->_services[$serviceInterface] = $serviceInstance;
     }
 }
