@@ -4,10 +4,6 @@ require_once "vendor/autoload.php";
 
 $GLOBALS['IS_DEBUG'] = true;
 
-use DeepCode\api\SubmissionsController;
-use DeepCode\controllers\HomeController;
-use DeepCode\controllers\ProblemsController;
-use DeepCode\controllers\ProfileController;
 use DeepCode\db\DeepCodeContext;
 use Framework\application\App;
 use Framework\mapper\RouteMapper;
@@ -21,13 +17,10 @@ try{
 
     // Initialize controllers using automapper. Automapper will map each controller by some route.
     $automapper = new RouteMapper($app->router, $app->services);
-//    $automapper->mapControllers("", "src/controllers");
-//    $automapper->mapControllers("api/", "api");
+    $automapper->mapControllers("", "./src/controllers");
+    $automapper->mapControllers("/api", "./src/api");
 
-    $automapper->mapController("", HomeController::class);
-    $automapper->mapController("", ProblemsController::class);
-    $automapper->mapController("", ProfileController::class);
-    $automapper->mapController("/api", SubmissionsController::class);
+    // index.php don't even know about controllers, and create controller when it required.
 
 //    $app->router->dump_routes();
 

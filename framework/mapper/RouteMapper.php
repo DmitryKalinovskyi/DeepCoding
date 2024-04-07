@@ -21,7 +21,7 @@ class RouteMapper
     }
 
 
-    private function mapControllerMethod(string $route, string $controllerClass, ReflectionMethod $method){
+    private function mapControllerMethod(string $route, string $controllerClass, ReflectionMethod $method): void{
         if($method->getName() == '__construct') return;
 
         $methodAttributes = $method->getAttributes();
@@ -53,7 +53,7 @@ class RouteMapper
     /**
      * @throws ReflectionException
      */
-    public function mapController(string $route, string $controllerClass){
+    public function mapController(string $route, string $controllerClass): void{
         // using reflection, check does controller have route attributes.
         $reflectionClass = new ReflectionClass($controllerClass);
         $methods = $reflectionClass->getMethods();
@@ -71,18 +71,48 @@ class RouteMapper
      * Recursive controller mapping in folder.
      *
      * @param $route - start of each route.
-     * @param $controllerDirectory - directory that will be used to generate routes.
+     * @param $controllersDirectory - directory that will be used to generate routes.
      * @param int $depth - recursion depth.
      * @return void
+     * @throws ReflectionException
      */
-    public function mapControllers(string $route, string $controllerDirectory, int $depth = -1){
+    public function mapControllers(string $route, string $controllersDirectory, int $depth = -1): void{
 
-        if(is_dir($controllerDirectory) === false){
+        if(is_dir($controllersDirectory) === false){
             throw new InvalidArgumentException("You need to pass directory.");
         }
 
-        $files = scandir($controllerDirectory);
+        $files = array_diff(scandir($controllersDirectory), array('..', '.'));
+        foreach($files as $file){
+            $fullFileName = "$controllersDirectory/$file";
+            if(is_dir($fullFileName)){
+                if($depth === -1)
+                 $this->mapControllers("$route/$file", $fullFileName);
+                else if($depth > 0)
+                 $this->mapControllers("$route/$file", $fullFileName, $depth-1);
+            }
+            else{
+                // map controller, to do that get the controller class
+                $class = $this->getClassNameFromFilePath($fullFileName);
 
+                $this->mapController($route, $class);
+            }
+        }
+    }
 
+    private function getClassNameFromFilePath($filePath): string
+    {
+        $contents = file_get_contents($filePath);
+
+        // Match namespace
+        preg_match('/namespace\s+(.*?);/s', $contents, $namespaceMatches);
+        $namespace = trim($namespaceMatches[1] ?? '');
+
+        // Match class
+        preg_match('/class\s+(\w+)/s', $contents, $classMatches);
+        $className = trim($classMatches[1] ?? '');
+
+        // Combine namespace and class name
+        return $fullClassName = $namespace ? $namespace . '\\' . $className : $className;
     }
 }

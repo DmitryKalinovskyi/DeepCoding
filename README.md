@@ -29,8 +29,9 @@ to solve different problems related to algorithms and data structures
 - [x] Create basic Controller
 - [X] Custom orm (basic structure)
 - [X] Dependency injection (implemented as service collection)
-- [ ] Routes automapper (working on)
+- [X] Routes automapper
 - [ ] ORM joins
 - [ ] ORM expressions
+- [ ] Middlewares
 - [ ] Authentication/ Authorization (JWT Token based)
 - [ ] Caching system
