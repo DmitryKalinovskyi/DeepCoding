@@ -30,6 +30,6 @@ try{
         echo "Internal server error.";
     }
     else{
-        var_dump($e);
+        echo json_encode($e->getMessage());
     }
 }
