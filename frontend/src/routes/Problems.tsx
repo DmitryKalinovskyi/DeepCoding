@@ -1,19 +1,22 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
 
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import ProblemsFilter from "../components/ProblemsFilter";
 
-const root = ReactDOM.createRoot(
-    document.getElementById('root') as HTMLElement
-);
-root.render(
-    <div className="Page">
-        <Header />
 
-        
 
-        <Footer/>
-    </div>
-);
+function Problems(){
+    return (
+        <div>
+            <Header/>
+            <div className="container py-5" >
+                <ProblemsFilter/>
+            </div>
+            <Footer/>
+        </div>
+    )
+}
+
+
+export default Problems;
