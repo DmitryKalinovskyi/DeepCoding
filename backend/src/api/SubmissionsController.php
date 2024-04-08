@@ -67,5 +67,4 @@ class SubmissionsController extends APIController
 
         echo json_encode($submission);
     }
-
 }

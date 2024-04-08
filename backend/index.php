@@ -4,6 +4,11 @@ require_once "vendor/autoload.php";
 
 $GLOBALS['IS_DEBUG'] = true;
 
+if($GLOBALS['IS_DEBUG']){
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Headers: *");
+}
+
 use DeepCode\db\DeepCodeContext;
 use Framework\application\App;
 use Framework\mapper\RouteMapper;
