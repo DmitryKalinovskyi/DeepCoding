@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\routing;
+namespace Framework\middlewares\Routing;
 
 use InvalidArgumentException;
 

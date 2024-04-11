@@ -8,6 +8,8 @@ class JWTAuthenticationMiddleware extends Middleware
 {
     public function __invoke()
     {
-        // TODO: Implement __invoke() method.
+        echo "jwt auth";
+
+        $this->_next->__invoke();
     }
 }

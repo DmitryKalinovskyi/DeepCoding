@@ -32,7 +32,7 @@ class ServiceCollection implements IServiceCollection
      */
     public function addScoped($serviceInterface, $serviceClass): IServiceCollection
     {
-        if(($serviceClass instanceof $serviceInterface) === false){
+        if(is_a($serviceClass,  $serviceInterface, true) === false){
             throw new InvalidArgumentException("Service class should implement service interface.");
         }
 
@@ -41,6 +41,7 @@ class ServiceCollection implements IServiceCollection
         }
 
         $this->_services[$serviceInterface] = $serviceClass;
+        return $this;
     }
 
 
@@ -94,6 +95,7 @@ class ServiceCollection implements IServiceCollection
         }
 
         $this->_services[$serviceInterface] = $serviceInstance;
+        return $this;
     }
 
     public function resolveMethod(callable $method): mixed

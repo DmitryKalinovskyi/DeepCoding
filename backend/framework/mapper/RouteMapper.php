@@ -4,7 +4,7 @@ namespace Framework\mapper;
 
 use Framework\attributes\Routing\Route;
 use Framework\dependency\IServiceCollection;
-use Framework\routing\Router;
+use Framework\middlewares\routing\Router;
 use InvalidArgumentException;
 use ReflectionClass;
 use ReflectionException;
