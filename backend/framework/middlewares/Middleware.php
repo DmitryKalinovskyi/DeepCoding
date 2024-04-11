@@ -2,7 +2,7 @@
 
 namespace Framework\middlewares;
 
-class Middleware
+abstract class Middleware
 {
-
+    public abstract function __invoke();
 }

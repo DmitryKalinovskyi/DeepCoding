@@ -9,21 +9,29 @@ use Framework\routing\Router;
 
 class App
 {
-    public Router $router;
     public IServiceCollection $services;
-    public IServiceCollection $middlewares;
+    private array $_middlewares;
 
     public function __construct(){
-        $this->router = new Router();
         $this->services = new ServiceCollection();
-        $this->middlewares = new ServiceCollection();
+    }
+
+    public function useMiddleware(callable|string $middleware): App{
+        $this->_middlewares[] = $middleware;
+        return $this;
     }
 
     /**
      * @throws Exception
      */
-    public function handleRequest(): void{
-        // redirect using router.
-        $this->router->redirect($_SERVER['REQUEST_URI']);
+    public function run(): void{
+
+        // execute middlewares
+        foreach($this->_middlewares as $middleware){
+            $this->services->resolveMethod($middleware);
+        }
+//
+//        // redirect using router.
+//        $this->router->redirect($_SERVER['REQUEST_URI']);
     }
 }

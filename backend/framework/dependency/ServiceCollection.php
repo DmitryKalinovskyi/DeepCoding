@@ -14,7 +14,7 @@ class ServiceCollection implements IServiceCollection
         $this->_services = [];
     }
 
-    public function getService($serviceInterface): object
+    public function getService($serviceInterface): mixed
     {
         if(empty($this->_services[$serviceInterface]))
             throw new ServiceNotResolvedException("Service with interface $serviceInterface not resolved.");
@@ -30,7 +30,7 @@ class ServiceCollection implements IServiceCollection
     /**
      * @throws ServiceConflictException
      */
-    public function addScoped($serviceInterface, $serviceClass): void
+    public function addScoped($serviceInterface, $serviceClass): IServiceCollection
     {
         if(($serviceClass instanceof $serviceInterface) === false){
             throw new InvalidArgumentException("Service class should implement service interface.");
@@ -48,7 +48,7 @@ class ServiceCollection implements IServiceCollection
     /**
      * @throws ServiceNotResolvedException
      */
-    public function resolve($class, $constructorParams = [])
+    public function resolve($class, $constructorParams = []): mixed
     {
         $classReflector = new \ReflectionClass($class);
 
@@ -83,7 +83,7 @@ class ServiceCollection implements IServiceCollection
     /**
      * @throws ServiceConflictException
      */
-    public function addSingleton($serviceInterface, $serviceInstance): void
+    public function addSingleton($serviceInterface, $serviceInstance): IServiceCollection
     {
         if(($serviceInstance instanceof $serviceInterface) === false){
             throw new InvalidArgumentException("Service class should implement service interface.");
@@ -94,5 +94,10 @@ class ServiceCollection implements IServiceCollection
         }
 
         $this->_services[$serviceInterface] = $serviceInstance;
+    }
+
+    public function resolveMethod(callable $method): mixed
+    {
+        return "not implemented.";
     }
 }

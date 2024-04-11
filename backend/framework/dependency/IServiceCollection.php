@@ -9,9 +9,9 @@ interface IServiceCollection
     /**
      * @throws ServiceNotResolvedException
      */
-    public function getService($serviceInterface): object;
+    public function getService($serviceInterface): mixed;
 
-    public function resolve($class, $constructorParams=[]);
+    public function resolve($class, $constructorParams=[]): mixed;
 
 //    /**
 //     * Bind class to the interface, each time when service requested by interface will be created new object.
@@ -29,7 +29,9 @@ interface IServiceCollection
      * @param $serviceClass
      * @return void
      */
-    public function addScoped($serviceInterface, $serviceClass): void;
+    public function addScoped($serviceInterface, $serviceClass): IServiceCollection;
 
-    public function addSingleton($serviceInterface, $serviceInstance): void;
+    public function addSingleton($serviceInterface, $serviceInstance): IServiceCollection;
+
+    public function resolveMethod(callable $method): mixed;
 }
