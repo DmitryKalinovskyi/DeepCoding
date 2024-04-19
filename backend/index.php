@@ -14,10 +14,12 @@ try{
     $appBuilder = new AppBuilder();
 
     $appBuilder->useMVC();
+
     // add database
     $appBuilder->services()
         ->addSingleton( DeepCodeContext::class,
-        new DeepCodeContext("mysql:host=127.0.0.1;dbname=deep_code"));
+        new DeepCodeContext("mysql:host=127.0.0.1;dbname=deep_code"))
+        ->addScoped(RouteMapper::class, RouteMapper::class);
 
 //    $appBuilder->useRouter();
 
@@ -25,11 +27,16 @@ try{
 //    $appBuilder->useMiddleware(new JWTAuthenticationMiddleware());
 
     // Initialize controllers using automapper. Automapper will map each controller by some route.
-//    $appBuilder->useMiddleware(
-//    function(RouteMapper $automapper) {
-//        $automapper->mapControllers("", "./src/controllers");
-//        $automapper->mapControllers("/api", "./src/api");
-//    });
+    $appBuilder->use(
+    function(RouteMapper $automapper, $next) {
+        $automapper->mapControllers("", "./src/controllers");
+        $automapper->mapControllers("/api", "./src/api");
+        $next();
+    });
+//
+//    $appBuilder->use(
+//        function(Router)
+//    )
 
     // index.php don't even know about controllers, application will create controller when needed.
     $app = $appBuilder->build();

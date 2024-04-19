@@ -72,7 +72,10 @@ class ServiceCollection implements IServiceCollection
     /**
      * @throws ServiceNotResolvedException
      */
-    private function resolveParamsForFunc(ReflectionFunctionAbstract $func, array $params = []): array{
+    private function resolveParamsForFunc(?ReflectionFunctionAbstract $func, array $params = []): array{
+        if($func === null)
+            return [];
+
         $args = $func->getParameters();
         if (empty($args)) {
             return [];
