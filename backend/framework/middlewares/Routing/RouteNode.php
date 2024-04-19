@@ -7,11 +7,9 @@ use Framework\exceptions\RouteNotResolvedException;
 
 class RouteNode{
 
-    private $_callable;
     private array $_children;
 
     public function __construct(){
-        $this->_callable = null;
         $this->_children = [];
     }
 
@@ -19,6 +17,12 @@ class RouteNode{
      * @throws RouteNotResolvedException
      */
     public function moveNext(string $token){
+        if(count($this->_children) == 0){
+            throw new RouteNotResolvedException();
+        }
+        else if(count($this->_children) == 1){
+        }
+
         if(array_key_exists($token, $this->_children)){
             return $this->_children[$token];
         }
@@ -40,7 +44,7 @@ class RouteNode{
         }
     }
 
-    public function getCallable(){
-        return $this->_callable;
+    public function isParameter(string $token): bool{
+        return $token[0] == ':';
     }
 }

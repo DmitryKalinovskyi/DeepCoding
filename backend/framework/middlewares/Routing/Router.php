@@ -3,62 +3,30 @@
 namespace Framework\middlewares\Routing;
 
 use Exception;
+use Framework\exceptions\RouteNotResolvedException;
+use Framework\middlewares\Middleware;
 
-class Router{
-
-    public RouterMethod $post;
-    public RouterMethod $get;
-    public RouterMethod $patch;
-    public RouterMethod $delete;
-    public RouterMethod $put;
+class Router extends Middleware
+{
+    private RouteNode $_rootNode;
 
     public function __construct(){
-        $this->post = new RouterMethod();
-        $this->put = new RouterMethod();
-        $this->delete = new RouterMethod();
-        $this->patch = new RouterMethod();
-        $this->get = new RouterMethod();
+        $this->_rootNode = new RouteNode();
     }
 
-    /**
-     * @throws Exception
-     */
-    public function redirect($url){
-        switch($_SERVER['REQUEST_METHOD'] ){
-            case "POST":
-                $this->post->handleRoute($url);
-                break;
-            case "GET":
-                $this->get->handleRoute($url);
-                break;
-            case "PATCH":
-                $this->patch->handleRoute($url);
-                break;
-            case "PUT":
-                $this->put->handleRoute($url);
-                break;
-            case "DELETE":
-                $this->delete->handleRoute($url);
-                break;
-            default:
-                throw new Exception("Unsupported request method exception");
-        }
+    public function __invoke(): void
+    {
+        echo " route";
     }
 
-    public function dump_routes(): void{
-        echo "GET ROUTES: ";
-        var_dump($this->get);
+    public function addRoute(string $url, callable $action){
+        // home/index?p1=p1&p2=
+        
+        [$path, $params] = explode('?', $url);
 
-        echo "POST ROUTES: ";
-        var_dump($this->post);
+        // split tokens. make route
+        $tokens = explode('/', $url);
 
-        echo "PATCH ROUTES: ";
-        var_dump($this->patch);
 
-        echo "PUT ROUTES: ";
-        var_dump($this->put);
-
-        echo "DELETE ROUTES: ";
-        var_dump($this->delete);
     }
 }

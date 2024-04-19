@@ -2,19 +2,28 @@
 
 namespace Framework\middlewares;
 
+use Closure;
+
+// now becomes unused, due to Closure system
 abstract class Middleware
 {
-    protected ?Middleware $_next;
-    public function setNext(Middleware $next): void{
+    private ?Closure $_next;
+    public function setNext(Closure $next): void{
         $this->_next = $next;
     }
+
+    public function invokeNext(): void{
+        $f = $this->_next;
+        $f();
+    }
+
     public abstract function __invoke();
 
-    public function dumpMiddlewarePipeline(){
-       $middleware = $this;
-        while($middleware !== null){
-            var_dump($middleware);
-            $middleware = $middleware->_next;
-        }
-    }
+//    public function dumpMiddlewarePipeline(){
+//       $middleware = $this;
+//        while($middleware !== null){
+//            var_dump($middleware);
+//            $middleware = $middleware->_next;
+//        }
+//    }
 }

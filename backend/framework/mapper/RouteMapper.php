@@ -4,7 +4,8 @@ namespace Framework\mapper;
 
 use Framework\attributes\Routing\Route;
 use Framework\dependency\IServiceCollection;
-use Framework\middlewares\routing\Router;
+use Framework\middlewares\Routing\ControllerRouter;
+use Framework\middlewares\routing\ControllerRouter_;
 use InvalidArgumentException;
 use ReflectionClass;
 use ReflectionException;
@@ -12,10 +13,10 @@ use ReflectionMethod;
 
 class RouteMapper
 {
-    private Router $_router;
+    private ControllerRouter $_router;
     private IServiceCollection $_controllerCollection;
 
-    public function __construct(Router $router, IServiceCollection $controllerCollection){
+    public function __construct(ControllerRouter $router, IServiceCollection $controllerCollection){
         $this->_router = $router;
         $this->_controllerCollection = $controllerCollection;
     }

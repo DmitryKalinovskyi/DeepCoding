@@ -5,13 +5,22 @@ namespace Framework\dependency;
 use Framework\exceptions\ServiceConflictException;
 use Framework\exceptions\ServiceNotResolvedException;
 use InvalidArgumentException;
+use ReflectionException;
+use ReflectionFunction;
+use ReflectionFunctionAbstract;
+use ReflectionMethod;
 
 class ServiceCollection implements IServiceCollection
 {
     private array $_services;
 
+    /**
+     * @throws ServiceConflictException
+     */
     public function __construct(){
         $this->_services = [];
+
+        $this->addSingleton(IServiceCollection::class, $this);
     }
 
     public function getService($serviceInterface): mixed
@@ -44,8 +53,6 @@ class ServiceCollection implements IServiceCollection
         return $this;
     }
 
-
-
     /**
      * @throws ServiceNotResolvedException
      */
@@ -55,30 +62,37 @@ class ServiceCollection implements IServiceCollection
 
         // get constructor using reflector, if class don't have constructor just create and return object.
         $constructReflector = $classReflector->getConstructor();
-        if (empty($constructReflector)) {
-            return new $class;
-        }
 
-        // get constructor arguments, return new object if constructor without parameters.
-        $constructArguments = $constructReflector->getParameters();
-        if (empty($constructArguments)) {
-            return new $class;
-        }
-
-        // get arguments
-        $args = [];
-        foreach ($constructArguments as $argument) {
-            $argumentType = $argument->getType()->getName();
-
-            $args[$argument->getName()] = $this->getService($argumentType);
-        }
-
-        foreach($constructorParams as $key => $value){
-            $args[$key] = $value;
-        }
+        $args = $this->resolveParamsForFunc($constructReflector, $constructorParams);
 
         // return instance with given params.
         return new $class(...$args);
+    }
+
+    /**
+     * @throws ServiceNotResolvedException
+     */
+    private function resolveParamsForFunc(ReflectionFunctionAbstract $func, array $params = []): array{
+        $args = $func->getParameters();
+        if (empty($args)) {
+            return [];
+        }
+
+        $resultingParams = [];
+
+        foreach ($args as $argument) {
+            $argumentTypeName = $argument->getType();
+
+            if($argumentTypeName !== null) $argumentTypeName = $argumentTypeName->getName();
+
+            $argName = $argument->getName();
+            if(array_key_exists($argName, $params))
+                $resultingParams[$argName] = $params[$argName];
+            else if($argumentTypeName !== null)
+                $resultingParams[$argName] = $this->getService($argumentTypeName);
+        }
+
+        return $resultingParams;
     }
 
     /**
@@ -98,8 +112,16 @@ class ServiceCollection implements IServiceCollection
         return $this;
     }
 
-    public function resolveMethod(callable $method): mixed
+    /**
+     * @throws ReflectionException
+     * @throws ServiceNotResolvedException
+     */
+    public function invokeFunction(callable $function, array $params = []): mixed
     {
-        return "not implemented.";
+        $m = new ReflectionFunction($function);
+
+        $params = $this->resolveParamsForFunc($m, $params);
+
+        return $m->invoke(...$params);
     }
 }

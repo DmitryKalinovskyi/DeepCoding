@@ -13,18 +13,16 @@ try{
     // Create app and configure all services.
     $appBuilder = new AppBuilder();
 
-    $appBuilder->useCors();
-
+    $appBuilder->useMVC();
     // add database
     $appBuilder->services()
         ->addSingleton( DeepCodeContext::class,
-        new DeepCodeContext("mysql:host=127.0.0.1;dbname=deep_code"))
-        ->addScoped(RouteMapper::class, RouteMapper::class);
+        new DeepCodeContext("mysql:host=127.0.0.1;dbname=deep_code"));
 
 //    $appBuilder->useRouter();
 
     // use default authorization middleware
-    $appBuilder->useMiddleware(new JWTAuthenticationMiddleware());
+//    $appBuilder->useMiddleware(new JWTAuthenticationMiddleware());
 
     // Initialize controllers using automapper. Automapper will map each controller by some route.
 //    $appBuilder->useMiddleware(

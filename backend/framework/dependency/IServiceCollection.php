@@ -29,9 +29,9 @@ interface IServiceCollection
      * @param $serviceClass
      * @return void
      */
-    public function addScoped($serviceInterface, $serviceClass): IServiceCollection;
+    public function addScoped(string $serviceInterface, string $serviceClass): IServiceCollection;
 
-    public function addSingleton($serviceInterface, $serviceInstance): IServiceCollection;
+    public function addSingleton(string $serviceInterface, $serviceInstance): IServiceCollection;
 
-    public function resolveMethod(callable $method): mixed;
+    public function invokeFunction(callable $function): mixed;
 }

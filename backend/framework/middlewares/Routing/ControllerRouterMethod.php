@@ -4,7 +4,7 @@ namespace Framework\middlewares\Routing;
 
 use InvalidArgumentException;
 
-class RouterMethod
+class ControllerRouterMethod
 {
     private array $routes;
 
