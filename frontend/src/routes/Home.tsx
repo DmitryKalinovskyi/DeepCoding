@@ -10,6 +10,8 @@ const fetchData = async () => {
 
     const data = await response.json();
 
+    console.log(data);
+
     return data as HomeViewModel;
 }
 
@@ -33,7 +35,7 @@ export default function Home(){
     return (
         <div>
             <Header/>
-            <div className="container py-5" >
+            <div className="m-5" >
                 {data?.msg}
             </div>
             <Footer/>

@@ -40,7 +40,7 @@ function ProblemsFilter(){
         <div>
             <form className="row mb-2" method="get">
                 <div className="col-2">
-                    <select className="form-select">
+                    <select className="shadow-sm shadow-gray-300">
                         <option>All</option>
                         <option>Easy</option>
                         <option>Medium</option>
@@ -70,7 +70,8 @@ function ProblemsFilter(){
                         <button className="input-group-text ">
                             <span className="bi bi-search"></span>
                         </button>
-                        <input className="form-control" name="search" placeholder="Enter problem name" value=""/>
+                        <input className="form-control"
+                               name="search" placeholder="Enter problem name"/>
                     </div>
                 </div>
             </form>
