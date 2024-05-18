@@ -42,12 +42,12 @@ function ProblemsFilter(){
     return (
         <div>
             <form className="flex " method="get">
-                <Input>
-                    <option>Status</option>
-                    <option>Not tried</option>
-                    <option>Tried</option>
-                    <option>Solved</option>
-                </Input>
+                {/*<Input>*/}
+                {/*    <option>Status</option>*/}
+                {/*    <option>Not tried</option>*/}
+                {/*    <option>Tried</option>*/}
+                {/*    <option>Solved</option>*/}
+                {/*</Input>*/}
                 <select className="shadow-sm outline-0 border-2 rounded">
 
                 </select>
@@ -90,13 +90,11 @@ function ProblemsFilter(){
                 </div>
 
                 <div className="col-6">
-
                     <div className="input-group">
                         <button className="input-group-text ">
                             <span className="bi bi-search"></span>
                         </button>
-                        <input className="form-control"
-                               name="search" placeholder="Enter problem name"/>
+                        <Input name="search" placeholder="Enter problem name"/>
                     </div>
                 </div>
             </form>

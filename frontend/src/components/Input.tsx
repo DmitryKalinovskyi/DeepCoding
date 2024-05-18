@@ -1,15 +1,28 @@
+import React from "react";
+import {cn} from "../lib/utils.ts";
 
-interface InputProps{
-    name?: string,
-    options?: [],
-    children?: React.ReactNode
-}
+export interface InputProps
+    extends React.InputHTMLAttributes<HTMLInputElement> {}
 
-export default function Input(props: InputProps ){
-    console.log(props)
-    return <>
-        <select className="shadow-sm outline-0 border-2 rounded">
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
+    ({ className, type, ...props }, ref) => {
+        return (
+            <input
+                type={type}
+                className={cn(
+                            'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+                            className
+                        )}
+                ref={ref}
+                {...props}
+            />
+            // <input
+            //
+            //     />
+        )
+    }
+)
 
-        </select>
-    </>
-}
+Input.displayName = 'Input'
+
+export default Input;
