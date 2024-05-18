@@ -1,3 +1,6 @@
+import React from "react";
+
+
 function Header(){
     return (
         <header className="shadow-gray-300 shadow-sm">

@@ -1,6 +1,6 @@
-// import {alpha, FormControl, InputBase, InputLabel, MenuItem, Select, styled} from "@mui/material";
-// import SearchIcon from '@mui/icons-material/Search';
-import {useEffect, useState} from "react";
+import {alpha, FormControl, InputBase, InputLabel, MenuItem, Select, styled} from "@mui/material";
+import SearchIcon from '@mui/icons-material/Search';
+import React, {useEffect, useState} from "react";
 import Input from "../components/Input";
 
 
@@ -52,30 +52,30 @@ function ProblemsFilter(){
 
                 </select>
 
-                {/*<FormControl>*/}
-                {/*<InputLabel id="status-select-label">Status</InputLabel>*/}
-                {/*    <Select*/}
-                {/*        labelId="status-select-label"*/}
-                {/*        className="w-32"*/}
-                {/*        label="Status"*/}
-                {/*    >*/}
-                {/*        <MenuItem>Not even tried</MenuItem>*/}
-                {/*        <MenuItem>Tried</MenuItem>*/}
-                {/*        <MenuItem>Solved</MenuItem>*/}
-                {/*    </Select>*/}
-                {/*</FormControl>*/}
-                {/*<FormControl>*/}
-                {/*    <InputLabel id="difficulty-select-label">Difficulty</InputLabel>*/}
-                {/*    <Select*/}
-                {/*        labelId="difficulty-select-label"*/}
-                {/*        className="w-32"*/}
-                {/*        label="Difficulty"*/}
-                {/*    >*/}
-                {/*        <MenuItem>Not even tried</MenuItem>*/}
-                {/*        <MenuItem>Tried</MenuItem>*/}
-                {/*        <MenuItem>Solved</MenuItem>*/}
-                {/*    </Select>*/}
-                {/*</FormControl>*/}
+                <FormControl>
+                <InputLabel id="status-select-label">Status</InputLabel>
+                    <Select
+                        labelId="status-select-label"
+                        className="w-32"
+                        label="Status"
+                    >
+                        <MenuItem>Not even tried</MenuItem>
+                        <MenuItem>Tried</MenuItem>
+                        <MenuItem>Solved</MenuItem>
+                    </Select>
+                </FormControl>
+                <FormControl>
+                    <InputLabel id="difficulty-select-label">Difficulty</InputLabel>
+                    <Select
+                        labelId="difficulty-select-label"
+                        className="w-32"
+                        label="Difficulty"
+                    >
+                        <MenuItem>Not even tried</MenuItem>
+                        <MenuItem>Tried</MenuItem>
+                        <MenuItem>Solved</MenuItem>
+                    </Select>
+                </FormControl>
 
                 {/*<div className="col-2">*/}
                 {/*    <select className="shadow-sm shadow-gray-300">*/}
