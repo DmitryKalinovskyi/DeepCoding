@@ -1,4 +1,7 @@
+import {alpha, FormControl, InputBase, InputLabel, MenuItem, Select, styled} from "@mui/material";
+import SearchIcon from '@mui/icons-material/Search';
 import React, {useEffect, useState} from "react";
+import Input from "../components/Input";
 
 
 interface ProblemsFilter{
@@ -38,32 +41,54 @@ function ProblemsFilter(){
 
     return (
         <div>
-            <form className="" method="get">
-                <div className="col-2">
-                    <select className="shadow-sm shadow-gray-300">
-                        <option>All</option>
-                        <option>Easy</option>
-                        <option>Medium</option>
-                        <option>Hard</option>
-                    </select>
-                </div>
-                <div className="col-2">
-                    <select className="form-select">
-                        <option>None</option>
-                        <option>Tag1</option>
-                        <option>Tag2</option>
-                        <option>Tag3</option>
-                    </select>
+            <form className="flex " method="get">
+                <Input>
+                    <option>Status</option>
+                    <option>Not tried</option>
+                    <option>Tried</option>
+                    <option>Solved</option>
+                </Input>
+                <select className="shadow-sm outline-0 border-2 rounded">
+
+                </select>
+
+                <FormControl>
+                <InputLabel id="status-select-label">Status</InputLabel>
+                    <Select
+                        labelId="status-select-label"
+                        className="w-32"
+                        label="Status"
+                    >
+                        <MenuItem>Not even tried</MenuItem>
+                        <MenuItem>Tried</MenuItem>
+                        <MenuItem>Solved</MenuItem>
+                    </Select>
+                </FormControl>
+                <FormControl>
+                    <InputLabel id="difficulty-select-label">Difficulty</InputLabel>
+                    <Select
+                        labelId="difficulty-select-label"
+                        className="w-32"
+                        label="Difficulty"
+                    >
+                        <MenuItem>Not even tried</MenuItem>
+                        <MenuItem>Tried</MenuItem>
+                        <MenuItem>Solved</MenuItem>
+                    </Select>
+                </FormControl>
+
+                {/*<div className="col-2">*/}
+                {/*    <select className="shadow-sm shadow-gray-300">*/}
+                {/*        <option>All</option>*/}
+                {/*        <option>Easy</option>*/}
+                {/*        <option>Medium</option>*/}
+                {/*        <option>Hard</option>*/}
+                {/*    </select>*/}
+                {/*</div>*/}
+
+                <div>
                 </div>
 
-                <div className="col-2">
-                    <select className="form-select">
-                        <option>All</option>
-                        <option>Not even tried</option>
-                        <option>Tried</option>
-                        <option>Solved</option>
-                    </select>
-                </div>
                 <div className="col-6">
 
                     <div className="input-group">
@@ -89,8 +114,8 @@ function ProblemsFilter(){
                         </tr>
                     </thead>
                     <tbody>
-                    {!isLoading ? data?.problems.map((problem) =>
-                            <tr className="">
+                    {!isLoading ? data?.problems.map((problem, index) =>
+                            <tr className="" key={index}>
                                 <td className="w-60">
                                     Solved
                                 </td>

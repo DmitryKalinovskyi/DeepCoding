@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import Header from '../components/Header'
-import Footer from '../components/Footer'
+import Header from '../partial-pages/Header'
+import Footer from '../partial-pages/Footer'
 
 const fetchData = async () => {
     // const url = process.env.REACT_APP_API_URL_ADDRESS + "/home";

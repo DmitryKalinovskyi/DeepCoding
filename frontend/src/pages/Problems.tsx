@@ -1,8 +1,8 @@
 import React from 'react';
 
-import Header from '../components/Header'
-import Footer from '../components/Footer'
-import ProblemsFilter from "../components/ProblemsFilter";
+import Header from '../partial-pages/Header'
+import Footer from '../partial-pages/Footer'
+import ProblemsFilter from "../partial-pages/ProblemsFilter";
 
 
 

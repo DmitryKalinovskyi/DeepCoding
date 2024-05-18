@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 
-import Header from '../components/Header'
-import Footer from '../components/Footer'
-import CodeEditor from "../components/CodeEditor";
-import SubmissionList from "../components/SubmissionList";
+import Header from '../partial-pages/Header'
+import Footer from '../partial-pages/Footer'
+import CodeEditor from "../partial-pages/CodeEditor";
+import SubmissionList from "../partial-pages/SubmissionList";
 
 interface ProblemProperties{
     Id: number;
