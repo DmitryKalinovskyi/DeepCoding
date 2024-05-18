@@ -38,7 +38,7 @@ function ProblemsFilter(){
 
     return (
         <div>
-            <form className="row mb-2" method="get">
+            <form className="" method="get">
                 <div className="col-2">
                     <select className="shadow-sm shadow-gray-300">
                         <option>All</option>
@@ -77,24 +77,51 @@ function ProblemsFilter(){
             </form>
 
             <div>
-                <table className="table">
+                <table className="w-full problems-table ">
+                    <thead>
+                        <tr>
+                            <td className="w-60">
+                                Status
+                            </td>
+                            <td>
+                                Title
+                            </td>
+                        </tr>
+                    </thead>
                     <tbody>
-                    {data?.problems.map((problem) =>
-                            <tr>
-                                <td>
-                                    {problem.Id}
+                    {!isLoading ? data?.problems.map((problem) =>
+                            <tr className="">
+                                <td className="w-60">
+                                    Solved
                                 </td>
                                 <td>
-                                    <a href= {`problem?id=${problem.Id}`} className='link text-decoration-none'>
-                                        {problem.Name}
+                                    <a href={`problem?id=${problem.Id}`} className='hover:text-blue-500'>
+                                        {problem.Id}. {problem.Name}
                                     </a>
                                 </td>
                             </tr>
-                    )}
+                        ) :
+                        <>
+                            <tr>
+                                <td className="w-60">
+                                    <div className="preview-div w-40"/>
+                                </td>
+                                <td className="w-60">
+                                    <div className="preview-div w-40"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td className="w-60">
+                                <div className="preview-div w-40"/>
+                                </td>
+                                <td className="w-60">
+                                    <div className="preview-div w-40"/>
+                                </td>
+                            </tr>
+                        </>
+                    }
                     </tbody>
                 </table>
-                {isLoading && <tr><td colSpan={2}>Loading...</td></tr>}
-
             </div>
         </div>
     );

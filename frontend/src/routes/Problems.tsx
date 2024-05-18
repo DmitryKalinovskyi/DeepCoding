@@ -8,13 +8,13 @@ import ProblemsFilter from "../components/ProblemsFilter";
 
 function Problems(){
     return (
-        <div>
+        <>
             <Header/>
-            <div className="container py-5" >
-                <ProblemsFilter/>
-            </div>
+                <div className="container py-5" >
+                    <ProblemsFilter/>
+                </div>
             <Footer/>
-        </div>
+        </>
     )
 }
 

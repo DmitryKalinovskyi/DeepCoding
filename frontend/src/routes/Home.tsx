@@ -35,8 +35,10 @@ export default function Home(){
     return (
         <div>
             <Header/>
-            <div className="m-5" >
-                {data?.msg}
+            <div className="container">
+                <div className="m-5">
+                    {data?.msg}
+                </div>
             </div>
             <Footer/>
         </div>

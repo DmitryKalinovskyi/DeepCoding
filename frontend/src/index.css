@@ -3,8 +3,42 @@
 @tailwind utilities;
 
 @layer base{
-  .nav-bar > {
-    @apply hover:bg-gray-300
+  .nav-bar{
+    @apply items-stretch
+  }
+
+  /*we will consider the first as logo*/
+  .nav-bar .nav-link {
+    @apply transition-colors duration-100
+    flex items-center px-3
+
+    hover:bg-gray-100
+  }
+
+  .nav-bar .nav-group{
+    @apply flex
+  }
+
+  .problems-table{
+    @apply border-collapse table-fixed
+  }
+
+  .problems-table thead td{
+    @apply text-gray-500 border-b-2
+  }
+
+  .problems-table td{
+    @apply p-2
+  }
+  .problems-table tbody tr:nth-child(even){
+    @apply bg-gray-100 p-2
+  }
+
+  .problems-table tbody tr:nth-child(even) .preview-div{
+    @apply h-6 rounded box-border bg-white
+  }
+  .problems-table tbody tr:nth-child(odd) .preview-div{
+    @apply h-6 rounded box-border bg-gray-100
   }
 }
 
