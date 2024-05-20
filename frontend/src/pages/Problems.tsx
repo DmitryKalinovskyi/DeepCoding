@@ -2,7 +2,7 @@ import React from 'react';
 
 import Header from '../partial-pages/Header'
 import Footer from '../partial-pages/Footer'
-import ProblemsFilter from "../partial-pages/ProblemsFilter";
+import ProblemsFilter from "../partial-pages/SearchFilter.tsx";
 
 
 

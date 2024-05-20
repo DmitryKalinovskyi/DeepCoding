@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer base{
+    *{
+        @apply outline-indigo-600;
+    }
+
     .nav-bar{
         @apply items-stretch
     }
@@ -39,6 +43,10 @@
     }
     .problems-table tbody tr:nth-child(odd) .preview-div{
         @apply h-6 rounded box-border bg-gray-100
+    }
+
+    .problems-table.is-searching *{
+        filter: blur(0.7px);
     }
 }
 

@@ -4,7 +4,7 @@ function Header(){
             <div className="nav-bar flex justify-between container">
                 <div className="nav-group">
                     <div>
-                        <a href="/public">
+                        <a href="/">
                             <img className="object-cover h-20" src="./logo.jpg"></img>
                         </a>
                     </div>
