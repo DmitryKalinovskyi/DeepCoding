@@ -1,27 +1,31 @@
+import Select from "../components/Select.tsx";
+import ReactCodeMirror from "@uiw/react-codemirror";
+import {Button, ButtonBase} from "@mui/material";
+import {useState} from "react";
 
 function CodeEditor(){
-    return (
-        <form className="h-100" method="post">
-            <div className="d-flex flex-column h-100">
-                <div className="bg-light rounded-2">
-                    <div className="input-group mb-2">
-                        <div className="input-group-text">
-                            Select your compiler:
-                        </div>
-                        <select className="form-control" name="compiler">
-                            <option>C</option>
-                            <option>C++</option>
-                        </select>
-                    </div>
-                </div>
+    const [selectedCompiler, setSelectedCompiler] = useState("C++");
 
-                <textarea name="code" placeholder="Enter your code here..." className="form-control editor-area flex-grow-1 mb-2">c++</textarea>
-                <input name="problemId" value="<?php echo $problem->Id ?> " hidden/>
-                    <div>
-                        <button className="btn btn-primary" type="submit">Send</button>
-                    </div>
+    function onCompilerSelect(e){
+        setSelectedCompiler(e.target.value);
+    }
+
+    return (
+        <div className="d-flex flex-column h-100">
+            <div className="bg-light rounded-2">
+                <div className="input-group mb-2">
+                    <Select onChange={onCompilerSelect} value={selectedCompiler}>
+                        <option >C++</option>
+                        <option >C#</option>
+                        <option >Python</option>
+                    </Select>
+                </div>
             </div>
-        </form>
+
+                <ReactCodeMirror className="bg-black rounded-md mb-4" height="400px" theme="light"/>
+
+            <Button variant="contained">Send</Button>
+        </div>
     )
 }
 

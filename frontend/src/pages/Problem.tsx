@@ -5,6 +5,7 @@ import SubmissionList from "../partial-pages/SubmissionList";
 import DefaultLayout from "../partial-pages/layout/DefaultLayout.tsx";
 import Box from '@mui/material/Box';
 import {Tab, Tabs} from "@mui/material";
+import Latex from "react-latex-next";
 
 interface ProblemProperties{
     Id: number;
@@ -42,7 +43,7 @@ function CustomTabPanel(props: TabPanelProps) {
             {...other}
         >
             {value === index && (
-                <Box className="p-2 border h-full rounded-b-md">
+                <Box className="p-2 h-full">
                     {children}
                 </Box>
             )}
@@ -80,7 +81,7 @@ function Problem(props: ProblemProperties){
 
     return (
         <DefaultLayout>
-            <div className="min-w-full min-h-full grid grid-cols-2 gap-8">
+            <div className="min-w-full min-h-full grid grid-cols-2 gap-8 ">
                 <div className="p-3 rounded-md h-100 bg-gray-100">
                     <div className="text-2xl font-semibold mb-2">
                         Problem name: {data?.Name}
@@ -91,9 +92,10 @@ function Problem(props: ProblemProperties){
                 </div>
 
 
-                <div className="flex flex-col ">
-                    <Box className="border rounded-t-md">
-                        <Tabs value={tabIndex} onChange={onTabSwitch} aria-label="basic tabs example">
+                <div className="flex flex-col rounded-md bg-gray-100">
+                    <Box>
+                        <Tabs value={tabIndex} onChange={onTabSwitch} aria-label="basic tabs example"
+                        className="rounded-t-md">
                             <Tab label="Editor" {...a11yProps(0)}  />
                             <Tab label="Submissions"  {...a11yProps(1)} />
                         </Tabs>
