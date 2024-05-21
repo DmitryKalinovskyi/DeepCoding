@@ -2,8 +2,11 @@ import Select from "../components/Select.tsx";
 import ReactCodeMirror from "@uiw/react-codemirror";
 import {Button, ButtonBase} from "@mui/material";
 import {useState} from "react";
+import CodeEditor from "../components/CodeEditor.tsx";
 
-function CodeEditor(){
+// code editor is custom component for displaying code inside application.
+
+function SubmitEditor(){
     const [selectedCompiler, setSelectedCompiler] = useState("C++");
 
     function onCompilerSelect(e){
@@ -11,7 +14,7 @@ function CodeEditor(){
     }
 
     return (
-        <div className="d-flex flex-column h-100">
+        <div className="flex flex-col h-full">
             <div className="bg-light rounded-2">
                 <div className="input-group mb-2">
                     <Select onChange={onCompilerSelect} value={selectedCompiler}>
@@ -21,12 +24,11 @@ function CodeEditor(){
                     </Select>
                 </div>
             </div>
-
-                <ReactCodeMirror className="bg-black rounded-md mb-4" height="400px" theme="light"/>
-
-            <Button variant="contained">Send</Button>
+            <CodeEditor className="flex-grow overflow-auto"/>
+            <Button className="mt-4 w-20 bg-violet-700"
+                    variant="contained">Send</Button>
         </div>
     )
 }
 
-export default CodeEditor;
+export default SubmitEditor;

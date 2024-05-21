@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 
-import CodeEditor from "../partial-pages/CodeEditor";
+import SubmitEditor from "../partial-pages/SubmitEditor.tsx";
 import SubmissionList from "../partial-pages/SubmissionList";
 import DefaultLayout from "../partial-pages/layout/DefaultLayout.tsx";
 import Box from '@mui/material/Box';
@@ -43,7 +43,7 @@ function CustomTabPanel(props: TabPanelProps) {
             {...other}
         >
             {value === index && (
-                <Box className="p-2 h-full">
+                <Box className="p-6 h-full">
                     {children}
                 </Box>
             )}
@@ -82,7 +82,7 @@ function Problem(props: ProblemProperties){
     return (
         <DefaultLayout>
             <div className="min-w-full min-h-full grid grid-cols-2 gap-8 ">
-                <div className="p-3 rounded-md h-100 bg-gray-100">
+                <div className="p-6 rounded-md h-100 bg-gray-100">
                     <div className="text-2xl font-semibold mb-2">
                         Problem name: {data?.Name}
                     </div>
@@ -101,7 +101,7 @@ function Problem(props: ProblemProperties){
                         </Tabs>
                     </Box>
                     <CustomTabPanel value={tabIndex} index={0} >
-                        <CodeEditor/>
+                        <SubmitEditor/>
                     </CustomTabPanel>
                     <CustomTabPanel value={tabIndex} index={1}>
                         <SubmissionList UserId={1} ProblemId={1}/>

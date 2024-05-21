@@ -1,0 +1,13 @@
+@layer CodeEditor{
+    .cm-editor{
+        @apply bg-white rounded-md h-full border !outline-none
+    }
+
+    .cm-editor.cm-focused{
+        @apply outline-dashed
+    }
+
+    .cm-editor .cm-gutters{
+        @apply rounded-l-md
+    }
+}
