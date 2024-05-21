@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Header from '../partial-pages/Header'
 import Footer from '../partial-pages/Footer'
+import {DefaultLayout} from "../partial-pages/layout/DefaultLayout.tsx";
 
 const fetchData = async () => {
     // const url = process.env.REACT_APP_API_URL_ADDRESS + "/home";
@@ -33,15 +34,11 @@ export default function Home(){
     }, []);
 
     return (
-        <div>
-            <Header/>
-            <div className="container">
-                <div className="m-5">
-                    {data?.msg}
-                </div>
+        <DefaultLayout>
+            <div>
+                {data?.msg}
             </div>
-            <Footer/>
-        </div>
+        </DefaultLayout>
     )
 }
 

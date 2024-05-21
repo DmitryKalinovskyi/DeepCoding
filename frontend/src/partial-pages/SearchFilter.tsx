@@ -4,6 +4,7 @@ import {useEffect, useRef, useState} from "react";
 import Input from "../components/Input";
 import {cn} from "../lib/utils.ts";
 import Select from "../components/Select.tsx";
+import {Pagination} from "@mui/material";
 
 
 interface SearchResult {
@@ -19,16 +20,21 @@ interface Problem{
 }
 
 interface SearchFilterParams{
-    pageSize?: 25
+    pageSize: 25
 }
 
-async function fetchProblems(search = "") {
+async function fetchProblems(search = "", page= 0, pageSize = 25) {
     const url = `http://deepcode/api/problems?` + new URLSearchParams({
-        search
+        search,
+        page: page.toString(),
+        pageSize: pageSize.toString()
     });
 
     const response = await fetch(url);
-    return await response.json() as SearchResult;
+    const result  = await response.json() as SearchResult;
+    console.log("fetching result")
+    console.log(result)
+    return result
 }
 
 
@@ -60,10 +66,22 @@ function ProblemsFilter(params: SearchFilterParams){
             1000)
     }
 
+    async function onPageChange(e, page: number){
+        setIsSearching(true);
+        const result = await fetchProblems(
+            "",
+            // api have zero positional page
+            page-1
+        )
+        localStorage.setItem("searchResult", JSON.stringify(result));
+
+        setIsSearching(false);
+    }
+
     if(!isLoaded)
         load();
 
-    const previewTable = [...Array(params.pageSize ?? 10).keys()].map((_e, index) => {
+    const previewTable = [...Array(params.pageSize).keys()].map((_e, index) => {
         return <tr key={index}>
             <td className="w-60">
                 <div className="preview-div w-32"/>
@@ -78,6 +96,12 @@ function ProblemsFilter(params: SearchFilterParams){
         <div>
             <div className="flex items-stretch gap-4"
             >
+                <Select>
+                    <option>Difficulty</option>
+                    <option>Easy</option>
+                    <option>Medium</option>
+                    <option>Hard</option>
+                </Select>
 
                 <Select>
                     <option>Status</option>
@@ -131,6 +155,18 @@ function ProblemsFilter(params: SearchFilterParams){
                     </tbody>
                 </table>
             </div>
+
+            {searchResult.pageCount > 0 &&
+                <div className="flex justify-center">
+
+                <Pagination count={searchResult.pageCount}
+                            page={searchResult.page + 1}
+                            onChange={onPageChange}
+
+                />
+                </div>
+            }
+
         </div>
     );
 }
