@@ -18,13 +18,13 @@ function SubmitEditor(){
             <div className="bg-light rounded-2">
                 <div className="input-group mb-2">
                     <Select onChange={onCompilerSelect} value={selectedCompiler}>
-                        <option >C++</option>
-                        <option >C#</option>
-                        <option >Python</option>
+                        <option>C++</option>
+                        <option>C#</option>
+                        <option>Python</option>
                     </Select>
                 </div>
             </div>
-            <CodeEditor className="flex-grow overflow-auto"/>
+            <CodeEditor className="h-96" />
             <Button className="mt-4 w-20 bg-violet-700"
                     variant="contained">Send</Button>
         </div>
