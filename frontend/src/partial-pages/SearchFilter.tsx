@@ -3,6 +3,7 @@
 import {useEffect, useRef, useState} from "react";
 import Input from "../components/Input";
 import {cn} from "../lib/utils.ts";
+import Select from "../components/Select.tsx";
 
 
 interface SearchResult {
@@ -62,30 +63,38 @@ function ProblemsFilter(params: SearchFilterParams){
     if(!isLoaded)
         load();
 
-    const previewTable = [...Array(params.pageSize ?? 20).keys()].map((_e, index) => {
+    const previewTable = [...Array(params.pageSize ?? 10).keys()].map((_e, index) => {
         return <tr key={index}>
             <td className="w-60">
                 <div className="preview-div w-32"/>
             </td>
             <td className="w-60">
-                <div className="preview-div w-40"/>
+                <div className="preview-div w-60"/>
             </td>
         </tr>
     });
 
     return (
         <div>
-            <div className="flex"
+            <div className="flex items-stretch gap-4"
             >
-                <select className="shadow-sm outline-0 border-2 rounded">
 
-                </select>
+                <Select>
+                    <option>Status</option>
+                    <option>Never tried</option>
+                    <option>Tried</option>
+                    <option>Solved</option>
+                </Select>
+
+                <Select>
+                    <option>Tags</option>
+                    <option>Dynamic programming</option>
+                    <option>Topological ordering</option>
+                    <option>Two dimensional DP</option>
+                </Select>
 
                 <div className="col-6">
                     <div className="input-group">
-                        <button className="input-group-text ">
-                            <span className="bi bi-search"></span>
-                        </button>
                         <Input onChange={onSearch}
                                name="search" placeholder="Enter problem name"/>
                     </div>
