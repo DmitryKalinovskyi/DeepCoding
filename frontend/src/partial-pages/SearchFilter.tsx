@@ -117,12 +117,9 @@ function ProblemsFilter(params: SearchFilterParams){
                     <option>Two dimensional DP</option>
                 </Select>
 
-                <div className="col-6">
-                    <div className="input-group">
-                        <Input onChange={onSearch}
-                               name="search" placeholder="Enter problem name"/>
-                    </div>
-                </div>
+                <Input onChange={onSearch}
+                       name="search"
+                       placeholder="Enter problem name"/>
             </div>
 
             <div>

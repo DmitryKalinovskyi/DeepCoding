@@ -1,7 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import Header from '../partial-pages/Header'
-import Footer from '../partial-pages/Footer'
-import {DefaultLayout} from "../partial-pages/layout/DefaultLayout.tsx";
+import {useEffect, useState} from 'react';
+import DefaultLayout from "../partial-pages/layout/DefaultLayout.tsx";
 
 const fetchData = async () => {
     // const url = process.env.REACT_APP_API_URL_ADDRESS + "/home";

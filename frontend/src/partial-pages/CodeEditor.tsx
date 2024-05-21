@@ -2,7 +2,6 @@
 function CodeEditor(){
     return (
         <form className="h-100" method="post">
-
             <div className="d-flex flex-column h-100">
                 <div className="bg-light rounded-2">
                     <div className="input-group mb-2">
