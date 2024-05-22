@@ -42,11 +42,11 @@ class ServiceCollection implements IServiceCollection
     public function addScoped($serviceInterface, $serviceClass): IServiceCollection
     {
         if(is_a($serviceClass,  $serviceInterface, true) === false){
-            throw new InvalidArgumentException("Service class should implement service interface.");
+            throw new InvalidArgumentException("$serviceClass should implement $serviceInterface.");
         }
 
         if(empty($this->_services[$serviceInterface]) === false){
-            throw new ServiceConflictException("Service for that interface already defined.");
+            throw new ServiceConflictException("$serviceInterface already defined.");
         }
 
         $this->_services[$serviceInterface] = $serviceClass;
@@ -62,6 +62,8 @@ class ServiceCollection implements IServiceCollection
 
         // get constructor using reflector, if class don't have constructor just create and return object.
         $constructReflector = $classReflector->getConstructor();
+
+        if($constructReflector == null) return new $class();
 
         $args = $this->resolveParamsForFunc($constructReflector, $constructorParams);
 

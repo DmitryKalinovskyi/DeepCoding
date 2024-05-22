@@ -151,7 +151,7 @@ public ProfileController extends APIController{
 ```php
 //index.php
 
-app->middlewares
+use src\middlewares\JWTAuthenticationMiddleware;app->middlewares
     ->addScoped(IAuthenticationMiddleware::class, JWTAuthenticationMiddleware::class);
     ->addScoped(IAuthorizationMiddleware::class, AuthorizationMiddleware::class);
 
