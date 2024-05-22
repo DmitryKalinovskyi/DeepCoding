@@ -4,9 +4,9 @@ namespace Framework\middlewares\Routing;
 
 use Exception;
 use Framework\exceptions\RouteNotResolvedException;
-use Framework\middlewares\Middleware;
+use Framework\middlewares\Middleware_deprecated;
 
-class Router extends Middleware
+class Router extends Middleware_deprecated
 {
     private RouteNode $_rootNode;
 

@@ -3,8 +3,8 @@
 
 namespace DeepCode\models;
 
-use Framework\attributes\DBColumn;
-use Framework\attributes\Key;
+use framework\attributes\DataAnnotation\DBColumn;
+use framework\attributes\DataAnnotation\Key;
 
 class Problem
 {

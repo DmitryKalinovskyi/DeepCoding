@@ -5,7 +5,7 @@ namespace Framework\middlewares;
 use Closure;
 
 // now becomes unused, due to Closure system
-abstract class Middleware
+abstract class Middleware_deprecated
 {
     private ?Closure $_next;
     public function setNext(Closure $next): void{

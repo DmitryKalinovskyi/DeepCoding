@@ -85,10 +85,10 @@ to solve different problems related to algorithms and data structures
 - [ ] Authentication/ Authorization (JWT Token based)
 - [ ] Caching system
 
-## More detailed description of Middlewares
+## Middlewares, authentication, filters
 Middlewares have purpose to prepare the data, or make some request validation. Usually they contain logic that is similar, authentication as example.
 Imagine, you have several endpoints and several of them requires authorization. If you try to do this without middlewares, you need to include some Authentication service,
-then make authenticate user. If user is unauthenticated, you make response with 401 (Server don't know who you are).
+then authenticate user. If user is unauthenticated, you make response with 401 (Server don't know who you are).
 
 ```php
 public ProfileController extends APIController{
@@ -123,16 +123,13 @@ public ProfileController extends APIController{
 
 as you can see, in each endpoint you should repeat authentication, that makes code overcomplicated, and broke one of the programming principles (Dry)
 
-Using middlewares we can do same thing simpler
+Using middlewares and filters we can do same thing simpler
 
 ```php
 public ProfileController extends APIController{
     
-    private IAuthenticationService $_authenticationService;
     private DeepCodeContext $_db;
-    public function __construct(IAuthenticationService $authenticationService,
-                                       DeepCodeContext $db){
-        $this->_authenticationService = $authenticationService;
+    public function __construct(DeepCodeContext $db){
         $this->_db = $db;
     }
     
@@ -141,7 +138,8 @@ public ProfileController extends APIController{
     #[Authorize]
     #[WithId(":id") | HasRole("Admin")]
     public UpdateProfile($id){
-        $user = $_authenticationService->authenticate();
+        // if added authentication middle ware, context will contain user
+        $user = HttpContext->user;
         
         // update user...
         
@@ -154,8 +152,8 @@ public ProfileController extends APIController{
 //index.php
 
 app->middlewares
-    ->addScoped(IAuthorizationMiddleware::class, JWTAuthorizationMiddleware::class);
-    ->addScoped(IAuthentication::class, UserAuthentication::class);
+    ->addScoped(IAuthenticationMiddleware::class, JWTAuthenticationMiddleware::class);
+    ->addScoped(IAuthorizationMiddleware::class, AuthorizationMiddleware::class);
 
 app->handleRequest();
 ```

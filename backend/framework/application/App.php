@@ -6,7 +6,7 @@ use Closure;
 use Exception;
 use Framework\dependency\IServiceCollection;
 use Framework\dependency\ServiceCollection;
-use Framework\middlewares\Middleware;
+use Framework\middlewares\Middleware_deprecated;
 
 class App
 {

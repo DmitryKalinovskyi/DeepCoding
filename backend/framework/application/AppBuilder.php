@@ -7,7 +7,7 @@ use Framework\dependency\IServiceCollection;
 use Framework\exceptions\ServiceConflictException;
 use Framework\exceptions\ServiceNotResolvedException;
 use Framework\http\HttpContext;
-use Framework\middlewares\Middleware;
+use Framework\middlewares\Middleware_deprecated;
 use Framework\middlewares\Routing\ControllerRouter;
 use Framework\middlewares\Routing\Router;
 use Framework\mvc\ControllerBase;

@@ -3,7 +3,6 @@
 namespace Framework\orm;
 
 use Exception;
-use Framework\orm\Logger\IDBLogger;
 use Framework\orm\QueryBuilder\IQueryBuilder;
 use Framework\orm\QueryBuilder\MySQL\MySQLInsert;
 use Framework\orm\QueryBuilder\MySQL\MySQLUpdate;
@@ -31,14 +30,6 @@ class DBContext
             return $sth->fetchAll(PDO::FETCH_ASSOC);
         }catch(Exception $e){
             echo "Builded query: ".$query;
-
-            if(empty($this->_logger) === false){
-                $msg = $e->getMessage() . '\n';
-
-                $msg .= $query;
-
-                $this->_logger->log($msg);
-            }
 
             throw $e;
         }

@@ -13,15 +13,6 @@ interface IServiceCollection
 
     public function resolve($class, $constructorParams=[]): mixed;
 
-//    /**
-//     * Bind class to the interface, each time when service requested by interface will be created new object.
-//     *
-//     * @param $serviceInterface
-//     * @param $serviceClass
-//     * @return void
-//     */
-//    public function AddTransient($serviceInterface, $serviceClass): void;
-
     /**
      * Bind class to the interface, creates only one instance during the execution.
      *

@@ -2,14 +2,12 @@
 
 namespace Framework\middlewares\Authentication;
 
-use Framework\middlewares\Middleware;
+use Framework\middlewares\Middleware_deprecated;
 
-class JWTAuthenticationMiddleware extends Middleware
+class JWTAuthenticationMiddleware implements IAuthenticationMiddleware
 {
-    public function __invoke()
+    public function __invoke(): void
     {
         echo "jwt auth";
-
-        $this->_next->__invoke();
     }
 }
