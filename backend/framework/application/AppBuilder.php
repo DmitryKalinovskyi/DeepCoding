@@ -24,10 +24,17 @@ class AppBuilder{
      * @return void
      * @throws ServiceConflictException
      */
-    public function useMVC(){
+    public function useMVC(): self{
         $this->useHttpContext();
         $this->useControllers();
         $this->useServerSideRendering();
+
+        return $this;
+    }
+
+    public function useCors(): self{
+        header("Access-Control-Allow-Origin: *");
+        return $this;
     }
 
     /**

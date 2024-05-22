@@ -3,7 +3,7 @@
 namespace Framework\attributes\Requests;
 
 #[\Attribute]
-class HttpDelete
+class HttpDelete extends HttpMethod
 {
 
 }

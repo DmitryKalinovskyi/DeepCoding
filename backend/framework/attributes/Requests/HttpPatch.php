@@ -4,7 +4,7 @@ namespace Framework\attributes\Requests;
 
 
 #[\Attribute]
-class HttpPatch
+class HttpPatch extends HttpMethod
 {
 
 }

@@ -3,7 +3,7 @@
 namespace Framework\attributes\Requests;
 
 #[\Attribute]
-class HttpGet
+class HttpGet extends HttpMethod
 {
 
 }

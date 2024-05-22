@@ -18,13 +18,11 @@ class ProblemsController extends APIController {
 
         $page_size = 25;
         $data = [];
-        $data['page'] = $_GET['page'] ?? 0;
+        $data['page'] = intval($_GET['page']) ?? 0;
         if(!is_numeric($data['page']))
             $data['page'] = 0;
 
         $data['pageCount'] = ceil($this->_db->problems->count() / $page_size);
-
-        if($data['pageCount'] == 1) $data['pageCount'] = 0;
 
         $search = trim($_GET['search'] ?? "");
 

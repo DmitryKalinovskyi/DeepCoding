@@ -4,5 +4,8 @@
       "DeepCode\\": "src/",
       "Framework\\": "framework/"
     }
+  },
+  "require": {
+    "ext-pdo": "*"
   }
 }

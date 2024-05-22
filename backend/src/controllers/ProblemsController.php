@@ -25,8 +25,6 @@ class ProblemsController extends ControllerBase{
 
         $data['pageCount'] = ceil($this->_db->problems->count() / $page_size);
 
-        if($data['pageCount'] == 1) $data['pageCount'] = 0;
-
         $search = trim($_GET['search'] ?? "");
 
         $query = $this->_db->problems->select()

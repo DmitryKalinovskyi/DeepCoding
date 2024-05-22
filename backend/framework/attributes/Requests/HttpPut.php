@@ -4,7 +4,7 @@ namespace Framework\attributes\Requests;
 
 
 #[\Attribute]
-class HttpPut
+class HttpPut extends HttpMethod
 {
 
 }

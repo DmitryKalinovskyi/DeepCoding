@@ -2,7 +2,7 @@
 
 namespace Framework\attributes\Requests;
 #[\Attribute]
-class HttpPost
+class HttpPost extends HttpMethod
 {
 
 }

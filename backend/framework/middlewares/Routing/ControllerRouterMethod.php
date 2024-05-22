@@ -14,7 +14,7 @@ class ControllerRouterMethod
 
     public function addRoute($url, callable $callback): void{
         if(isset($this->routes[$url])){
-            throw new InvalidArgumentException("Current url address already taken.");
+            throw new InvalidArgumentException("Url address $url already taken.");
         }
 
         $this->routes[$url] = $callback;

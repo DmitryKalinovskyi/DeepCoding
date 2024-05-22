@@ -14,6 +14,7 @@ try{
     $appBuilder = new AppBuilder();
 
     $appBuilder->useMVC();
+    $appBuilder->useCors();
 
     // add database
     $appBuilder->services()

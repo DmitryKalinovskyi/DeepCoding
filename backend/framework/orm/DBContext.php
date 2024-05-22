@@ -15,14 +15,8 @@ use PDO;
 class DBContext
 {
     private PDO $_pdo;
-    private ?IDBLogger $_logger;
-
     public function __construct($connectionString, $username = "root", $password = ""){
         $this->_pdo = new PDO($connectionString, $username, $password);
-    }
-
-    public function setLogger(IDBLogger $logger): void{
-        $this->_logger = $logger;
     }
 
     /**
@@ -36,6 +30,8 @@ class DBContext
 
             return $sth->fetchAll(PDO::FETCH_ASSOC);
         }catch(Exception $e){
+            echo "Builded query: ".$query;
+
             if(empty($this->_logger) === false){
                 $msg = $e->getMessage() . '\n';
 
@@ -52,21 +48,33 @@ class DBContext
         return "MySQL";
     }
 
+    /**
+     * @throws Exception
+     */
     public function executeAndMap(string $query, $params, $class): array{
-        $sth = $this->_pdo->prepare($query);
-        $sth->execute($params);
+        try{
 
-        $results = [];
-        while ($row = $sth->fetch(PDO::FETCH_ASSOC)) {
-            $instance = new $class();
+            $sth = $this->_pdo->prepare($query);
+            $sth->execute($params);
 
-            foreach($row as $field => $value)
-                $instance->$field = $value;
+            $results = [];
+            while ($row = $sth->fetch(PDO::FETCH_ASSOC)) {
+                $instance = new $class();
 
-            $results[] = $instance;
+                foreach($row as $field => $value)
+                    $instance->$field = $value;
+
+                $results[] = $instance;
+            }
+
+            return $results;
+        }
+        catch(Exception $e){
+            echo "Builded query: ".$query;
+
+            throw $e;
         }
 
-        return $results;
     }
 
     public function query(): ProxyQueryBuilder{

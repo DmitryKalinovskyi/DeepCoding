@@ -2,6 +2,12 @@
 
 namespace Framework\mapper;
 
+use Framework\attributes\Requests\HttpDelete;
+use Framework\attributes\Requests\HttpGet;
+use Framework\attributes\Requests\HttpMethod;
+use Framework\attributes\Requests\HttpPatch;
+use Framework\attributes\Requests\HttpPost;
+use Framework\attributes\Requests\HttpPut;
 use Framework\attributes\Routing\Route;
 use Framework\dependency\IServiceCollection;
 use Framework\middlewares\Routing\ControllerRouter;
@@ -27,6 +33,13 @@ class RouteMapper
 
         $methodAttributes = $method->getAttributes();
 
+        $httpAttributes = [];
+        // take http attributes
+        foreach($methodAttributes as $attribute){
+            if($attribute->newInstance() instanceof HttpMethod)
+                $httpAttributes[] = $attribute->newInstance();
+        }
+
         foreach($methodAttributes as $attribute){
             $attributeInstance = $attribute->newInstance();
 
@@ -41,12 +54,36 @@ class RouteMapper
                 if($methodRoute !== "/" or empty($methodRoute))
                     $fullMethodRoute .= "/" . $methodRoute;
 
-                $this->_router->get->addRoute($fullMethodRoute, function() use ($controllerClass, $method) {
-                    $controller = $this->_controllerCollection->resolve($controllerClass);
+                // select methods based on http attributes
+                $routerMethods = [];
 
-                    $methodName = $method->getName();
-                    $controller->$methodName();
-                });
+                foreach($httpAttributes as $httpAttribute){
+                    if($httpAttribute instanceof HttpGet)
+                        $routerMethods[] = $this->_router->get;
+                    if($httpAttribute instanceof HttpPost)
+                        $routerMethods[] = $this->_router->post;
+                    if($httpAttribute instanceof HttpPatch)
+                        $routerMethods[] = $this->_router->patch;
+                    if($httpAttribute instanceof HttpDelete)
+                        $routerMethods[] = $this->_router->delete;
+                    if($httpAttribute instanceof HttpPut)
+                        $routerMethods[] = $this->_router->put;
+                }
+
+                if(empty($routerMethods))
+                    $routerMethods[] = $this->_router->get;
+
+                foreach($routerMethods as $routerMethod){
+                    $routerMethod->addRoute($fullMethodRoute, function() use ($controllerClass, $method) {
+                        $controller = $this->_controllerCollection->resolve($controllerClass);
+
+                        $methodName = $method->getName();
+                        $controller->$methodName();
+//
+//                        $actualMethod = $controller->$methodName;
+//                        $this->_controllerCollection->invokeFunction($actualMethod);
+                    });
+                }
             }
         }
     }
