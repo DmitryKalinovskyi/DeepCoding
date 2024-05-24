@@ -1,6 +1,6 @@
 function Header(){
     return (
-        <header className="shadow-gray-300 shadow-sm">
+        <header className="z-20 shadow-gray-300 shadow-sm ">
             <div className="nav-bar flex justify-between container">
                 <div className="nav-group">
                     <div>
@@ -14,7 +14,7 @@ function Header(){
                         </a>
                     </div>
                     <div className="nav-link">
-                        <a href="/problems">
+                        <a href="/competitions">
                             Competitions
                         </a>
                     </div>
@@ -23,6 +23,11 @@ function Header(){
                     <div className="nav-link">
                         <a href="/profile">
                             Profile
+                        </a>
+                    </div>
+                    <div className="nav-link">
+                        <a href="/dashboard">
+                            Dashboard
                         </a>
                     </div>
                 </div>

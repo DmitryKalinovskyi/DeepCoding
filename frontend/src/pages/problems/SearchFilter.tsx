@@ -1,9 +1,9 @@
 // import {alpha, FormControl, InputBase, InputLabel, MenuItem, Select, styled} from "@mui/material";
 // import SearchIcon from '@mui/icons-material/Search';
 import {useEffect, useRef, useState} from "react";
-import Input from "../components/Input";
-import {cn} from "../lib/utils.ts";
-import Select from "../components/Select.tsx";
+import Input from "../../components/Input.tsx";
+import {cn} from "../../lib/utils.ts";
+import Select from "../../components/Select.tsx";
 import {Pagination} from "@mui/material";
 
 
@@ -41,6 +41,7 @@ async function fetchProblems(search = "", page= 0, pageSize = 25) {
 function ProblemsFilter(params: SearchFilterParams){
     const [isLoaded, setIsLoaded] = useState(false);
     const [isSearching, setIsSearching] = useState(false);
+    const [problemsPage, setProblemsPage] = useState(1);
 
     const searchResult = JSON.parse(localStorage.getItem("searchResult") ?? "{}");
     let search_timeout: number;
@@ -67,6 +68,7 @@ function ProblemsFilter(params: SearchFilterParams){
     }
 
     async function onPageChange(e, page: number){
+        setProblemsPage(page);
         setIsSearching(true);
         const result = await fetchProblems(
             "",
@@ -157,7 +159,7 @@ function ProblemsFilter(params: SearchFilterParams){
                 <div className="flex justify-center">
 
                 <Pagination count={searchResult.pageCount}
-                            page={searchResult.page + 1}
+                            page={problemsPage}
                             onChange={onPageChange}
 
                 />

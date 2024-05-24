@@ -1,6 +1,6 @@
 @layer CodeEditor{
     .cm-editor{
-        @apply bg-white rounded-md h-full border !outline-none
+        @apply rounded-md h-full border !outline-none
     }
 
     .cm-editor.cm-focused{
@@ -9,5 +9,9 @@
 
     .cm-editor .cm-gutters{
         @apply rounded-l-md
+    }
+
+    .cm-editor .cm-gutter{
+        @apply bg-gray-50
     }
 }

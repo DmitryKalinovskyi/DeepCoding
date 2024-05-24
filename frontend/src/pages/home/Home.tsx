@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import DefaultLayout from "../partial-pages/layout/DefaultLayout.tsx";
+import DynamicLayout from "../../partial-pages/layout/DynamicLayout.tsx";
 
 const fetchData = async () => {
     // const url = process.env.REACT_APP_API_URL_ADDRESS + "/home";
@@ -32,11 +32,11 @@ export default function Home(){
     }, []);
 
     return (
-        <DefaultLayout>
+        <DynamicLayout>
             <div>
                 {data?.msg}
             </div>
-        </DefaultLayout>
+        </DynamicLayout>
     )
 }
 

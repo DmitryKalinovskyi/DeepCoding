@@ -1,8 +1,8 @@
-import Select from "../components/Select.tsx";
+import Select from "../../components/Select.tsx";
 import ReactCodeMirror from "@uiw/react-codemirror";
 import {Button, ButtonBase} from "@mui/material";
 import {useState} from "react";
-import CodeEditor from "../components/CodeEditor.tsx";
+import CodeEditor from "../../components/CodeEditor.tsx";
 
 // code editor is custom component for displaying code inside application.
 
@@ -14,7 +14,7 @@ function SubmitEditor(){
     }
 
     return (
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col max-h-full">
             <div className="bg-light rounded-2">
                 <div className="input-group mb-2">
                     <Select onChange={onCompilerSelect} value={selectedCompiler}>
@@ -24,7 +24,9 @@ function SubmitEditor(){
                     </Select>
                 </div>
             </div>
-            <CodeEditor className="h-96" />
+            <div className="h-96">
+                <CodeEditor className="h-full"/>
+            </div>
             <Button className="mt-4 w-20 bg-violet-700"
                     variant="contained">Send</Button>
         </div>
