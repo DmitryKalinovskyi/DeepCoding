@@ -1,4 +1,5 @@
 import {useEffect, useState} from 'react';
+import {useParams} from 'react-router-dom';
 
 import SubmitEditor from "./SubmitEditor.tsx";
 import SubmissionList from "./SubmissionList.tsx";
@@ -6,10 +7,6 @@ import {TabControl, TabPanel} from "../../components/TabControl.tsx";
 import Card from '@mui/material/Card';
 import StaticLayout from "../../partial-pages/layout/StaticLayout.tsx";
 import {Button} from "@mui/material";
-
-interface ProblemProperties{
-    id: number;
-}
 
 interface Problem{
     id: number,
@@ -29,21 +26,24 @@ console.log(result);
         description: result.Description
     }
 }
-function Problem(props: ProblemProperties){
+function Problem(){
     const [data, setData] = useState<Problem>();
     const [isLoading, setIsLoading] = useState(true);
     const [tabIndex, setTabIndex] = useState(0);
-    const [rating, setRating] = useState(0);
+
+    const params = useParams<{problemId: string}>();
+
+
 
     useEffect(() => {
         async function fetchAndSet(){
-            const submissions = await fetchProblem(props.id);
+            const submissions = await fetchProblem(params.problemId);
             setData(submissions);
             setIsLoading(false);
         }
 
         fetchAndSet().then();
-    }, [props]);
+    }, []);
 
     return (
         <StaticLayout useTinyHeader={false} >

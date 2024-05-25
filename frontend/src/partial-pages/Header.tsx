@@ -1,34 +1,37 @@
+import {Link} from "react-router-dom";
+import logo from "../../public/logo.jpg";
+
 function Header(){
     return (
         <header className="z-20 shadow-gray-300 shadow-sm h-header">
             <div className="nav-bar flex justify-between container">
                 <div className="nav-group">
                     <div>
-                        <a href="/">
-                            <img className="object-cover h-20" src="./logo.jpg"></img>
-                        </a>
+                        <Link to="/">
+                            <img className="object-cover h-20" src={logo}></img>
+                        </Link>
                     </div>
                     <div className="nav-link">
-                        <a href="/problems">
+                        <Link to="/problems">
                             Problems
-                        </a>
+                        </Link>
                     </div>
                     <div className="nav-link">
-                        <a href="/competitions">
+                        <Link to="/competitions">
                             Competitions
-                        </a>
+                        </Link>
                     </div>
                 </div>
                 <div className="nav-group">
                     <div className="nav-link">
-                        <a href="/profile">
+                        <Link to="/profile">
                             Profile
-                        </a>
+                        </Link>
                     </div>
                     <div className="nav-link">
-                        <a href="/dashboard">
+                        <Link to="/dashboard">
                             Dashboard
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>

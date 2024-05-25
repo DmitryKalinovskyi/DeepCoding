@@ -5,6 +5,7 @@ import Input from "../../components/Input.tsx";
 import {cn} from "../../lib/utils.ts";
 import Select from "../../components/Select.tsx";
 import {Pagination} from "@mui/material";
+import {Link} from "react-router-dom";
 
 
 interface SearchResult {
@@ -143,9 +144,9 @@ function ProblemsFilter(params: SearchFilterParams){
                                     Solved
                                 </td>
                                 <td>
-                                    <a href={`problem?id=${problem.Id}`} className='hover:text-blue-500'>
+                                    <Link to={`/problems/${problem.Id}`} className='hover:text-blue-500'>
                                         {problem.Id}. {problem.Name}
-                                    </a>
+                                    </Link>
                                 </td>
                             </tr>
                         ) :

@@ -28,8 +28,8 @@ const router = createBrowserRouter([
         element: <Home/>
     },
     {
-        path: '/problem',
-        element: <Problem id={3}/>
+        path: '/problems/:problemId',
+        element: <Problem/>
     },
     {
         path: '/competitions',

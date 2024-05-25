@@ -1,19 +1,19 @@
 .color-scale-0 {
-    @apply fill-green-50
+    @apply fill-blue-50
 }
 
 .color-scale-1 {
-    @apply fill-green-100
+    @apply fill-blue-100
 }
 
 .color-scale-2 {
-    @apply fill-green-300
+    @apply fill-blue-300
 }
 
 .color-scale-3 {
-    @apply fill-green-500
+    @apply fill-blue-500
 }
 
 .color-scale-4 {
-    @apply fill-green-700
+    @apply fill-blue-700
 }
