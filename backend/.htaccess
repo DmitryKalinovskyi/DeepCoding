@@ -1,5 +1,6 @@
 RewriteEngine On
 
 RewriteCond %{REQUEST_URI} !^/public/
+RewriteCond %{REQUEST_URI} !^/vendor/twbs/bootstrap
 
 RewriteRule . index.php

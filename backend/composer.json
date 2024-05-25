@@ -6,6 +6,7 @@
     }
   },
   "require": {
-    "ext-pdo": "*"
+    "ext-pdo": "*",
+    "twbs/bootstrap": "^5.3"
   }
 }
