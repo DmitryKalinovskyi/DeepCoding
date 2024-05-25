@@ -1,11 +1,12 @@
 <?php
 
-namespace framework\attributes\Filters;
+namespace Framework\attributes\Filters;
 
+use Attribute;
 use Framework\http\HttpContext;
 
-#[\Attribute]
-class AuthenticatedAttribute extends RequestFilterAttribute
+#[Attribute]
+class Authenticated extends RequestFilterAttribute
 {
     /**
      * @param HttpContext $context - context for the request

@@ -1,7 +1,6 @@
 import {useEffect, useState} from 'react';
 import DynamicLayout from "../../partial-pages/layout/DynamicLayout.tsx";
 import Card from "@mui/material/Card";
-import {Avatar} from "@mui/material";
 
 const fetchData = async () => {
     // const url = process.env.REACT_APP_API_URL_ADDRESS + "/home";

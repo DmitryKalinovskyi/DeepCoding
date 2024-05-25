@@ -1,6 +1,6 @@
 <?php
 
-namespace framework\attributes\Filters;
+namespace Framework\attributes\Filters;
 
 use Attribute;
 use Framework\http\HttpContext;

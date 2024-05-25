@@ -10,11 +10,9 @@ use Framework\attributes\Routing\Route;
 use Framework\mvc\APIController;
 
 class ProblemsController extends APIController {
-    private DeepCodeContext $_db;
     private IProblemsRepository $repository;
 
-    public function __construct(DeepCodeContext $context, IProblemsRepository $repository){
-        $this->_db = $context;
+    public function __construct(IProblemsRepository $repository){
         $this->repository = $repository;
     }
 
@@ -39,9 +37,7 @@ class ProblemsController extends APIController {
     {
         $id = $_GET['id'];
 
-        $problem = $this->_db->problems->select()
-            ->where("Id = :id")
-            ->first(["id" => $id]);
+        $problem = $this->repository->find($id);
 
         echo json_encode($problem);
     }

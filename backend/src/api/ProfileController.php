@@ -2,6 +2,7 @@
 
 namespace DeepCode\api;
 
+use Framework\attributes\Filters\Authenticated;
 use Framework\attributes\Routing\Route;
 use Framework\http\HttpContext;
 use Framework\mvc\APIController;
@@ -14,7 +15,8 @@ class ProfileController extends APIController
     }
 
     #[Route('my')]
+    #[Authenticated]
     public function MyProfile(){
-        echo $this->context->user;
+        var_dump($this->context->user);
     }
 }
