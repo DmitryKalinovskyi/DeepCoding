@@ -1,0 +1,24 @@
+.submissions-table{
+    @apply table-fixed border-collapse w-full
+}
+
+.submissions-table thead td{
+    @apply text-gray-500 border-b-2
+}
+
+.submissions-table td{
+    @apply p-2
+}
+.submissions-table tbody tr{
+    @apply cursor-pointer
+}
+
+.submissions-table tbody tr:nth-child(even){
+    @apply bg-gray-100 p-2
+}
+.submissions-table tbody tr:nth-child(even){
+    @apply h-6 rounded box-border bg-white
+}
+.submissions-table tbody tr:nth-child(odd){
+    @apply h-6 rounded box-border bg-gray-100
+}

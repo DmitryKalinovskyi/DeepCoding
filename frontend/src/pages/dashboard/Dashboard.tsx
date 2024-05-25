@@ -3,15 +3,18 @@ import {useState} from "react";
 import DashboardProblems from "./DashboardProblems.tsx";
 import DashboardUsers from "./DashboardUsers.tsx";
 import DashboardCompetitions from "./DashboardCompetitions.tsx";
-import {Card} from "@mui/material";
+import {Button, Card} from "@mui/material";
 import StaticLayout from "../../partial-pages/layout/StaticLayout.tsx";
 
 export default function Dashboard(){
     const [page, setPage] = useState(0);
 
     return (
-        <StaticLayout>
-            <div className="h-full flex items-stretch" >
+        <StaticLayout haveFooter={false} haveHeader={false}>
+            <div className="h-full flex flex-col" >
+                <div className="mb-4">
+                    <Button variant="contained">Go to web site</Button>
+                </div>
                 <Card className="flex-grow">
                 <div className="flex">
                     <TabControl value={page}
@@ -21,6 +24,8 @@ export default function Dashboard(){
                                     "Users",
                                     "Competitions",
                                     "Problems",
+                                    "Resources",
+                                    "Settings",
                                 ]}
                     />
 

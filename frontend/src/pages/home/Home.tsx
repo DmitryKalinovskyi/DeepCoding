@@ -1,5 +1,7 @@
 import {useEffect, useState} from 'react';
 import DynamicLayout from "../../partial-pages/layout/DynamicLayout.tsx";
+import Card from "@mui/material/Card";
+import {Avatar} from "@mui/material";
 
 const fetchData = async () => {
     // const url = process.env.REACT_APP_API_URL_ADDRESS + "/home";
@@ -33,8 +35,23 @@ export default function Home(){
 
     return (
         <DynamicLayout>
-            <div>
-                {data?.msg}
+            <div className="grid grid-cols-4 gap-4">
+                <div className="col-span-3">
+                    {data?.msg}
+                </div>
+                <div className="">
+                    <Card className="p-4">
+                        <div className="font-semibold">
+                            Users
+                        </div>
+                        <div>
+                            Online: 20
+                        </div>
+                        <div>
+                            Registered: 30
+                        </div>
+                    </Card>
+                </div>
             </div>
         </DynamicLayout>
     )

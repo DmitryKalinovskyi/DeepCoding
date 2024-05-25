@@ -6,7 +6,7 @@ interface TabPanelProps {
     children?: React.ReactNode;
     index: number;
     value: number;
-    className: string;
+    className?: string;
 }
 
 export function TabPanel(props: TabPanelProps) {

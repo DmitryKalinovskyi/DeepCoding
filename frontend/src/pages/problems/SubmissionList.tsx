@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
+import {CircularProgress} from "@mui/material";
 
 interface Submission{
     Id: number,
@@ -23,7 +24,7 @@ const fetchSubmissions = async(userId: number, problemId: number) => {
 function SubmissionList(props: SubmissionListProperties){
 
     const [data, setData] = useState<Submission[]>([]);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         setIsLoading(true);
@@ -37,17 +38,38 @@ function SubmissionList(props: SubmissionListProperties){
     }, [props]);
 
     return (
-        <div>
-            {isLoading &&  <div>Loading...</div>}
-            <ul>
+        <div className="h-full p-2">
+            {isLoading ? <div className="h-full flex justify-center items-center"><CircularProgress /></div>:
+
+            <table className="submissions-table">
+                <thead>
+                    <tr>
+                        <td>Status</td>
+                        <td>Compiler</td>
+                        <td>Runtime</td>
+                        <td>Memory</td>
+                    </tr>
+                </thead>
+                <tbody>
                 {data.map((submission) =>
-                    <li>
-                        <a href= {`submissions?id=${submission.Id}`} className='link text-decoration-none'>
-                            {submission.Id}
-                        </a>
-                    </li>
+                    <tr onClick={()=>window.location=`submissions?id=${submission.Id}`}>
+                        <td>
+                                {submission.Id}
+                        </td>
+                        <td>
+                            C++
+                        </td>
+                        <td>
+                            20ms
+                        </td>
+                        <td>
+                            20mb
+                        </td>
+                    </tr>
                 )}
-            </ul>
+                </tbody>
+            </table>
+            }
         </div>
     );
 }

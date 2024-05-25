@@ -1,8 +1,17 @@
 @import './components/CodeEditor.css';
+@import 'pages/problems/css/SubmissionList.css';
+@import 'pages/profile/css/ContributionHeatmap.css';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root{
+    --header-size: 80px;
+    --footer-size: 40px;
+    --tiny-header-size: 32px;
+}
+
 
 @layer base{
     *{

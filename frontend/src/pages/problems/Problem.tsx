@@ -5,6 +5,7 @@ import SubmissionList from "./SubmissionList.tsx";
 import {TabControl, TabPanel} from "../../components/TabControl.tsx";
 import Card from '@mui/material/Card';
 import StaticLayout from "../../partial-pages/layout/StaticLayout.tsx";
+import {Button} from "@mui/material";
 
 interface ProblemProperties{
     id: number;
@@ -32,6 +33,7 @@ function Problem(props: ProblemProperties){
     const [data, setData] = useState<Problem>();
     const [isLoading, setIsLoading] = useState(true);
     const [tabIndex, setTabIndex] = useState(0);
+    const [rating, setRating] = useState(0);
 
     useEffect(() => {
         async function fetchAndSet(){
@@ -44,16 +46,27 @@ function Problem(props: ProblemProperties){
     }, [props]);
 
     return (
-        <StaticLayout>
-            <div className="min-w-full min-h-full grid grid-cols-2 gap-8 ">
-                <Card>
-                    <div className="p-6">
+        <StaticLayout useTinyHeader={false} >
+            <div className="h-full grid grid-cols-2 gap-8 ">
+                <Card className="relative h-full">
+                    <div className="p-6 h-full overflow-y-auto mb-6">
                         <div className="text-2xl font-semibold mb-2">
                             Problem name: {data?.name}
                         </div>
                         <div>
                             {data?.description}
                         </div>
+                    </div>
+
+                    <div className="absolute bottom-0 p-2 bg-white w-full flex">
+                        <Button className="w-20 h-6">Report</Button>
+                        {/*<Rating*/}
+                        {/*        name="simple-controlled"*/}
+                        {/*        value={rating}*/}
+                        {/*        onChange={(_e, newRating) => {*/}
+                        {/*            setRating(newRating ?? 0);*/}
+                        {/*        }}*/}
+                        {/*    />*/}
                     </div>
                 </Card>
 

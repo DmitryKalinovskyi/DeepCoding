@@ -1,6 +1,6 @@
 function Header(){
     return (
-        <header className="z-20 shadow-gray-300 shadow-sm ">
+        <header className="z-20 shadow-gray-300 shadow-sm h-header">
             <div className="nav-bar flex justify-between container">
                 <div className="nav-group">
                     <div>
