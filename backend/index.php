@@ -19,17 +19,15 @@ $appBuilder = new AppBuilder();
 $appBuilder
     ->use(ErrorCatcher::class) // for debugging
     ->use(CORS::class)
-    ->use(MVC::class);
+    ->use(MVC::class)
+
+    // use default authorization middleware
+    ->use(JWTAuthenticationMiddleware::class);
 
 $appBuilder->services()
     ->addScoped(DeepCodeContext::class,
         fn() => new DeepCodeContext("mysql:host=127.0.0.1;dbname=deep_code"))
-
-    ->addScoped(RouteMapper::class)
     ->addScopedForInterface(IProblemsRepository::class, ProblemsRepository::class);
-
-// use default authorization middleware
-$appBuilder->use(JWTAuthenticationMiddleware::class);
 
 $appBuilder->use(
     function($next){
@@ -41,17 +39,15 @@ $appBuilder->use(
 
 // Initialize controllers using automapper. Automapper will map each controller by some route.
 $appBuilder->use(
-function(RouteMapper $automapper, $next) {
-    $automapper->mapControllers("", "./src/Controllers");
-    $automapper->mapControllers("/api", "./src/Api");
-    $next();
-});
+    function(RouteMapper $automapper, ControllerRouter $router) {
+        // maps and redirect to the specific resource.
 
-$appBuilder->use(
-    function(ControllerRouter $router){
+        $automapper->mapControllers("", "./src/Controllers");
+        $automapper->mapControllers("/api", "./src/Api");
         $router->redirect($_SERVER['REQUEST_URI']);
-    }
-);
+
+    })
+    ->services()->addTransient(RouteMapper::class);
 
 // index.php don't even know about controllers, application will create controller when needed.
 $app = $appBuilder->build();
