@@ -22,7 +22,7 @@ interface IServiceCollection
      */
     public function resolve(string $class, array $constructorParams=[]): mixed;
 
-    public function invokeFunction(callable $function): mixed;
+    public function invokeFunction(callable $function, array $params = []): mixed;
 
 
     /**

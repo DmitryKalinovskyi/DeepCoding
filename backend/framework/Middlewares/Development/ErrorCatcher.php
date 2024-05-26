@@ -2,7 +2,7 @@
 
 namespace Framework\Middlewares\Development;
 
-class ErrorMiddleware
+class ErrorCatcher
 {
     public function __invoke(mixed $next): void{
         try{

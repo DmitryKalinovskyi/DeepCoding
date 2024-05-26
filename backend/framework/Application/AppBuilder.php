@@ -4,15 +4,9 @@ namespace Framework\Application;
 
 use Closure;
 use Framework\Dependency\IServiceCollection;
-use Framework\Exceptions\ServiceConflictException;
-use Framework\Exceptions\ServiceNotResolvedException;
-use Framework\Http\HttpContext;
-use Framework\middlewares\Routing\ControllerRouter;
-use Framework\middlewares\Routing\Router;
-use Framework\MVC\ControllerBase;
-use Framework\MVC\Views\ViewRenderer;
 
-class AppBuilder{
+class AppBuilder implements IAppBuilder
+{
     private App $app;
 
     private array $middlewares;
@@ -21,48 +15,27 @@ class AppBuilder{
         $this->app = new App();
     }
 
-    public function useMVC(): self{
-        $this->useHttpContext();
-        $this->useControllers();
-        $this->useServerSideRendering();
+    public function use(Closure|string $middleware): IAppBuilder{
+        if(gettype($middleware) === "string")
+            return $this->useMiddleware($middleware);
 
-        return $this;
-    }
-
-    public function useCors(): self{
-        header("Access-Control-Allow-Origin: *");
-        return $this;
-    }
-
-    public function useHttpContext(): self{
-        $this->app->services->addScoped(HttpContext::class);
-        return $this;
-    }
-
-    /**
-     * @throws ServiceConflictException
-     */
-    public function useControllers(): self{
-        $this->app->services->addScoped(ControllerRouter::class);
-        return $this;
-    }
-
-    /**
-     * @throws ServiceConflictException
-     */
-    public function useServerSideRendering(): self{
-        $this->app->services->addScoped(ViewRenderer::class);
-        return $this;
-    }
-
-    public function use(Closure $middleware): self{
         $this->middlewares[] = $middleware;
 
         return $this;
     }
 
+    private function useMiddleware(string $middlewareClass): IAppBuilder{
+
+        // this function create wrapper callable to the actual middleware, that construct it and execute
+        $this->use(function($next) use($middlewareClass){
+            $this->services()->invokeFunction($this->services()->resolve($middlewareClass)(...), ["next" => $next]);
+        });
+
+        return $this;
+    }
+
     private function prepareMiddlewares(): ?Closure{
-        $next = null;
+        $next = fn() => 1 + 1;
 
         // link them
         for($i = count($this->middlewares)-1; $i >= 0; $i--){
@@ -76,20 +49,7 @@ class AppBuilder{
         return $next;
     }
 
-    public function useMiddleware(string $middlewareClass, array $constructorParams=[]): self{
-
-        $middleware = $this->services()->resolve($middlewareClass, $constructorParams);
-
-        $this->use($middleware(...));
-
-        return $this;
-    }
-
     public function build(): App{
-        $this->use(function(ControllerRouter $router){
-            $router->redirect($_SERVER['REQUEST_URI']);
-        });
-
         $this->app->middlewarePipeline = $this->prepareMiddlewares();
         return $this->app;
     }
