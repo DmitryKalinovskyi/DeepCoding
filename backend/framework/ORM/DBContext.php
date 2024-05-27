@@ -3,12 +3,13 @@
 namespace Framework\ORM;
 
 use Exception;
-use Framework\ORM\QueryBuilder\IQueryBuilder;
-use Framework\ORM\QueryBuilder\MySQL\MySQLInsert;
-use Framework\ORM\QueryBuilder\MySQL\MySQLUpdate;
-use Framework\ORM\QueryBuilder\MySQL\MySQLSelect;
-use Framework\ORM\QueryBuilder\MySQL\MySQLDelete;
-use Framework\ORM\QueryBuilderProxy\ProxyQueryBuilder;
+use Framework\ORM\QueryBuilders\IQueryBuilder;
+use Framework\ORM\QueryBuilders\MySQL\MySQLInsert;
+use Framework\ORM\QueryBuilders\MySQL\MySQLQueryBuilder;
+use Framework\ORM\QueryBuilders\MySQL\MySQLUpdate;
+use Framework\ORM\QueryBuilders\MySQL\MySQLSelect;
+use Framework\ORM\QueryBuilders\MySQL\MySQLDelete;
+use Framework\ORM\Queries\Query;
 use PDO;
 
 class DBContext
@@ -68,16 +69,12 @@ class DBContext
 
     }
 
-    public function query(): ProxyQueryBuilder{
+    public function query(): Query{
         // look at the configuration, then choose appropriate service for the database type
 
         // TODO: several database bindings instead of mysql by default.
 
-        return new ProxyQueryBuilder(
-            new MySQLInsert(),
-            new MySQLSelect(),
-            new MySQLUpdate(),
-            new MySQLDelete(),
+        return new Query(new MySQLQueryBuilder(),
             $this);
     }
 
@@ -89,6 +86,10 @@ class DBContext
 
     public function inTransaction(): bool{
         return $this->inTransaction();
+    }
+
+    public function commit(): bool{
+        return $this->_pdo->commit();
     }
 
     public function rollback(): bool{

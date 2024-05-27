@@ -29,25 +29,19 @@ $appBuilder->services()
         fn() => new DeepCodeContext("mysql:host=127.0.0.1;dbname=deep_code"))
     ->addScopedForInterface(IProblemsRepository::class, ProblemsRepository::class);
 
-$appBuilder->use(
-    function($next){
+$appBuilder->use(function($next){
         if(str_starts_with($_SERVER['REQUEST_URI'], "/api"))
             header('Content-Type: application/json; charset=utf-8');
         $next();
-    }
-);
+    });
 
 // Initialize controllers using automapper. Automapper will map each controller by some route.
-$appBuilder->use(
-    function(RouteMapper $automapper, ControllerRouter $router) {
+$appBuilder->use(function(RouteMapper $automapper, ControllerRouter $router) {
         // maps and redirect to the specific resource.
-
         $automapper->mapControllers("", "./src/Controllers");
         $automapper->mapControllers("/api", "./src/Api");
         $router->redirect($_SERVER['REQUEST_URI']);
-
-    })
-    ->services()->addTransient(RouteMapper::class);
+    })->services()->addTransient(RouteMapper::class);
 
 // index.php don't even know about controllers, application will create controller when needed.
 $app = $appBuilder->build();

@@ -1,12 +1,12 @@
 <?php
 
-namespace Framework\ORM\QueryBuilder\MySQL;
+namespace Framework\ORM\QueryBuilders\MySQL;
 
-use Framework\ORM\QueryBuilder\IDeleteQueryBuilder;
-use Framework\ORM\QueryBuilder\IInsertQueryBuilder;
-use Framework\ORM\QueryBuilder\IQueryBuilder;
-use Framework\ORM\QueryBuilder\ISelectQueryBuilder;
-use Framework\ORM\QueryBuilder\IUpdateQueryBuilder;
+use Framework\ORM\QueryBuilders\IDeleteQueryBuilder;
+use Framework\ORM\QueryBuilders\IInsertQueryBuilder;
+use Framework\ORM\QueryBuilders\IQueryBuilder;
+use Framework\ORM\QueryBuilders\ISelectQueryBuilder;
+use Framework\ORM\QueryBuilders\IUpdateQueryBuilder;
 
 class MySQLQueryBuilder implements IQueryBuilder
 {

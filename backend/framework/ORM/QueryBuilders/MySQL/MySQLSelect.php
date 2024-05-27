@@ -1,8 +1,8 @@
 <?php
 
-namespace Framework\ORM\QueryBuilder\MySQL;
+namespace Framework\ORM\QueryBuilders\MySQL;
 
-use Framework\ORM\QueryBuilder\ISelectQueryBuilder;
+use Framework\ORM\QueryBuilders\ISelectQueryBuilder;
 use InvalidArgumentException;
 
 class MySQLSelect implements ISelectQueryBuilder
@@ -15,9 +15,9 @@ class MySQLSelect implements ISelectQueryBuilder
     private int $limit = -1;
     private int $offset = -1;
 
-    public function select(array $columns): ISelectQueryBuilder
+    public function select(array $columnNames): ISelectQueryBuilder
     {
-        $this->columns = $columns;
+        $this->columns = $columnNames;
         return $this;
     }
 

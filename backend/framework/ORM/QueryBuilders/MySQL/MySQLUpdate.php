@@ -1,8 +1,8 @@
 <?php
 
-namespace Framework\ORM\QueryBuilder\MySQL;
+namespace Framework\ORM\QueryBuilders\MySQL;
 
-use Framework\ORM\QueryBuilder\IUpdateQueryBuilder;
+use Framework\ORM\QueryBuilders\IUpdateQueryBuilder;
 use InvalidArgumentException;
 
 class MySQLUpdate implements IUpdateQueryBuilder
@@ -10,7 +10,6 @@ class MySQLUpdate implements IUpdateQueryBuilder
 
     private array $tableNames = [];
     private array $set = [];
-
     private string $whereCondition = "";
 
     public function update(array $tableNames): IUpdateQueryBuilder
@@ -19,13 +18,13 @@ class MySQLUpdate implements IUpdateQueryBuilder
         return $this;
     }
 
-    public function set(string $fieldName, string $value): IUpdateQueryBuilder
+    public function set(string $fieldName, string $variable): IUpdateQueryBuilder
     {
-        $this->set[$fieldName] = $value;
+        $this->set[$fieldName] = $variable;
         return $this;
     }
 
-    public function where($condition): IUpdateQueryBuilder
+    public function where(string $condition): IUpdateQueryBuilder
     {
         $this->whereCondition = $condition;
         return $this;
@@ -34,10 +33,10 @@ class MySQLUpdate implements IUpdateQueryBuilder
     public function build(): string
     {
         if(empty($this->tableNames))
-            throw new InvalidArgumentException("Table names not specified.");
+            throw new \Exception("Table names not specified.");
 
         if(empty($this->set))
-            throw new InvalidArgumentException("Fields to set not specified.");
+            throw new \Exception("Fields to set not specified.");
 
         $query = "UPDATE " . join(', ', $this->tableNames);
 
