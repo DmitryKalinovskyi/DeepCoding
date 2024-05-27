@@ -43,7 +43,7 @@ class DBContext
     /**
      * @throws Exception
      */
-    public function executeAndMap(string $query, $params, $class): array{
+    public function executeAndMap(string $query, $params, string $class): array{
         try{
 
             $sth = $this->_pdo->prepare($query);
@@ -53,8 +53,9 @@ class DBContext
             while ($row = $sth->fetch(PDO::FETCH_ASSOC)) {
                 $instance = new $class();
 
-                foreach($row as $field => $value)
-                    $instance->$field = $value;
+                foreach($row as $property => $value)
+                    if(property_exists($instance, $property))
+                    $instance->$property = $value;
 
                 $results[] = $instance;
             }

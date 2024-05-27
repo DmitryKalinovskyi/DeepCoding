@@ -10,12 +10,25 @@ class DBSet
 {
     private string $_tableName;
     private string $_className;
+    private string $_tableAlias;
     private DBContext $_dbContext;
 
     public function __construct($tableName, $className, $dbContext){
         $this->_tableName = $tableName;
         $this->_className = $className;
         $this->_dbContext = $dbContext;
+    }
+
+    public function alias(string $alias): self{
+        $this->_tableAlias = $alias;
+        return $this;
+    }
+
+    private function getTableName(): string{
+        if(!empty($this->_tableAlias)){
+            return "$this->_tableName as $this->_tableAlias";
+        }
+        return $this->_tableName;
     }
 
     public function insert(object $value): array|false{
@@ -44,7 +57,7 @@ class DBSet
         $proxy = $this->_dbContext->query();
         $proxySelect = $proxy->select($columns);
 
-        $proxySelect->from($this->_tableName);
+        $proxySelect->from($this->getTableName());
         $proxySelect->asClass($this->_className);
 
         return $proxySelect;
@@ -53,23 +66,23 @@ class DBSet
     public function update(): UpdateQuery
     {
         $proxy = $this->_dbContext->query();
-        return $proxy->update([$this->_tableName]);
+        return $proxy->update([$this->getTableName()]);
     }
 
     public function delete(): DeleteQuery
     {
         $proxy = $this->_dbContext->query();
         $proxyDelete = $proxy->delete();
-        $proxyDelete->from($this->_tableName);
+        $proxyDelete->from($this->getTableName());
 
         return $proxyDelete;
     }
 
     public function count(): int{
         $qb = $this->_dbContext->query()
-            ->select(["COUNT(*) as count"])
-            ->from($this->_tableName);
+            ->select(["COUNT(*) as __DBSET__count"])
+            ->from($this->getTableName());
 
-        return $qb->execute()[0]['count'];
+        return $qb->execute()[0]['__DBSET__count'];
     }
 }

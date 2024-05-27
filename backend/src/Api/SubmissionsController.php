@@ -29,17 +29,11 @@ class SubmissionsController extends APIController
         $userId = $_GET['userId'];
 
         // get submissions for the current user
-
-
-
         $query = $this->_db->submissions
-            // -> select()
-            // -> leftJoin('problems as p')
-            // -> where('p.Id = Id')
-            ->select(['s.Id', 's.ProblemId', 's.UserId', 's.Code', 's.Compiler'])
-            ->fromSources(['submissions as s', 'problems as p'])
-            ->where('p.Id = :problemId AND p.Id = s.ProblemId AND s.UserId = :userId');
-
+            ->alias("S")
+            ->select()
+            ->leftJoin(DeepCodeContext::PROBLEMS_TABLE . " as P", "S.ProblemId = P.Id")
+            ->where("S.UserId = :userId and P.Id = :problemId");
 
         $submissions = $query->execute(['problemId' => $problemId, 'userId' => $userId]);
 

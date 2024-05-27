@@ -29,21 +29,21 @@ class MySQLSelect implements ISelectQueryBuilder
 
         $query .= " FROM " . join(',', $this->sources);
 
+        // joins
+        foreach($this->joins as list($joinType, $tableName, $on)){
+            $query .= " $joinType JOIN $tableName ON $on";
+        }
+
         if(empty($this->whereCondition) === false){
             $query .= " WHERE " . $this->whereCondition;
         }
 
-        // joins
-        foreach($this->joins as list($joinType, $tableName, $on)){
-            $query .= "$joinType JOIN $tableName ON $on";
-        }
-
         if(!empty($this->groupBy)){
-            $query .= "GROUP BY " . join(',', $this->groupBy);
+            $query .= " GROUP BY " . join(',', $this->groupBy);
         }
 
         if(!empty($this->havingCondition)){
-            $query .= "HAVING " . $this->havingCondition;
+            $query .= " HAVING " . $this->havingCondition;
         }
 
 
@@ -52,7 +52,7 @@ class MySQLSelect implements ISelectQueryBuilder
             foreach($this->orderBy as list($columnName, $isAscending)){
                 $orderByParts[] = $columnName . ($isAscending ? "ASC" : "DESC");
             }
-            $query .= "ORDER BY " . join(',', $orderByParts);
+            $query .= " ORDER BY " . join(',', $orderByParts);
         }
 
         if($this->limit > 0)
