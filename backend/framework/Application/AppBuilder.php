@@ -20,12 +20,10 @@ class AppBuilder implements IAppBuilder
             return $this->useMiddleware($middleware);
 
         $this->middlewares[] = $middleware;
-
         return $this;
     }
 
     private function useMiddleware(string $middlewareClass): IAppBuilder{
-
         // this function create wrapper callable to the actual middleware, that construct it and execute
         $this->use(function($next) use($middlewareClass){
             $this->services()->invokeFunction($this->services()->resolve($middlewareClass)(...), ["next" => $next]);
@@ -35,7 +33,7 @@ class AppBuilder implements IAppBuilder
     }
 
     private function prepareMiddlewares(): ?Closure{
-        $next = fn() => 1 + 1;
+        $next = fn() => null;
 
         // link them
         for($i = count($this->middlewares)-1; $i >= 0; $i--){

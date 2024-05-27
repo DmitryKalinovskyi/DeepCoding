@@ -6,6 +6,10 @@ class HttpContext
 {
     private array $features = [];
 
+    public function __construct(){
+
+    }
+
     public function __get(string $name){
         return $this->features[$name];
     }

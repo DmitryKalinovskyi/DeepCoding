@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\ORM\QueryBuilder;
+namespace Framework\ORM\QueryBuilders;
 
 /*
  * Class allow to construct default Create, Read, Update, Delete queries.

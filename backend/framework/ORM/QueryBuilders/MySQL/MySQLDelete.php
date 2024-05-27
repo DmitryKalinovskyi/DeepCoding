@@ -1,8 +1,9 @@
 <?php
 
-namespace Framework\ORM\QueryBuilder\MySQL;
+namespace Framework\ORM\QueryBuilders\MySQL;
 
-use Framework\ORM\QueryBuilder\IDeleteQueryBuilder;
+use Exception;
+use Framework\ORM\QueryBuilders\IDeleteQueryBuilder;
 use InvalidArgumentException;
 
 class MySQLDelete implements IDeleteQueryBuilder
@@ -22,14 +23,17 @@ class MySQLDelete implements IDeleteQueryBuilder
         return $this;
     }
 
+    /**
+     * @throws Exception table name not specified.
+     */
     public function build(): string
     {
         if($this->tableName === "")
-            throw new InvalidArgumentException("You need to specify FROM tableName");
+            throw new Exception("Table name not specified. You need to invoke from method.");
 
         $query = "DELETE FROM " . $this->tableName;
 
-        if(empty($this->whereCondition) === false){
+        if(!empty($this->whereCondition)){
             $query .= " WHERE " . $this->whereCondition;
         }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\ORM\QueryBuilderProxy;
+namespace Framework\ORM\Queries;
 
 interface IDBExecutable
 {

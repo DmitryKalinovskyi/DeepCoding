@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\ORM\QueryBuilder;
+namespace Framework\ORM\QueryBuilders;
 
 interface IDeleteQueryBuilder
 {

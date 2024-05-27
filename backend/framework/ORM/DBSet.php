@@ -2,9 +2,9 @@
 
 namespace Framework\ORM;
 
-use Framework\ORM\QueryBuilderProxy\ProxyDelete;
-use Framework\ORM\QueryBuilderProxy\ProxySelect;
-use Framework\ORM\QueryBuilderProxy\ProxyUpdate;
+use Framework\ORM\Queries\DeleteQuery;
+use Framework\ORM\Queries\SelectQuery;
+use Framework\ORM\Queries\UpdateQuery;
 
 class DBSet
 {
@@ -39,7 +39,7 @@ class DBSet
         return $proxy->execute($values);
     }
 
-    public function select(array $columns = ['*']): ProxySelect
+    public function select(array $columns = ['*']): SelectQuery
     {
         $proxy = $this->_dbContext->query();
         $proxySelect = $proxy->select($columns);
@@ -50,13 +50,13 @@ class DBSet
         return $proxySelect;
     }
 
-    public function update(): ProxyUpdate
+    public function update(): UpdateQuery
     {
         $proxy = $this->_dbContext->query();
         return $proxy->update([$this->_tableName]);
     }
 
-    public function delete(): ProxyDelete
+    public function delete(): DeleteQuery
     {
         $proxy = $this->_dbContext->query();
         $proxyDelete = $proxy->delete();
