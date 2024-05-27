@@ -14,45 +14,39 @@ class SelectQuery implements ISelectQueryBuilder, IDBExecutable
         $this->_dbContext = $dbContext;
     }
 
-    public function select(array $columnNames): SelectQuery
+    public function select(array $columnNames): self
     {
         $this->_selectQueryBuilder->select($columnNames);
         return $this;
     }
 
-    public function from(string $source): SelectQuery
+    public function from(string $source): self
     {
         $this->_selectQueryBuilder->from($source);
         return $this;
     }
 
-    public function fromSources(array $sources): SelectQuery
+    public function fromSources(array $sources): self
     {
         $this->_selectQueryBuilder->fromSources($sources);
         return $this;
     }
 
-    public function where($condition): SelectQuery
+    public function where($condition): self
     {
         $this->_selectQueryBuilder->where($condition);
         return $this;
     }
 
-    public function limit(int $limit): SelectQuery
+    public function limit(int $limit): self
     {
         $this->_selectQueryBuilder->limit($limit);
         return $this;
     }
 
-    public function offset(int $offset): SelectQuery
+    public function offset(int $offset): self
     {
         $this->_selectQueryBuilder->offset($offset);
-        return $this;
-    }
-
-    public function thenOrderBy(): SelectQuery
-    {
-        $this->_selectQueryBuilder->thenOrderBy();
         return $this;
     }
 
@@ -61,20 +55,20 @@ class SelectQuery implements ISelectQueryBuilder, IDBExecutable
         return $this->_selectQueryBuilder->build();
     }
 
-    public function clone(): SelectQuery
+    public function clone(): self
     {
         return new SelectQuery($this->_selectQueryBuilder->clone(), $this->_dbContext);
     }
 
     private string $_asClass = "";
 
-    public function asClass($class): SelectQuery{
+    public function asClass($class): self{
         $this->_asClass = $class;
         return $this;
     }
 
     // used by default
-    public function asObject(){
+    public function asObject(): self{
         $this->_asClass = "";
         return $this;
     }
@@ -87,38 +81,69 @@ class SelectQuery implements ISelectQueryBuilder, IDBExecutable
         return $this->_dbContext->execute($this->build(), $params);
     }
 
-    public function first($params = []){
+    public function first($params = []): mixed{
 
-        $oldLimit = $this->getLimit();
+        $clone = $this->clone();
+        $clone->limit(1);
 
-        $this->limit(1);
-
-        $result = $this->execute($params);
+        $result = $clone->execute($params);
 
         if(empty($result[0])) return null;
-
-        $this->limit($oldLimit);
 
         return $result[0];
     }
 
-    public function getSources(): array
+    public function orderBy(string $columnName, bool $isAscending = true): self
     {
-        return $this->_selectQueryBuilder->getSources();
+        $this->_selectQueryBuilder->orderBy($columnName, $isAscending);
+        return $this;
     }
 
-    public function getWhere(): string
+    public function orderByColumns(array $columnNames, bool $isAscending = true): self
     {
-        return $this->_selectQueryBuilder->getWhere();
+        $this->_selectQueryBuilder->orderByColumns($columnNames, $isAscending);
+        return $this;
     }
 
-    public function getLimit(): int
+    public function clearOrderBy(): self
     {
-        return $this->_selectQueryBuilder->getLimit();
+        $this->_selectQueryBuilder->clearOrderBy();
+        return $this;
     }
 
-    public function getOffset(): int
+    public function innerJoin(string $tableName, string $on): self
     {
-        return $this->_selectQueryBuilder->getOffset();
+        $this->_selectQueryBuilder->innerJoin($tableName, $on);
+        return $this;
+    }
+
+    public function leftJoin(string $tableName, string $on): self
+    {
+        $this->_selectQueryBuilder->leftJoin($tableName, $on);
+        return $this;
+    }
+
+    public function rightJoin(string $tableName, string $on): self
+    {
+        $this->_selectQueryBuilder->rightJoin($tableName, $on);
+        return $this;
+    }
+
+    public function fullJoin(string $tableName, string $on): self
+    {
+        $this->_selectQueryBuilder->fullJoin($tableName, $on);
+        return $this;
+    }
+
+    public function groupBy(array $columnNames): self
+    {
+        $this->_selectQueryBuilder->groupBy($columnNames);
+        return $this;
+    }
+
+    public function having(string $condition): self
+    {
+        $this->_selectQueryBuilder->having($condition);
+        return $this;
     }
 }

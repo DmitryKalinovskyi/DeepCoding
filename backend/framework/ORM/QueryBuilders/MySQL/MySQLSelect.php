@@ -7,13 +7,77 @@ use InvalidArgumentException;
 
 class MySQLSelect implements ISelectQueryBuilder
 {
-
     private array $columns = [];
     private array $sources = [];
     private string $whereCondition = "";
-
+    private array $joins = [];
+    private array $groupBy = [];
+    private string $havingCondition = "";
+    private array $orderBy = [];
     private int $limit = -1;
     private int $offset = -1;
+
+    public function build(): string
+    {
+        if(empty($this->columns))
+            throw new InvalidArgumentException("Columns to select not specified.");
+
+        if(empty($this->sources))
+            throw new InvalidArgumentException("Source data not specified.");
+
+        $query = "SELECT " . join(',', $this->columns);
+
+        $query .= " FROM " . join(',', $this->sources);
+
+        if(empty($this->whereCondition) === false){
+            $query .= " WHERE " . $this->whereCondition;
+        }
+
+        // joins
+        foreach($this->joins as list($joinType, $tableName, $on)){
+            $query .= "$joinType JOIN $tableName ON $on";
+        }
+
+        if(!empty($this->groupBy)){
+            $query .= "GROUP BY " . join(',', $this->groupBy);
+        }
+
+        if(!empty($this->havingCondition)){
+            $query .= "HAVING " . $this->havingCondition;
+        }
+
+
+        if(!empty($this->orderBy)){
+            $orderByParts = [];
+            foreach($this->orderBy as list($columnName, $isAscending)){
+                $orderByParts[] = $columnName . ($isAscending ? "ASC" : "DESC");
+            }
+            $query .= "ORDER BY " . join(',', $orderByParts);
+        }
+
+        if($this->limit > 0)
+            $query .= " LIMIT " . $this->limit;
+
+        if($this->offset > 0)
+            $query .= " OFFSET " . $this->offset;
+
+        return $query;
+    }
+
+    public function clone(): ISelectQueryBuilder
+    {
+        $copy = new MySQLSelect();
+        $copy->whereCondition = $this->whereCondition;
+        $copy->columns = $this->columns;
+        $copy->sources = $this->sources;
+        $copy->joins = $this->joins;
+        $copy->groupBy = $this->groupBy;
+        $copy->havingCondition = $this->havingCondition;
+        $copy->orderBy = $this->orderBy;
+        $copy->limit = $this->limit;
+        $copy->offset = $this->offset;
+        return $copy;
+    }
 
     public function select(array $columnNames): ISelectQueryBuilder
     {
@@ -51,81 +115,64 @@ class MySQLSelect implements ISelectQueryBuilder
         return $this;
     }
 
-    public function orderBy(): ISelectQueryBuilder
+    public function orderBy(string $columnName, bool $isAscending = true): ISelectQueryBuilder
     {
-        // TODO: Implement orderBy() method.
+        $this->orderBy[] = [$columnName, $isAscending];
         return $this;
     }
 
-    public function thenOrderBy(): ISelectQueryBuilder
+    public function orderByColumns(array $columnNames, bool $isAscending = true): ISelectQueryBuilder
     {
-        // TODO: Implement thenOrderBy() method.
-        return $this;
-
-    }
-
-    public function groupBy(): ISelectQueryBuilder
-    {
-        // TODO: Implement groupBy() method.
-        return $this;
-
-    }
-
-    public function build(): string
-    {
-        if(empty($this->columns))
-            throw new InvalidArgumentException("Columns to select not specified.");
-
-        if(empty($this->sources))
-            throw new InvalidArgumentException("Source data not specified.");
-
-        $query = "SELECT " . join(', ', $this->columns);
-
-        $query .= " FROM " . join(', ', $this->sources);
-
-        if(empty($this->whereCondition) === false){
-            $query .= " WHERE " . $this->whereCondition;
+        foreach($columnNames as $columnName){
+            $this->orderBy($columnName, $isAscending);
         }
-
-        if($this->limit > 0)
-            $query .= " LIMIT " . $this->limit;
-
-        if($this->offset > 0)
-            $query .= " OFFSET " . $this->offset;
-
-        return $query;
+        return $this;
     }
 
-    public function clone(): ISelectQueryBuilder
+    public function clearOrderBy(): ISelectQueryBuilder
     {
-        // TODO: Implement clone() method.
-
-        $copy = new MySQLSelect();
-        $copy->whereCondition = $this->whereCondition;
-        $copy->limit = $this->limit;
-        $copy->offset = $this->offset;
-        $copy->columns = $this->columns;
-        $copy->sources = $this->sources;
-        return $copy;
+        $this->orderBy = [];
+        return $this;
     }
 
-    public function getSources(): array
-    {
-        return $this->sources;
+    private function queryJoin(string $joinType, string $tableName, string $on): void{
+        $this->joins[] = [$joinType, $tableName, $on];
     }
 
-    public function getWhere(): string
+    public function innerJoin(string $tableName, string $on): ISelectQueryBuilder
     {
-        return $this->whereCondition;
+        $this->queryJoin("INNER", $tableName, $on);
+        return $this;
     }
 
-    public function getLimit(): int
+    public function leftJoin(string $tableName, string $on): ISelectQueryBuilder
     {
-        return $this->limit;
+        $this->queryJoin("LEFT", $tableName, $on);
+        return $this;
     }
 
-    public function getOffset(): int
+    public function rightJoin(string $tableName, string $on): ISelectQueryBuilder
     {
-        return $this->offset;
+        $this->queryJoin("RIGHT", $tableName, $on);
+        return $this;
+    }
+
+    public function fullJoin(string $tableName, string $on): ISelectQueryBuilder
+    {
+        // in MySQL full join is actually cross join.
+        $this->queryJoin("CROSS", $tableName, $on);
+        return $this;
+    }
+
+    public function groupBy(array $columnNames): ISelectQueryBuilder
+    {
+        $this->groupBy = $columnNames;
+        return $this;
+    }
+
+    public function having(string $condition): ISelectQueryBuilder
+    {
+        $this->havingCondition = $condition;
+        return $this;
     }
 }

@@ -13,8 +13,6 @@ interface ISelectQueryBuilder
     public function where(string $condition): ISelectQueryBuilder;
     public function limit(int $limit): ISelectQueryBuilder;
     public function offset(int $offset): ISelectQueryBuilder;
-    public function paginate(int $offset, int $limit): ISelectQueryBuilder;
-
     public function orderBy(string $columnName, bool $isAscending = true): ISelectQueryBuilder;
     public function orderByColumns(array $columnNames, bool $isAscending = true): ISelectQueryBuilder;
     public function clearOrderBy(): ISelectQueryBuilder;
@@ -22,19 +20,19 @@ interface ISelectQueryBuilder
     // Joins
 
     // intersection
-    public function innerJoin(string $tableName, string $on);
-    public function leftJoin(string $tableName, string $on);
-    public function rightJoin(string $tableName, string $on);
-    public function fullJoin(string $tableName, string $on);
+    public function innerJoin(string $tableName, string $on): ISelectQueryBuilder;
+    public function leftJoin(string $tableName, string $on): ISelectQueryBuilder;
+    public function rightJoin(string $tableName, string $on): ISelectQueryBuilder;
+    public function fullJoin(string $tableName, string $on): ISelectQueryBuilder;
 
-    public function union(string $builtSelect);
+    // TODO: Add union
+//    public function union(string $builtSelect): ISelectQueryBuilder;
 
-    public function groupBy(string $columnName): ISelectQueryBuilder;
+    public function groupBy(array $columnNames): ISelectQueryBuilder;
 
-    public function having(string $condition);
+    public function having(string $condition): ISelectQueryBuilder;
 
     public function build(): string;
 
     public function clone(): ISelectQueryBuilder;
-
 }

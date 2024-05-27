@@ -10,9 +10,6 @@ use Framework\ORM\QueryBuilders\IUpdateQueryBuilder;
 
 class MySQLQueryBuilder implements IQueryBuilder
 {
-
-    // by default use standard MySQLQueryParts
-
     public function select(array $columns): ISelectQueryBuilder
     {
         $builder = new MySQLSelect();

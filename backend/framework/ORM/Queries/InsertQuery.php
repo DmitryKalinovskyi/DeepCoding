@@ -33,12 +33,6 @@ class InsertQuery implements IInsertQueryBuilder, IDBExecutable
         return $this;
     }
 
-//    public function addValue(object $value): ProxyInsert
-//    {
-//        $this->_insertService->addValue($value);
-//        return $this;
-//    }
-
     public function build(): string
     {
         return $this->_insertQueryBuilder->build();
@@ -47,5 +41,17 @@ class InsertQuery implements IInsertQueryBuilder, IDBExecutable
     public function clone(): InsertQuery
     {
         return new InsertQuery($this->_insertQueryBuilder->clone(), $this->_dbContext);
+    }
+
+    public function times(int $times): InsertQuery
+    {
+        $this->_insertQueryBuilder->times($times);
+        return $this;
+    }
+
+    public function select(string $selectQuery): InsertQuery
+    {
+        $this->_insertQueryBuilder->select($selectQuery);
+        return $this;
     }
 }
