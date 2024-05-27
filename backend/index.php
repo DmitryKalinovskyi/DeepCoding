@@ -4,8 +4,8 @@ require_once "vendor/autoload.php";
 
 use DeepCode\DB\DeepCodeContext;
 use DeepCode\Middlewares\JWTAuthenticationMiddleware;
-use DeepCode\Repositories\IProblemsRepository;
-use DeepCode\Repositories\ProblemsRepository;
+use DeepCode\Repositories\Implementation\ProblemsRepository;
+use DeepCode\Repositories\Interfaces\IProblemsRepository;
 use Framework\Application\AppBuilder;
 use Framework\Mapper\RouteMapper;
 use Framework\Middlewares\Cors\CORS;

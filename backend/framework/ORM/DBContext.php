@@ -17,6 +17,7 @@ class DBContext
     private PDO $_pdo;
     public function __construct($connectionString, $username = "root", $password = ""){
         $this->_pdo = new PDO($connectionString, $username, $password);
+        $this->setQueryBuilder(QueryBuilders\MySQL\MySQLQueryBuilder::class);
     }
 
     /**
@@ -34,10 +35,6 @@ class DBContext
 
             throw $e;
         }
-    }
-
-    public function getDatabaseType(){
-        return "MySQL";
     }
 
     /**
@@ -70,12 +67,20 @@ class DBContext
 
     }
 
+    private string $_queryBuilderClass;
+
+    public function setQueryBuilder(string $queryBuilderClass){
+        if(is_subclass_of($queryBuilderClass, IQueryBuilder::class)){
+            $this->_queryBuilderClass = $queryBuilderClass;
+        }
+        else{
+            throw new Exception("$queryBuilderClass is not subclass of " . IQueryBuilder::class);
+        }
+    }
+
     public function query(): Query{
-        // look at the configuration, then choose appropriate service for the database type
-
-        // TODO: several database bindings instead of mysql by default.
-
-        return new Query(new MySQLQueryBuilder(),
+        // look at the configuration, then choose appropriate query builder for the database type
+        return new Query(new $this->_queryBuilderClass(),
             $this);
     }
 
