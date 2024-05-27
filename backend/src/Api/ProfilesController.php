@@ -19,4 +19,9 @@ class ProfilesController extends APIController
     public function MyProfile(): void{
         echo json_encode($this->context->user);
     }
+
+    #[Route('{profileId}')]
+    public function GetProfile(int $profileId): void{
+        echo "user $profileId";
+    }
 }

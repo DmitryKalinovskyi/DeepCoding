@@ -48,7 +48,8 @@ class ProblemsController extends APIController {
     public function GetProblemSubmissions(int $problemId): void{
 
         $submissions = $this->repository->getProblemSubmissionsForUser($problemId,
-            $this->context->user->Id);
+1);
+//            $this->context->user->Id);
 
         echo json_encode($submissions);
     }

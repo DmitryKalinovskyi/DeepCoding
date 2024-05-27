@@ -10,7 +10,7 @@ use Framework\Attributes\Requests\HttpPost;
 use Framework\Attributes\Requests\HttpPut;
 use Framework\Attributes\Routing\Route;
 use Framework\Dependency\IServiceCollection;
-use Framework\Middlewares\Routing\ControllerRouter;
+use Framework\Middlewares\Routing\Router;
 use InvalidArgumentException;
 use ReflectionClass;
 use ReflectionException;
@@ -18,10 +18,10 @@ use ReflectionMethod;
 
 class RouteMapper
 {
-    private ControllerRouter $router;
+    private Router $router;
     private IServiceCollection $controllersServices;
 
-    public function __construct(ControllerRouter $router, IServiceCollection $controllersServices){
+    public function __construct(Router $router, IServiceCollection $controllersServices){
         $this->router = $router;
         $this->controllersServices = $controllersServices;
     }
@@ -73,15 +73,10 @@ class RouteMapper
                     $routerMethods[] = $this->router->get;
 
                 foreach($routerMethods as $routerMethod){
-                    $routerMethod->addRoute($fullMethodRoute, function() use ($controllerClass, $method) {
-                        $controller = $this->controllersServices->resolve($controllerClass);
+                    $controller = $this->controllersServices->resolve($controllerClass);
+                    $methodName = $method->getName();
 
-                        $methodName = $method->getName();
-                        $controller->$methodName();
-//
-//                        $actualMethod = $controller->$methodName;
-//                        $this->_controllerCollection->invokeFunction($actualMethod);
-                    });
+                    $routerMethod->addRoute($fullMethodRoute,  $controller->$methodName(...));
                 }
             }
         }
