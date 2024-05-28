@@ -5,7 +5,11 @@ require_once "vendor/autoload.php";
 use DeepCode\DB\DeepCodeContext;
 use DeepCode\Middlewares\JWTAuthenticationMiddleware;
 use DeepCode\Repositories\Implementation\ProblemsRepository;
+use DeepCode\Repositories\Implementation\UserRepository;
 use DeepCode\Repositories\Interfaces\IProblemsRepository;
+use DeepCode\Repositories\Interfaces\IUserRepository;
+use DeepCode\Services\IJWTService;
+use DeepCode\Services\JWTService;
 use Framework\Application\AppBuilder;
 use Framework\Http\HttpContext;
 use Framework\Mapper\RouteMapper;
@@ -26,7 +30,8 @@ $appBuilder = new AppBuilder();
 $appBuilder->services()
     ->addScoped(HttpContext::class)
     ->addScoped(Router::class)
-    ->addTransient(RouteMapper::class);
+    ->addTransient(RouteMapper::class)
+    ->addTransientForInterface(IJWTService::class, JWTService::class);
 
 // database
 $appBuilder->services()
@@ -35,7 +40,8 @@ $appBuilder->services()
 
 // repositories
 $appBuilder->services()
-    ->addScopedForInterface(IProblemsRepository::class, ProblemsRepository::class);
+    ->addScopedForInterface(IProblemsRepository::class, ProblemsRepository::class)
+    ->addScopedForInterface(IUserRepository::class, UserRepository::class);
 
 // configure middleware pipeline
 $appBuilder
@@ -60,6 +66,10 @@ $appBuilder->services()->invokeFunction(function (RouteMapper $routeMapper) {
         $routeMapper->mapControllers("", "./src/Controllers");
         $routeMapper->mapControllers("/api", "./src/Api");
     });
+
+$appBuilder->services()->invokeFunction(function (Router $router) {
+//    $router->dump_routes();
+});
 
 // index.php don't even know about controllers, application will create controller when needed.
 $app = $appBuilder->build();
