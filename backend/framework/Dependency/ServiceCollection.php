@@ -163,4 +163,9 @@ class ServiceCollection implements IServiceCollection
 
         return $resultingParams;
     }
+
+    public function __get(string $serviceName): mixed
+    {
+        return $this->getService($serviceName);
+    }
 }

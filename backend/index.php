@@ -11,6 +11,7 @@ use DeepCode\Repositories\Interfaces\IUserRepository;
 use DeepCode\Services\IJWTService;
 use DeepCode\Services\JWTService;
 use Framework\Application\AppBuilder;
+use Framework\Application\Configurations\MVCConfiguration;
 use Framework\Http\HttpContext;
 use Framework\Mapper\RouteMapper;
 use Framework\Middlewares\Controllers\ControllerMiddleware;
@@ -18,6 +19,8 @@ use Framework\Middlewares\Cors\CORS;
 use Framework\Middlewares\Development\ErrorCatcher;
 use Framework\Middlewares\Routing\Router;
 use Framework\MVC\Views\ViewRenderer;
+use Framework\Services\IPasswordHashingService;
+use Framework\Services\PasswordHashingService;
 
 // load config
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
@@ -26,12 +29,12 @@ $dotenv->load();
 // Create app and configure all services.
 $appBuilder = new AppBuilder();
 
+$appBuilder->useConfiguration(MVCConfiguration::class);
+
 // basic service configuration
 $appBuilder->services()
-    ->addScoped(HttpContext::class)
-    ->addScoped(Router::class)
-    ->addTransient(RouteMapper::class)
-    ->addTransientForInterface(IJWTService::class, JWTService::class);
+    ->addTransientForInterface(IJWTService::class, JWTService::class)
+    ->addTransientForInterface(IPasswordHashingService::class, PasswordHashingService::class);
 
 // database
 $appBuilder->services()
@@ -61,11 +64,10 @@ $appBuilder->use(function($next){
 $appBuilder->use(ControllerMiddleware::class);
 
 // Initialize controllers using automapper. Automapper will map each controller by some route.
-$appBuilder->services()->invokeFunction(function (RouteMapper $routeMapper) {
-        // maps and redirect to the specific resource.
-        $routeMapper->mapControllers("", "./src/Controllers");
-        $routeMapper->mapControllers("/api", "./src/Api");
-    });
+$appBuilder->services()->invokeFunction(function(RouteMapper $routeMapper){
+    $routeMapper->mapControllers("", "./src/Controllers");
+    $routeMapper->mapControllers("/api", "./src/Api");
+});
 
 $appBuilder->services()->invokeFunction(function (Router $router) {
 //    $router->dump_routes();

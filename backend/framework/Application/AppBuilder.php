@@ -3,6 +3,7 @@
 namespace Framework\Application;
 
 use Closure;
+use Framework\Application\Configurations\IAppBuilderConfiguration;
 use Framework\Dependency\IServiceCollection;
 
 class AppBuilder implements IAppBuilder
@@ -54,5 +55,23 @@ class AppBuilder implements IAppBuilder
 
     public function services(): IServiceCollection{
         return $this->app->services;
+    }
+
+
+    public function useConfiguration(string $appBuilderConfiguration): IAppBuilder
+    {
+        if(!is_subclass_of($appBuilderConfiguration, IAppBuilderConfiguration::class)){
+            throw new \InvalidArgumentException("$appBuilderConfiguration don't inherits from " . IAppBuilderConfiguration::class);
+        }
+
+        $configuration = $this->services()->resolve($appBuilderConfiguration);
+
+        return $this->useConfigurationInstance($configuration);
+    }
+
+    public function useConfigurationInstance(IAppBuilderConfiguration $appBuilderConfiguration): IAppBuilder
+    {
+        $appBuilderConfiguration->configure($this);
+        return $this;
     }
 }

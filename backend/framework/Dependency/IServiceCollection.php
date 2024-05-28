@@ -10,6 +10,12 @@ interface IServiceCollection
      * @param string $serviceName
      * @return mixed
      */
+    public function __get(string $serviceName): mixed;
+
+    /**
+     * @param string $serviceName
+     * @return mixed
+     */
     public function getService(string $serviceName): mixed;
 
     /**

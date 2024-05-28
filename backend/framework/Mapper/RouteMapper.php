@@ -26,13 +26,11 @@ class RouteMapper
         $this->controllersServices = $controllersServices;
     }
 
-
     private function mapControllerMethod(string $route, string $controllerClass, ReflectionMethod $method): void{
-        if($method->getName() == '__construct') return;
-
         $methodAttributes = $method->getAttributes();
 
         $httpAttributes = [];
+
         // take http Attributes
         foreach($methodAttributes as $attribute){
             if($attribute->newInstance() instanceof HttpMethod)
@@ -95,7 +93,9 @@ class RouteMapper
         $controllerRoute = $route . "/" . $controllerName;
 
         foreach($methods as $method){
-            $this->mapControllerMethod($controllerRoute, $controllerClass, $method);
+            // ignore magic methods
+            if(!str_starts_with($method->getName(), "__"))
+                $this->mapControllerMethod($controllerRoute, $controllerClass, $method);
         }
     }
 
@@ -114,7 +114,9 @@ class RouteMapper
             throw new InvalidArgumentException("You need to pass directory.");
         }
 
+        // scan dir returns redundant .. and .
         $files = array_diff(scandir($controllersDirectory), array('..', '.'));
+
         foreach($files as $file){
             $fullFileName = "$controllersDirectory/$file";
             if(is_dir($fullFileName)){
@@ -132,7 +134,7 @@ class RouteMapper
         }
     }
 
-    private function getClassNameFromFilePath($filePath): string
+    private function getClassNameFromFilePath(string $filePath): string
     {
         $contents = file_get_contents($filePath);
 

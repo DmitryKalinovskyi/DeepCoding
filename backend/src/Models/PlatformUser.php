@@ -17,5 +17,4 @@ class PlatformUser
     public string $AvatarUrl;
     #[DBColumn]
     public string $Password;
-
 }

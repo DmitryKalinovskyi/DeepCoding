@@ -49,15 +49,14 @@ class ProblemsController extends APIController {
     public function GetProblemSubmissions(int $problemId): void{
 
         $submissions = $this->repository->getProblemSubmissionsForUser($problemId,
-1);
-//            $this->context->user->Id);
+            $this->context->user->Id);
 
         echo json_encode($submissions);
     }
 
     #[Route('{problemId}/submissions')]
-    #[Authenticated]
     #[HttpPost]
+    #[Authenticated]
     public function SubmitCodeForProblem(int $problemId): void{
 
     }

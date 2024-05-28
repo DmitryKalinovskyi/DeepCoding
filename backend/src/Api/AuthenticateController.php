@@ -20,11 +20,10 @@ class AuthenticateController extends APIController
         $this->userRepository = $userRepository;
     }
 
-
     #[Route("login")]
     #[HttpPost]
     #[Unauthenticated]
-    public function Login(){
+    public function Login(): void{
         // receive credentials and use them in authentication service
         $login = $_POST['login'];
         $password = $_POST['password'];
