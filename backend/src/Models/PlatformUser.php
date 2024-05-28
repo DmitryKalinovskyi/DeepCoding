@@ -12,15 +12,10 @@ class PlatformUser
     #[DBColumn]
     public string $Login;
     #[DBColumn]
-    public string $FirstName;
-    #[DBColumn]
-    public string $LastName;
+    public string $Name;
     #[DBColumn]
     public string $AvatarUrl;
     #[DBColumn]
-    public string $Description;
+    public string $Password;
 
-    public function GetFullName(): string{
-        return "$this->FirstName $this->LastName";
-    }
 }

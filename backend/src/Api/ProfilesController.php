@@ -2,16 +2,19 @@
 
 namespace DeepCode\Api;
 
-use Framework\attributes\Filters\Authenticated;
-use Framework\attributes\Routing\Route;
+use DeepCode\Attributes\Filters\Authenticated;
+use DeepCode\Repositories\Interfaces\IUserRepository;
+use Framework\Attributes\Routing\Route;
 use Framework\Http\HttpContext;
 use Framework\MVC\APIController;
 
 class ProfilesController extends APIController
 {
     private HttpContext $context;
-    public function __construct(HttpContext $context){
+    private IUserRepository $userRepository;
+    public function __construct(HttpContext $context, \DeepCode\Repositories\Interfaces\IUserRepository $userRepository){
         $this->context = $context;
+        $this->userRepository = $userRepository;
     }
 
     #[Route('my')]
@@ -22,6 +25,6 @@ class ProfilesController extends APIController
 
     #[Route('{profileId}')]
     public function GetProfile(int $profileId): void{
-        echo "user $profileId";
+        echo json_encode($this->userRepository->find($profileId));
     }
 }

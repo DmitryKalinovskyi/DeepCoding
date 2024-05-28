@@ -4,9 +4,9 @@ namespace DeepCode\Api;
 
 use DeepCode\Repositories\Implementation\ProblemsSearchParams;
 use DeepCode\Repositories\Interfaces\IProblemsRepository;
-use Framework\Attributes\Filters\Authenticated;
+use DeepCode\Attributes\Filters\Authenticated;
 use Framework\Attributes\Requests\HttpPost;
-use Framework\attributes\Routing\Route;
+use Framework\Attributes\Routing\Route;
 use Framework\Http\HttpContext;
 use Framework\MVC\APIController;
 

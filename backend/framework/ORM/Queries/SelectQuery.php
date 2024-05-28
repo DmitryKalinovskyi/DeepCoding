@@ -57,7 +57,9 @@ class SelectQuery implements ISelectQueryBuilder, IDBExecutable
 
     public function clone(): self
     {
-        return new SelectQuery($this->_selectQueryBuilder->clone(), $this->_dbContext);
+        $clone = new SelectQuery($this->_selectQueryBuilder->clone(), $this->_dbContext);
+        $clone->_asClass = $this->_asClass;
+        return $clone;
     }
 
     private string $_asClass = "";

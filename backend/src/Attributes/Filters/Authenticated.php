@@ -1,8 +1,9 @@
 <?php
 
-namespace Framework\Attributes\Filters;
+namespace DeepCode\Attributes\Filters;
 
 use Attribute;
+use Framework\Attributes\Filters\RequestFilterAttribute;
 use Framework\Http\HttpContext;
 
 #[Attribute]
