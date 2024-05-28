@@ -6,9 +6,8 @@ use DeepCode\Repositories\Interfaces\IUserRepository;
 use DeepCode\Services\IJWTService;
 use DeepCode\Services\JWTService;
 use Framework\Http\HttpContext;
-use Framework\middlewares\Authentication\IAuthenticationMiddleware;
 
-class JWTAuthenticationMiddleware implements IAuthenticationMiddleware
+class JWTAuthenticationMiddleware
 {
     private const AUTH_SCHEME = "Bearer";
 

@@ -22,7 +22,7 @@ class Router{
         $this->options = new RouterMethod();
     }
 
-    public function getAction(string $route): callable{
+    public function getRouteAction(string $route): RouteAction{
         $methodMappings = [
             "GET" => $this->get,
             "POST" => $this->post,
@@ -32,15 +32,8 @@ class Router{
             "OPTIONS" => $this->options,
         ];
 
-        return $methodMappings[$_SERVER['REQUEST_METHOD']]->getAction($route);
+        return $methodMappings[$_SERVER['REQUEST_METHOD']]->getRouteAction($route);
     }
-
-
-//    public function getRouteParameters(string $route): array{
-//        // all parameters should be inside curly brackets
-//        //TODO: parse parameters
-//        return [];
-//    }
 
     public function dump_routes(): void{
         echo "GET ROUTES: ";

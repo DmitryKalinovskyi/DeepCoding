@@ -9,8 +9,13 @@ use Framework\Http\HttpContext;
 class Unauthenticated extends RequestFilterAttribute
 {
 
-    public function ok(HttpContext $context): bool
+    public function filter(HttpContext $context): bool
     {
-        return false;
+        if(isset($context->user)){
+            http_response_code(403);
+            echo "You need to log out";
+        }
+
+        return !isset($context->user);
     }
 }

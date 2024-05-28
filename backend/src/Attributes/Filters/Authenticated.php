@@ -13,8 +13,11 @@ class Authenticated extends RequestFilterAttribute
      * @param HttpContext $context - context for the request
      * @return bool - true if $context->user authenticated by middleware
      */
-    public function ok(HttpContext $context): bool
+    public function filter(HttpContext $context): bool
     {
+        if(!isset($context->user)){
+            http_response_code(401);
+        }
         return isset($context->user);
     }
 }
