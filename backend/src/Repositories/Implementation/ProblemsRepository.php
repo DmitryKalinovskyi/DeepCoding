@@ -1,13 +1,14 @@
 <?php
 
-namespace DeepCode\Repositories;
+namespace DeepCode\Repositories\Implementation;
 
 use DeepCode\DB\DeepCodeContext;
+use DeepCode\Repositories\Interfaces\IProblemsRepository;
+use Framework\Http\HttpContext;
 
 
 class ProblemsRepository implements IProblemsRepository
 {
-
     private DeepCodeContext $db;
 
     public function __construct(DeepCodeContext $db){
@@ -59,4 +60,25 @@ class ProblemsRepository implements IProblemsRepository
     }
 
 
+    public function getProblemSubmissions($key): array
+    {
+        $query = $this->db->submissions
+            ->alias("S")
+            ->select()
+            ->innerJoin(DeepCodeContext::PROBLEMS_TABLE . " as P", "S.ProblemId = P.Id")
+            ->where("P.Id = :problemId");
+
+        return $query->execute(['problemId' => $key]);
+    }
+
+    public function getProblemSubmissionsForUser($key, $userId): array
+    {
+        $query = $this->db->submissions
+            ->alias("S")
+            ->select()
+            ->innerJoin(DeepCodeContext::PROBLEMS_TABLE . " as P", "S.ProblemId = P.Id")
+            ->where("S.UserId = :userId and P.Id = :problemId");
+
+        return $query->execute(['problemId' => $key, 'userId' => $userId]);
+    }
 }

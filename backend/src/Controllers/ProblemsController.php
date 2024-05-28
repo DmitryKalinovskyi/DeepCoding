@@ -4,8 +4,8 @@ namespace DeepCode\Controllers;
 
 use DeepCode\DB\DeepCodeContext;
 use DeepCode\Models\Submission;
-use DeepCode\Repositories\IProblemsRepository;
-use DeepCode\Repositories\ProblemsSearchParams;
+use DeepCode\Repositories\Implementation\ProblemsSearchParams;
+use DeepCode\Repositories\Interfaces\IProblemsRepository;
 use Framework\attributes\Requests\HttpPost;
 use Framework\attributes\Routing\Route;
 use Framework\MVC\ControllerBase;

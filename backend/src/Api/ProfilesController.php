@@ -7,7 +7,7 @@ use Framework\attributes\Routing\Route;
 use Framework\Http\HttpContext;
 use Framework\MVC\APIController;
 
-class ProfileController extends APIController
+class ProfilesController extends APIController
 {
     private HttpContext $context;
     public function __construct(HttpContext $context){
@@ -16,7 +16,12 @@ class ProfileController extends APIController
 
     #[Route('my')]
     #[Authenticated]
-    public function MyProfile(){
-        var_dump($this->context->user);
+    public function MyProfile(): void{
+        echo json_encode($this->context->user);
+    }
+
+    #[Route('{profileId}')]
+    public function GetProfile(int $profileId): void{
+        echo "user $profileId";
     }
 }
