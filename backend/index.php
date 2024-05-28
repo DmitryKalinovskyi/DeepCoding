@@ -15,6 +15,10 @@ use Framework\Middlewares\Development\ErrorCatcher;
 use Framework\Middlewares\Routing\Router;
 use Framework\MVC\Views\ViewRenderer;
 
+// load config
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
 // Create app and configure all services.
 $appBuilder = new AppBuilder();
 
@@ -22,18 +26,18 @@ $appBuilder = new AppBuilder();
 $appBuilder->services()
     ->addScoped(HttpContext::class)
     ->addScoped(Router::class)
-    ->addScoped(RouteMapper::class);
+    ->addTransient(RouteMapper::class);
 
 // database
 $appBuilder->services()
     ->addScoped(DeepCodeContext::class,
-        fn() => new DeepCodeContext("mysql:host=127.0.0.1;dbname=deep_code"));
+        fn() => new DeepCodeContext($_ENV['DB_MYSQL']));
 
 // repositories
 $appBuilder->services()
     ->addScopedForInterface(IProblemsRepository::class, ProblemsRepository::class);
 
-
+// configure middleware pipeline
 $appBuilder
     ->use(ErrorCatcher::class) // for debugging
     ->use(CORS::class)
@@ -47,16 +51,15 @@ $appBuilder->use(function($next){
         $next();
     });
 
-// Initialize controllers using automapper. Automapper will map each controller by some route.
-$appBuilder->services()->invokeFunction(function (RouteMapper $automapper) {
-        // maps and redirect to the specific resource.
-        $automapper->mapControllers("", "./src/Controllers");
-        $automapper->mapControllers("/api", "./src/Api");
-    });
-
-
 // to invoke controller action
 $appBuilder->use(ControllerMiddleware::class);
+
+// Initialize controllers using automapper. Automapper will map each controller by some route.
+$appBuilder->services()->invokeFunction(function (RouteMapper $routeMapper) {
+        // maps and redirect to the specific resource.
+        $routeMapper->mapControllers("", "./src/Controllers");
+        $routeMapper->mapControllers("/api", "./src/Api");
+    });
 
 // index.php don't even know about controllers, application will create controller when needed.
 $app = $appBuilder->build();

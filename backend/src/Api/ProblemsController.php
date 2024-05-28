@@ -5,6 +5,7 @@ namespace DeepCode\Api;
 use DeepCode\Repositories\Implementation\ProblemsSearchParams;
 use DeepCode\Repositories\Interfaces\IProblemsRepository;
 use Framework\Attributes\Filters\Authenticated;
+use Framework\Attributes\Requests\HttpPost;
 use Framework\attributes\Routing\Route;
 use Framework\Http\HttpContext;
 use Framework\MVC\APIController;
@@ -52,5 +53,12 @@ class ProblemsController extends APIController {
 //            $this->context->user->Id);
 
         echo json_encode($submissions);
+    }
+
+    #[Route('{problemId}/submissions')]
+    #[Authenticated]
+    #[HttpPost]
+    public function SubmitCodeForProblem(int $problemId): void{
+
     }
 }

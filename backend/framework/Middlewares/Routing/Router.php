@@ -22,28 +22,6 @@ class Router{
         $this->options = new RouterMethod();
     }
 
-    /**
-     * @throws Exception
-     */
-//    public function redirect(string $method, string $route){
-//        $methodMappings = [
-//            "GET" => $this->get,
-//            "POST" => $this->post,
-//            "PUT" => $this->put,
-//            "PATCH" => $this->patch,
-//            "DELETE" => $this->delete,
-//            "OPTIONS" => $this->options,
-//        ];
-//
-//        $method = strtoupper($method);
-//        if(array_key_exists($method, $methodMappings)){
-//            $methodMappings[$method]->getAction($route)();
-//        }
-//        else{
-//            throw new Exception("$method is unsupported request method");
-//        }
-//    }
-
     public function getAction(string $route): callable{
         $methodMappings = [
             "GET" => $this->get,
