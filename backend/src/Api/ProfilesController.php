@@ -36,4 +36,26 @@ class ProfilesController extends APIController
 
         echo json_encode($dto);
     }
+
+    #[Route('my/submissions')]
+    #[Authenticated]
+    public function GetMySubmissions(): void{
+        $submissions = $this->userRepository->getSubmissions($this->context->user->Id);
+
+        echo json_encode($submissions);
+    }
+
+    #[Route('{profileId}/submissions')]
+    public function GetSubmissions(int $profileId): void{
+        $user =$this->userRepository->find($profileId);
+        if(empty($user)){
+            echo json_encode("profile not founded");
+            http_response_code(404);
+            return;
+        }
+
+        $submissions = $this->userRepository->getSubmissions($profileId);
+
+        echo json_encode($submissions);
+    }
 }

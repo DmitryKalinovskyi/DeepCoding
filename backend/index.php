@@ -5,8 +5,10 @@ require_once "vendor/autoload.php";
 use DeepCode\DB\DeepCodeContext;
 use DeepCode\Middlewares\JWTAuthenticationMiddleware;
 use DeepCode\Repositories\Implementation\ProblemsRepository;
+use DeepCode\Repositories\Implementation\SubmissionsRepository;
 use DeepCode\Repositories\Implementation\UserRepository;
 use DeepCode\Repositories\Interfaces\IProblemsRepository;
+use DeepCode\Repositories\Interfaces\ISubmissionsRepository;
 use DeepCode\Repositories\Interfaces\IUserRepository;
 use DeepCode\Services\IJWTService;
 use DeepCode\Services\JWTService;
@@ -44,7 +46,8 @@ $appBuilder->services()
 // repositories
 $appBuilder->services()
     ->addScopedForInterface(IProblemsRepository::class, ProblemsRepository::class)
-    ->addScopedForInterface(IUserRepository::class, UserRepository::class);
+    ->addScopedForInterface(IUserRepository::class, UserRepository::class)
+    ->addScopedForInterface(ISubmissionsRepository::class, SubmissionsRepository::class);
 
 // configure middleware pipeline
 $appBuilder

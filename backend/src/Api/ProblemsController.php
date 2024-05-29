@@ -2,9 +2,11 @@
 
 namespace DeepCode\Api;
 
+use DeepCode\Models\Submission;
 use DeepCode\Repositories\Implementation\ProblemsSearchParams;
 use DeepCode\Repositories\Interfaces\IProblemsRepository;
 use DeepCode\Attributes\Filters\Authenticated;
+use DeepCode\Repositories\Interfaces\ISubmissionsRepository;
 use Framework\Attributes\Requests\HttpPost;
 use Framework\Attributes\Routing\Route;
 use Framework\Http\HttpContext;
@@ -15,9 +17,12 @@ class ProblemsController extends APIController {
 
     private HttpContext $context;
 
-    public function __construct(IProblemsRepository $repository, HttpContext $context){
+    private ISubmissionsRepository $submissionsRepository;
+
+    public function __construct(IProblemsRepository $repository, HttpContext $context, ISubmissionsRepository $submissionsRepository){
         $this->repository = $repository;
         $this->context = $context;
+        $this->submissionsRepository = $submissionsRepository;
     }
 
     #[Route("/")]
@@ -58,6 +63,15 @@ class ProblemsController extends APIController {
     #[HttpPost]
     #[Authenticated]
     public function SubmitCodeForProblem(int $problemId): void{
+        $code = $_POST['Code'];
+        $compiler = $_POST['Compiler'];
 
+        $submission = new Submission();
+        $submission->Code = $code;
+        $submission->Compiler = $compiler;
+        $submission->ProblemId = $problemId;
+        $submission->UserId = $this->context->user->Id;
+
+        $this->submissionsRepository->insert($submission);
     }
 }
