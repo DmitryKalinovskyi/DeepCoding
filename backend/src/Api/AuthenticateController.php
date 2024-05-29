@@ -3,21 +3,31 @@
 namespace DeepCode\Api;
 
 use DeepCode\Attributes\Filters\Unauthenticated;
+use DeepCode\Models\PlatformUser;
 use DeepCode\Repositories\Interfaces\IUserRepository;
 use DeepCode\Services\IJWTService;
+use DeepCode\ViewModels\RegisterViewModel;
 use Framework\Attributes\Requests\HttpPost;
 use Framework\attributes\Routing\Route;
+use Framework\Mapper\AutoMapper;
 use Framework\MVC\APIController;
+use Framework\Services\IPasswordHashingService;
+use Framework\Validation\Validator;
 
 class AuthenticateController extends APIController
 {
     private IJWTService $jwtService;
     private IUserRepository $userRepository;
 
-    public function __construct(\DeepCode\Services\IJWTService $jwtService, \DeepCode\Repositories\Interfaces\IUserRepository $userRepository){
+    private IPasswordHashingService $hashingService;
+
+    public function __construct(IJWTService $jwtService,
+                                IUserRepository $userRepository,
+                                IPasswordHashingService $hashingService){
 
         $this->jwtService = $jwtService;
         $this->userRepository = $userRepository;
+        $this->hashingService = $hashingService;
     }
 
     #[Route("login")]
@@ -27,8 +37,14 @@ class AuthenticateController extends APIController
         // receive credentials and use them in authentication service
         $login = $_POST['login'];
         $password = $_POST['password'];
+        $user = $this->userRepository->findByLogin($login);
 
-        if($this->userRepository->isRegistered($login, $password)){
+        if($user === null){
+            echo json_encode("Not founded");
+            return;
+        }
+
+        if($this->hashingService->isMatch($password, $user->Password)){
             echo json_encode($this->jwtService->getToken($login));
         }
         else{
@@ -39,8 +55,25 @@ class AuthenticateController extends APIController
     #[Route("register")]
     #[HttpPost]
     #[Unauthenticated]
-    public function Register(){
+    public function Register(): void{
+        $registerViewModel = new RegisterViewModel();
+        AutoMapper::mapFromArray($_POST, $registerViewModel);
 
+        if(!Validator::isModelValid($registerViewModel)){
+            echo json_encode(Validator::getErrorMessage($registerViewModel));
+            return;
+        }
 
+        $user = new PlatformUser();
+        AutoMapper::map($registerViewModel, $user);
+        // check if exist user with that login
+        if(!empty($this->userRepository->findByLogin($user->Login))){
+            echo json_encode("User with that login already exist.");
+            return;
+        }
+
+        $user->Password = $this->hashingService->hashPassword($_POST['password']);
+
+        $this->userRepository->insert($user);
     }
 }

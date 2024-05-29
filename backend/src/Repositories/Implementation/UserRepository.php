@@ -46,7 +46,7 @@ class UserRepository implements IUserRepository
             ->first([':login' => $login, ":password" => $hashedPassword]) != null;
     }
 
-    public function findByLogin(string $login): PlatformUser
+    public function findByLogin(string $login): ?PlatformUser
     {
         return $this->context->platformUsers->select()
             ->where("Login = :login")

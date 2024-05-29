@@ -35,8 +35,9 @@ class MySQLInsert implements IInsertQueryBuilder
         }
         else{
             // add (COL_1, COL_2, COL_3, ..., COL_N) to the query
-            $query .= "(" . join(', ', $this->_columns) . ")";
+            $query .= " (" . join(', ', $this->_columns) . ")";
 
+            $query .= " VALUES ";
             // create (?, ?, ?, ..., ?)
             $questionMarks = array_fill(0, count($this->_columns), "?");
             $valueLine = "(" . join(',', $questionMarks) . ")";
