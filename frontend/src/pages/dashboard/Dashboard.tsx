@@ -5,6 +5,7 @@ import DashboardUsers from "./DashboardUsers.tsx";
 import DashboardCompetitions from "./DashboardCompetitions.tsx";
 import {Button, Card} from "@mui/material";
 import StaticLayout from "../../partial-pages/layout/StaticLayout.tsx";
+import {Link} from "react-router-dom";
 
 export default function Dashboard(){
     const [page, setPage] = useState(0);
@@ -13,7 +14,7 @@ export default function Dashboard(){
         <StaticLayout haveFooter={false} haveHeader={false}>
             <div className="h-full flex flex-col" >
                 <div className="mb-4">
-                    <Button variant="contained">Go to web site</Button>
+                    <Link to="/"><Button variant="contained">Go to web site</Button></Link>
                 </div>
                 <Card className="flex-grow">
                 <div className="flex">

@@ -1,5 +1,5 @@
 import {Link} from "react-router-dom";
-import logo from "../../public/logo.jpg";
+import logo from "/logo.jpg";
 
 function Header(){
     return (
@@ -23,14 +23,29 @@ function Header(){
                     </div>
                 </div>
                 <div className="nav-group">
+                    {/*if is logged in*/}
                     <div className="nav-link">
                         <Link to="/profile">
                             Profile
                         </Link>
                     </div>
+
+                    {/*if is admin*/}
                     <div className="nav-link">
                         <Link to="/dashboard">
                             Dashboard
+                        </Link>
+                    </div>
+
+                    {/*if is not logged in*/}
+                    <div className="nav-link">
+                        <Link to="/login">
+                            Login
+                        </Link>
+                    </div>
+                    <div className="nav-link">
+                        <Link to="/register">
+                            Register
                         </Link>
                     </div>
                 </div>

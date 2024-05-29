@@ -9,6 +9,9 @@ import Problem from "./pages/problems/Problem.tsx";
 import Competitions from "./pages/competitions/Competitions.tsx";
 import Dashboard from "./pages/dashboard/Dashboard.tsx";
 import Profile from "./pages/profile/Profile.tsx";
+import ProfileEdit from "./pages/profile/edit/ProfileEdit.tsx";
+import Register from "./pages/authentication/Register.tsx";
+import Login from "./pages/authentication/Login.tsx";
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -17,20 +20,25 @@ const root = ReactDOM.createRoot(
 const router = createBrowserRouter([
     {
         path: "/problems",
-        element: <Problems/>
+        element: <Problems/>,
+    },
+    {
+        path: '/problems/:problemId',
+        element: <Problem/>
     },
     {
         path: "/profile",
         element: <Profile/>
     },
     {
+        path: "/profile/edit",
+        element: <ProfileEdit/>
+    },
+    {
         path: '/',
         element: <Home/>
     },
-    {
-        path: '/problems/:problemId',
-        element: <Problem/>
-    },
+
     {
         path: '/competitions',
         element: <Competitions/>
@@ -38,6 +46,14 @@ const router = createBrowserRouter([
     {
         path: '/dashboard',
         element: <Dashboard/>
+    },
+    {
+        path: '/login',
+        element: <Login/>
+    },
+    {
+        path: '/register',
+        element: <Register/>
     },
 ])
 

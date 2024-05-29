@@ -4,6 +4,7 @@ import YouTubeIcon from '@mui/icons-material/YouTube';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import {Button, Divider} from "@mui/material";
 import ContributionHeatmap from "./ContributionHeatmap.tsx";
+import {Link} from "react-router-dom";
 
 export default function Profile(){
     return (
@@ -13,7 +14,7 @@ export default function Profile(){
                     <Card className="p-4">
                         <div className="flex flex-col gap-4 mb-4">
                             <div className="flex gap-4">
-                                <img src="../../../public/testAvatar.png" className="h-32 w-32 rounded-md"/>
+                                <img src="/testAvatar.png" className="h-32 w-32 rounded-md"/>
                                 <div>
                                     <div className="font-semibold text-xl">
                                         Dmytro Kalinovskyi
@@ -33,7 +34,10 @@ export default function Profile(){
                             <div className="flex gap-4 flex-wrap">
                                 <Button variant="contained">Follow</Button>
                                 <Button variant="contained">Unfollow</Button>
-                                <Button variant="contained">Edit Profile</Button>
+
+                                <Link to="/profile/edit">
+                                    <Button variant="contained">Edit Profile</Button>
+                                </Link>
                             </div>
                             <Divider flexItem/>
                             <div>

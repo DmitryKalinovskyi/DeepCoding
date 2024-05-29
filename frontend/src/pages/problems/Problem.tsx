@@ -15,7 +15,7 @@ interface Problem{
 }
 
 const fetchProblem = async(id: number) => {
-    const url = `http://deepcode/api/problems/problem?id=${id}`;
+    const url = `http://deepcode/api/problems/${id}`;
 
     const response = await fetch(url);
     const result = await response.json();
@@ -85,7 +85,7 @@ function Problem(){
                                 <SubmitEditor/>
                             </TabPanel>
                             <TabPanel className="h-full" value={tabIndex} index={1}>
-                                <SubmissionList UserId={1} ProblemId={1}/>
+                                {params.problemId && <SubmissionList ProblemId={+params.problemId}/>}
                             </TabPanel>
                         </div>
                     </div>

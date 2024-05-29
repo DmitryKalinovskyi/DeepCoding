@@ -10,12 +10,11 @@ interface Submission{
 }
 
 interface SubmissionListProperties{
-    UserId: number,
     ProblemId: number
 }
 
-const fetchSubmissions = async(userId: number, problemId: number) => {
-    const url = `http://deepcode/api/submissions/problem?userId=${userId}=&problemId=${problemId}`;
+const fetchSubmissions = async(problemId: number) => {
+    const url = `http://deepcode/api/problems/${problemId}/submissions`;
 
     const response = await fetch(url);
     return await response.json() as Submission[];
@@ -29,7 +28,7 @@ function SubmissionList(props: SubmissionListProperties){
     useEffect(() => {
         setIsLoading(true);
         async function fetchAndSet(){
-            const submissions = await fetchSubmissions(props.UserId, props.ProblemId);
+            const submissions = await fetchSubmissions(props.ProblemId);
             setData(submissions);
             setIsLoading(false);
         }
