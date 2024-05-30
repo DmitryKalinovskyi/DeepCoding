@@ -6,7 +6,7 @@ use ReflectionObject;
 
 class AutoMapper
 {
-    public static function map(object $from, object $to, bool $caseSensitive = false): void{
+    public static function map(object $from, object $to, bool $caseSensitive = false): object{
         $reflection = new ReflectionObject($from);
         $properties = $reflection->getProperties();
 
@@ -15,12 +15,15 @@ class AutoMapper
 
             self::mapProperty($propertyName, $from->$propertyName, $to, $caseSensitive);
         }
+        return $to;
     }
 
-    public static function mapFromArray(array $from, object $to, bool $caseSensitive = false): void{
+    public static function mapFromArray(array $from, object $to, bool $caseSensitive = false): object{
         foreach($from as $propertyName => $value){
             self::mapProperty($propertyName, $value, $to, $caseSensitive);
         }
+
+        return $to;
     }
 
     private static function mapProperty(string $propertyName, $value, object $to, bool $caseSensitive = false): void{

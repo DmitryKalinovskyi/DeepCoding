@@ -34,7 +34,8 @@ $dotenv->load();
 // Create app and configure all services.
 $appBuilder = new AppBuilder();
 
-$appBuilder->useConfiguration(DefaultConfiguration::class);
+$appBuilder->useConfigurationInstance(
+    new DefaultConfiguration(isDevelopment: true));
 
 // basic service configuration
 $appBuilder->services()
@@ -56,7 +57,6 @@ $appBuilder->services()
 
 // configure middleware pipeline
 $appBuilder
-    ->use(ErrorCatcher::class) // for debugging
     ->use(CORS::class)
 
     // use default authorization middleware

@@ -61,7 +61,7 @@ class UsersController extends APIController
         AutoMapper::mapFromArray($_POST, $registerViewModel);
 
         if(!Validator::isModelValid($registerViewModel)){
-            echo json_encode(Validator::getErrorMessage($registerViewModel));
+            echo json_encode(Validator::getErrors($registerViewModel));
             return;
         }
 
