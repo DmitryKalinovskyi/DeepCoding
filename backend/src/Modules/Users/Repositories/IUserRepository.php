@@ -1,9 +1,9 @@
 <?php
 
-namespace DeepCode\Repositories\Interfaces;
+namespace DeepCode\Modules\Users\Repositories;
 
 use DeepCode\Models\User;
-use DeepCode\Models\Submission;
+use DeepCode\Repositories\IRepository;
 
 interface IUserRepository extends IRepository
 {

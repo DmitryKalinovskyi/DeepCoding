@@ -1,6 +1,6 @@
 <?php
 
-namespace DeepCode\Api;
+namespace DeepCode\Modules\Problems\Controllers;
 
 use DeepCode\DB\DeepCodeContext;
 use Framework\attributes\Routing\Route;

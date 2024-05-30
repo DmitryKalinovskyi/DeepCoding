@@ -1,12 +1,12 @@
 <?php
 
-namespace DeepCode\Api;
+namespace DeepCode\Modules\Problems\Controllers;
 
 use DeepCode\Models\Submission;
 use DeepCode\Modules\Authentication\Attributes\Filters\Authenticated;
-use DeepCode\Repositories\Implementation\ProblemsSearchParams;
-use DeepCode\Repositories\Interfaces\IProblemsRepository;
-use DeepCode\Repositories\Interfaces\ISubmissionsRepository;
+use DeepCode\Modules\Problems\Repositories\Implementation\ProblemsSearchParams;
+use DeepCode\Modules\Problems\Repositories\Interfaces\IProblemsRepository;
+use DeepCode\Modules\Problems\Repositories\Interfaces\ISubmissionsRepository;
 use Framework\Attributes\Requests\HttpPost;
 use Framework\Attributes\Routing\Route;
 use Framework\Http\HttpContext;

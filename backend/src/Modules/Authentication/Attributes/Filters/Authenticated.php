@@ -1,6 +1,6 @@
 <?php
 
-namespace DeepCode\Attributes\Filters;
+namespace DeepCode\Modules\Authentication\Attributes\Filters;
 
 use Attribute;
 use Framework\Attributes\Filters\RequestFilterAttribute;

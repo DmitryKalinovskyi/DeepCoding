@@ -1,6 +1,6 @@
 <?php
 
-namespace DeepCode\Services;
+namespace DeepCode\Modules\Authentication\Services;
 
 interface IJWTService
 {

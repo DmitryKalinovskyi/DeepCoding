@@ -1,6 +1,6 @@
 <?php
 
-namespace DeepCode\Modules\Problems\Repositories\Interfaces;
+namespace DeepCode\Repositories;
 
 interface IRepository
 {

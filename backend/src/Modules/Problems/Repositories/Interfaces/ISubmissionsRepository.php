@@ -1,6 +1,8 @@
 <?php
 
-namespace DeepCode\Repositories\Interfaces;
+namespace DeepCode\Modules\Problems\Repositories\Interfaces;
+
+use DeepCode\Repositories\IRepository;
 
 interface ISubmissionsRepository extends IRepository
 {

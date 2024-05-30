@@ -1,9 +1,9 @@
 <?php
 
-namespace DeepCode\Repositories\Implementation;
+namespace DeepCode\Modules\Problems\Repositories\Implementation;
 
 use DeepCode\DB\DeepCodeContext;
-use DeepCode\Repositories\Interfaces\ISubmissionsRepository;
+use DeepCode\Modules\Problems\Repositories\Interfaces\ISubmissionsRepository;
 
 class SubmissionsRepository implements ISubmissionsRepository
 {

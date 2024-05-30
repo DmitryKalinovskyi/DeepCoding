@@ -1,10 +1,9 @@
 <?php
 
-namespace DeepCode\Repositories\Implementation;
+namespace DeepCode\Modules\Users\Repositories;
 
 use DeepCode\DB\DeepCodeContext;
 use DeepCode\Models\User;
-use DeepCode\Repositories\Interfaces\IUserRepository;
 
 class UserRepository implements IUserRepository
 {

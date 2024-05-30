@@ -1,11 +1,11 @@
 <?php
 
-namespace DeepCode\Api;
+namespace DeepCode\Modules\Authentication\Controllers;
 
 use DeepCode\Models\User;
 use DeepCode\Modules\Authentication\Attributes\Filters\Unauthenticated;
-use DeepCode\Repositories\Interfaces\IUserRepository;
-use DeepCode\Services\IJWTService;
+use DeepCode\Modules\Authentication\Services\IJWTService;
+use DeepCode\Modules\Users\Repositories\IUserRepository;
 use DeepCode\ViewModels\RegisterViewModel;
 use Framework\Attributes\Requests\HttpPost;
 use Framework\attributes\Routing\Route;

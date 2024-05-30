@@ -1,10 +1,9 @@
 <?php
 
-namespace DeepCode\Middlewares;
+namespace DeepCode\Modules\Authentication\Middlewares;
 
-use DeepCode\Repositories\Interfaces\IUserRepository;
-use DeepCode\Services\IJWTService;
-use DeepCode\Services\JWTService;
+use DeepCode\Modules\Authentication\Services\IJWTService;
+use DeepCode\Modules\Users\Repositories\IUserRepository;
 use Framework\Http\HttpContext;
 
 class JWTAuthenticationMiddleware

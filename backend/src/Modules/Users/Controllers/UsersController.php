@@ -1,16 +1,16 @@
 <?php
 
-namespace DeepCode\Api;
+namespace DeepCode\Modules\Users\Controllers;
 
 use DeepCode\DTO\UserDTO;
 use DeepCode\Modules\Authentication\Attributes\Filters\Authenticated;
-use DeepCode\Repositories\Interfaces\IUserRepository;
+use DeepCode\Modules\Users\Repositories\IUserRepository;
 use Framework\Attributes\Routing\Route;
 use Framework\Http\HttpContext;
 use Framework\Mapper\AutoMapper;
 use Framework\MVC\APIController;
 
-class ProfilesController extends APIController
+class UsersController extends APIController
 {
     private HttpContext $context;
     private IUserRepository $userRepository;
@@ -28,9 +28,16 @@ class ProfilesController extends APIController
         echo json_encode($dto);
     }
 
-    #[Route('{profileId}')]
-    public function GetProfile(int $profileId): void{
-        $user = $this->userRepository->find($profileId);
+    #[Route('{userId}')]
+    public function GetProfile(int $userId): void{
+        $user = $this->userRepository->find($userId);
+
+        if($user == null){
+            http_response_code(404);
+            echo json_encode("User not founded");
+            return;
+        }
+
         $dto = new UserDTO();
         AutoMapper::map($user, $dto);
 
@@ -47,7 +54,7 @@ class ProfilesController extends APIController
 
     #[Route('{profileId}/submissions')]
     public function GetSubmissions(int $profileId): void{
-        $user =$this->userRepository->find($profileId);
+        $user = $this->userRepository->find($profileId);
         if(empty($user)){
             echo json_encode("profile not founded");
             http_response_code(404);
