@@ -3,24 +3,22 @@
 require_once "vendor/autoload.php";
 
 use DeepCode\DB\DeepCodeContext;
-use DeepCode\Middlewares\JWTAuthenticationMiddleware;
-use DeepCode\Repositories\Implementation\ProblemsRepository;
-use DeepCode\Repositories\Implementation\SubmissionsRepository;
-use DeepCode\Repositories\Implementation\UserRepository;
-use DeepCode\Repositories\Interfaces\IProblemsRepository;
-use DeepCode\Repositories\Interfaces\ISubmissionsRepository;
-use DeepCode\Repositories\Interfaces\IUserRepository;
-use DeepCode\Services\IJWTService;
-use DeepCode\Services\JWTService;
+use DeepCode\Modules\Authentication\Middlewares\JWTAuthenticationMiddleware;
+use DeepCode\Modules\Authentication\Services\IJWTService;
+use DeepCode\Modules\Authentication\Services\JWTService;
+use DeepCode\Modules\Problems\Repositories\Implementation\ProblemsRepository;
+use DeepCode\Modules\Problems\Repositories\Implementation\SubmissionsRepository;
+use DeepCode\Modules\Problems\Repositories\Interfaces\IProblemsRepository;
+use DeepCode\Modules\Problems\Repositories\Interfaces\ISubmissionsRepository;
+use DeepCode\Modules\Users\Repositories\UserRepository;
+use DeepCode\Modules\Users\Repositories\IUserRepository;
 use Framework\Application\AppBuilder;
 use Framework\Application\Configurations\MVCConfiguration;
-use Framework\Http\HttpContext;
 use Framework\Mapper\RouteMapper;
 use Framework\Middlewares\Controllers\ControllerMiddleware;
 use Framework\Middlewares\Cors\CORS;
 use Framework\Middlewares\Development\ErrorCatcher;
 use Framework\Middlewares\Routing\Router;
-use Framework\MVC\Views\ViewRenderer;
 use Framework\Services\IPasswordHashingService;
 use Framework\Services\PasswordHashingService;
 
@@ -68,8 +66,9 @@ $appBuilder->use(ControllerMiddleware::class);
 
 // Initialize controllers using automapper. Automapper will map each controller by some route.
 $appBuilder->services()->invokeFunction(function(RouteMapper $routeMapper){
-    $routeMapper->mapControllers("", "./src/Controllers");
-    $routeMapper->mapControllers("/api", "./src/Api");
+    $routeMapper->mapControllers("/api", "./src/Modules/Users/Controllers");
+    $routeMapper->mapControllers("/api", "./src/Modules/Authentication/Controllers");
+    $routeMapper->mapControllers("/api", "./src/Modules/Problems/Controllers");
 });
 
 $appBuilder->services()->invokeFunction(function (Router $router) {

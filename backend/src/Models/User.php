@@ -17,8 +17,8 @@ class User
     public string $AvatarUrl;
     #[DBColumn]
     public string $Password;
-    #[DBColumn]
-    public \DateTime $RegisterDate;
+//    #[DBColumn]
+//    public \DateTime $RegisterDate;
 
     // socials
 //    #[DBColumn]

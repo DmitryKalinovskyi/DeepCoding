@@ -88,14 +88,36 @@ class RouteMapper
         $reflectionClass = new ReflectionClass($controllerClass);
         $methods = $reflectionClass->getMethods();
 
-        $controllerName = strtolower($reflectionClass->getShortName());
-        $controllerName = str_replace("controller", "", $controllerName);
-        $controllerRoute = $route . "/" . $controllerName;
+        // check if controller have Route attribute, use it in routing
+        $controllerAttributes = $reflectionClass->getAttributes();
+        $routeAttribute = null;
+        $controllerRelativeRoute = null;
+        foreach($controllerAttributes as $controllerAttribute){
+            $instance = $controllerAttribute->newInstance();
+            if($instance instanceof Route){
+                // use that attribute in routing
+                $controllerRelativeRoute = $instance->route;
+            }
+
+            if($controllerRelativeRoute != null) break;
+        }
+
+        if($controllerRelativeRoute == null){
+            // use name as route
+            $controllerName = strtolower($reflectionClass->getShortName());
+            $controllerName = str_replace("controller", "", $controllerName);
+            $controllerRelativeRoute = $controllerName;
+        }
+
+        $controllerAbsoluteRoute = $route;
+        if(!empty($controllerAbsoluteRoute))
+            $controllerAbsoluteRoute .= "/" . $controllerRelativeRoute;
+
 
         foreach($methods as $method){
             // ignore magic methods
             if(!str_starts_with($method->getName(), "__"))
-                $this->mapControllerMethod($controllerRoute, $controllerClass, $method);
+                $this->mapControllerMethod($controllerAbsoluteRoute, $controllerClass, $method);
         }
     }
 
