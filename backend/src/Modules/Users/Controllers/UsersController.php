@@ -2,8 +2,8 @@
 
 namespace DeepCode\Api;
 
-use DeepCode\Attributes\Filters\Authenticated;
 use DeepCode\DTO\UserDTO;
+use DeepCode\Modules\Authentication\Attributes\Filters\Authenticated;
 use DeepCode\Repositories\Interfaces\IUserRepository;
 use Framework\Attributes\Routing\Route;
 use Framework\Http\HttpContext;

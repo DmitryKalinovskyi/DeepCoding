@@ -3,9 +3,9 @@
 namespace DeepCode\Api;
 
 use DeepCode\Models\Submission;
+use DeepCode\Modules\Authentication\Attributes\Filters\Authenticated;
 use DeepCode\Repositories\Implementation\ProblemsSearchParams;
 use DeepCode\Repositories\Interfaces\IProblemsRepository;
-use DeepCode\Attributes\Filters\Authenticated;
 use DeepCode\Repositories\Interfaces\ISubmissionsRepository;
 use Framework\Attributes\Requests\HttpPost;
 use Framework\Attributes\Routing\Route;

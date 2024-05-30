@@ -2,8 +2,8 @@
 
 namespace DeepCode\Api;
 
-use DeepCode\Attributes\Filters\Unauthenticated;
 use DeepCode\Models\User;
+use DeepCode\Modules\Authentication\Attributes\Filters\Unauthenticated;
 use DeepCode\Repositories\Interfaces\IUserRepository;
 use DeepCode\Services\IJWTService;
 use DeepCode\ViewModels\RegisterViewModel;
