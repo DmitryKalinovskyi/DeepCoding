@@ -8,8 +8,6 @@ use Framework\Dependency\IServiceCollection;
 
 interface IAppBuilder
 {
-
-
     public function use(Closure|string $middleware): IAppBuilder;
 
     public function build(): App;

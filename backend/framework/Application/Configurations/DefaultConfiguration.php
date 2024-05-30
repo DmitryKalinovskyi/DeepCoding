@@ -7,7 +7,7 @@ use Framework\Http\HttpContext;
 use Framework\Mapper\RouteMapper;
 use Framework\Middlewares\Routing\Router;
 
-class MVCConfiguration implements IAppBuilderConfiguration
+class DefaultConfiguration implements IAppBuilderConfiguration
 {
     public function configure(IAppBuilder $appBuilder): void
     {
