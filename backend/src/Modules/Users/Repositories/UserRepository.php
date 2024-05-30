@@ -16,12 +16,12 @@ class UserRepository implements IUserRepository
 
     public function insert($model): void
     {
-        $this->context->platformUsers->insert($model);
+        $this->context->users->insert($model);
     }
 
     public function find($key): mixed
     {
-        return $this->context->platformUsers->select()
+        return $this->context->users->select()
             ->where("Id = :id")
             ->first([':id' => $key]);
     }
@@ -33,22 +33,26 @@ class UserRepository implements IUserRepository
 
     public function delete($key): void
     {
-        $this->context->platformUsers->delete()
+        $this->context->users->delete()
             ->where("Id = :id")
             ->execute([':id' => $key]);
     }
 
     public function isRegistered(string $login, string $hashedPassword): bool
     {
-        return $this->context->platformUsers->select()
+        return $this->context->users->select()
             ->where("Login = :login and Password = :password")
             ->first([':login' => $login, ":password" => $hashedPassword]) != null;
     }
 
     public function findByLogin(string $login): ?User
     {
-        return $this->context->platformUsers->select()
+        return $this->context->users->select()
             ->where("Login = :login")
             ->first([':login' => $login]);
+    }
+
+    public function exist(string $userId): bool
+    {
     }
 }

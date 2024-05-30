@@ -2,8 +2,13 @@
 
 require_once "vendor/autoload.php";
 
+use DeepCode\DB\DBSeeder;
 use DeepCode\DB\DeepCodeContext;
 use DeepCode\Modules\Authentication\Middlewares\JWTAuthenticationMiddleware;
+use DeepCode\Modules\Authentication\Repositories\IRolesRepository;
+use DeepCode\Modules\Authentication\Repositories\IUser_RolesRepository;
+use DeepCode\Modules\Authentication\Repositories\RolesRepository;
+use DeepCode\Modules\Authentication\Repositories\User_RolesRepository;
 use DeepCode\Modules\Authentication\Services\IJWTService;
 use DeepCode\Modules\Authentication\Services\JWTService;
 use DeepCode\Modules\Problems\Repositories\Implementation\ProblemsRepository;
@@ -45,7 +50,9 @@ $appBuilder->services()
 $appBuilder->services()
     ->addScopedForInterface(IProblemsRepository::class, ProblemsRepository::class)
     ->addScopedForInterface(IUserRepository::class, UserRepository::class)
-    ->addScopedForInterface(ISubmissionsRepository::class, SubmissionsRepository::class);
+    ->addScopedForInterface(ISubmissionsRepository::class, SubmissionsRepository::class)
+    ->addScopedForInterface(IRolesRepository::class, RolesRepository::class)
+    ->addScopedForInterface(IUser_RolesRepository::class, User_RolesRepository::class);
 
 // configure middleware pipeline
 $appBuilder
@@ -74,6 +81,10 @@ $appBuilder->services()->invokeFunction(function(RouteMapper $routeMapper){
 $appBuilder->services()->invokeFunction(function (Router $router) {
 //    $router->dump_routes();
 });
+
+// seed
+$appBuilder->services()->addTransient(DBSeeder::class);
+$appBuilder->services()->invokeFunction(fn(DBSeeder $seeder) => $seeder->seed());
 
 // index.php don't even know about controllers, application will create controller when needed.
 $app = $appBuilder->build();

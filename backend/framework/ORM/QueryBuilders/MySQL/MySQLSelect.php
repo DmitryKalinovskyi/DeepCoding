@@ -46,7 +46,6 @@ class MySQLSelect implements ISelectQueryBuilder
             $query .= " HAVING " . $this->havingCondition;
         }
 
-
         if(!empty($this->orderBy)){
             $orderByParts = [];
             foreach($this->orderBy as list($columnName, $isAscending)){
