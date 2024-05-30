@@ -3,6 +3,7 @@
 namespace DeepCode\Modules\Authentication\Middlewares;
 
 use DeepCode\Modules\Authentication\Repositories\IRolesRepository;
+use DeepCode\Modules\Authentication\Repositories\IUser_RolesRepository;
 use DeepCode\Modules\Authentication\Services\IJWTService;
 use DeepCode\Modules\Users\Repositories\IUserRepository;
 use Framework\Http\HttpContext;
@@ -12,7 +13,7 @@ class JWTAuthenticationMiddleware
     private const AUTH_SCHEME = "Bearer";
 
     public function __invoke(HttpContext $context, IJWTService $jwtService, IUserRepository $userRepository,
-                             IRolesRepository $rolesRepository,
+                             IUser_RolesRepository $user_RolesRepository,
                              $next): void{
         // this is simple workaround for time
 
@@ -40,7 +41,7 @@ class JWTAuthenticationMiddleware
         $userLogin = $jwtService->parseToken($token);
 
         $context->user = $userRepository->findByLogin($userLogin);
-        $context->roles = $rolesRepository->getUserRoles($context->user->Id);
+        $context->roles = $user_RolesRepository->getUserRoles($context->user->Id);
 
         $next();
     }

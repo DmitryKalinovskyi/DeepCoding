@@ -18,7 +18,7 @@ use DeepCode\Modules\Problems\Repositories\Interfaces\ISubmissionsRepository;
 use DeepCode\Modules\Users\Repositories\UserRepository;
 use DeepCode\Modules\Users\Repositories\IUserRepository;
 use Framework\Application\AppBuilder;
-use Framework\Application\Configurations\MVCConfiguration;
+use Framework\Application\Configurations\DefaultConfiguration;
 use Framework\Mapper\RouteMapper;
 use Framework\Middlewares\Controllers\ControllerMiddleware;
 use Framework\Middlewares\Cors\CORS;
@@ -34,7 +34,7 @@ $dotenv->load();
 // Create app and configure all services.
 $appBuilder = new AppBuilder();
 
-$appBuilder->useConfiguration(MVCConfiguration::class);
+$appBuilder->useConfiguration(DefaultConfiguration::class);
 
 // basic service configuration
 $appBuilder->services()

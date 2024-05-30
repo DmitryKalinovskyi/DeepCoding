@@ -5,6 +5,7 @@ namespace DeepCode\DB;
 use DeepCode\Models\Role;
 use DeepCode\Models\User;
 use DeepCode\Modules\Authentication\Repositories\IRolesRepository;
+use DeepCode\Modules\Authentication\Repositories\IUser_RolesRepository;
 use DeepCode\Modules\Users\Repositories\IUserRepository;
 use Framework\Services\IPasswordHashingService;
 
@@ -12,12 +13,17 @@ class DBSeeder
 {
     private IUserRepository $userRepository;
     private IRolesRepository $rolesRepository;
+    private IUser_RolesRepository $user_RolesRepository;
     private IPasswordHashingService $hashingService;
 
-    public function __construct(IUserRepository $userRepository, IRolesRepository $rolesRepository, \Framework\Services\IPasswordHashingService $hashingService){
+    public function __construct(IUserRepository $userRepository,
+                                IRolesRepository $rolesRepository,
+                                IPasswordHashingService $hashingService,
+                                IUser_RolesRepository $user_RolesRepository){
         $this->userRepository = $userRepository;
         $this->rolesRepository = $rolesRepository;
         $this->hashingService = $hashingService;
+        $this->user_RolesRepository = $user_RolesRepository;
     }
 
     public function seed(): void{
@@ -47,8 +53,8 @@ class DBSeeder
         }
 
         // give role for admin
-        if(!$this->rolesRepository->isUserHaveRole($admin->Id, $adminRole->Id)){
-            $this->rolesRepository->addRoleForUser($admin->Id, $adminRole->Id);
+        if(!$this->user_RolesRepository->isUserHaveRole($admin->Id, $adminRole->Id)){
+            $this->user_RolesRepository->addRoleForUser($admin->Id, $adminRole->Id);
         }
     }
 }

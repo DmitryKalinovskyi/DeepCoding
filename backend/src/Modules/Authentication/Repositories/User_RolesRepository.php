@@ -16,7 +16,7 @@ class User_RolesRepository implements IUser_RolesRepository
 
     public function getUserRoles($userId): array
     {
-        return $this->context->roles->select()
+        return $this->context->roles->select(['R.Id', 'R.Name'])
             ->from(DeepCodeContext::ROLES_TABLE . " as R")
             ->innerJoin(DeepCodeContext::USER_ROLES_TABLE . " as UR", "UR.RoleId = R.Id")
             ->innerJoin(DeepCodeContext::USERS_TABLE . " as U", "U.Id = UR.UserId")

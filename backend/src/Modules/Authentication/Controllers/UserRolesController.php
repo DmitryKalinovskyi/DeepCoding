@@ -47,7 +47,9 @@ class UserRolesController
     #[InRole("Admin")]
     #[HttpDelete]
     public function RemoveUserRole(int $userId): void{
-        if(empty($_POST['roleId'])){
+        $body = file_get_contents('php://input');
+
+        if(!isset($_POST['roleId'])){
             http_response_code(422);
             return;
         }
