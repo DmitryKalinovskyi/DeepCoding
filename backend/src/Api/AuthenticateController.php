@@ -3,7 +3,7 @@
 namespace DeepCode\Api;
 
 use DeepCode\Attributes\Filters\Unauthenticated;
-use DeepCode\Models\PlatformUser;
+use DeepCode\Models\User;
 use DeepCode\Repositories\Interfaces\IUserRepository;
 use DeepCode\Services\IJWTService;
 use DeepCode\ViewModels\RegisterViewModel;
@@ -64,7 +64,7 @@ class AuthenticateController extends APIController
             return;
         }
 
-        $user = new PlatformUser();
+        $user = new User();
         AutoMapper::map($registerViewModel, $user);
         // check if exist user with that login
         if(!empty($this->userRepository->findByLogin($user->Login))){

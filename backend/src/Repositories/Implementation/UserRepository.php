@@ -3,7 +3,7 @@
 namespace DeepCode\Repositories\Implementation;
 
 use DeepCode\DB\DeepCodeContext;
-use DeepCode\Models\PlatformUser;
+use DeepCode\Models\User;
 use DeepCode\Repositories\Interfaces\IUserRepository;
 
 class UserRepository implements IUserRepository
@@ -46,7 +46,7 @@ class UserRepository implements IUserRepository
             ->first([':login' => $login, ":password" => $hashedPassword]) != null;
     }
 
-    public function findByLogin(string $login): ?PlatformUser
+    public function findByLogin(string $login): ?User
     {
         return $this->context->platformUsers->select()
             ->where("Login = :login")
@@ -58,7 +58,7 @@ class UserRepository implements IUserRepository
         return $this->context->submissions
             ->alias("S")
             ->select(['S.Id', 'S.Code', 'S.ProblemId', 'S.UserId', 'S.Compiler'])
-            ->innerJoin(DeepCodeContext::PLATFORM_USERS_TABLE." as P", "P.Id = S.UserId")
+            ->innerJoin(DeepCodeContext::USERS_TABLE." as P", "P.Id = S.UserId")
             ->where("P.Id = :id")
             ->execute([":id" => $key]);
     }

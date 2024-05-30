@@ -1,7 +1,7 @@
 <?php
-/** @var Problem $problem */
+/** @var \DeepCode\Models\Problem\Problem $problem */
 
-use DeepCode\Models\Problem;
+use DeepCode\Models\Problem\Problem;
 
 ?>
 

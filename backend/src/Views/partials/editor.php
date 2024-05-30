@@ -1,11 +1,10 @@
 <?php
-/** @var Problem $problem */
+/** @var \DeepCode\Models\Problem\Problem $problem */
 
-use DeepCode\Models\Problem;
+use DeepCode\Models\Problem\Problem;
 
 
-
-    function getCodeTemplate(): string{
+function getCodeTemplate(): string{
 
         $path = "code-templates/c++.txt";
         $file = fopen($path, 'r');

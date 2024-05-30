@@ -1,10 +1,10 @@
 <?php
 
-/** @var Problem $problem */
+/** @var \DeepCode\Models\Problem\Problem $problem */
 
 $userId = 1;
 
-use DeepCode\Models\Problem;
+use DeepCode\Models\Problem\Problem;
 
 ?>
 

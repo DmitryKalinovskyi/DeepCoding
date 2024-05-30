@@ -3,7 +3,7 @@
 namespace DeepCode\Controllers;
 
 use DeepCode\DB\DeepCodeContext;
-use DeepCode\Models\PlatformUser;
+use DeepCode\Models\User;
 use Framework\attributes\Routing\Route;
 use Framework\MVC\ControllerBase;
 

@@ -13,9 +13,10 @@ class Submission
     public int $ProblemId;
     #[DBColumn]
     public int $UserId;
-
     #[DBColumn]
     public string $Code;
     #[DBColumn]
     public string $Compiler;
+    #[DBColumn]
+    public string $Status;
 }

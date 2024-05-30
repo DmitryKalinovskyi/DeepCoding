@@ -1,7 +1,7 @@
 <?php
 
 
-namespace DeepCode\Models;
+namespace DeepCode\Models\Problem;
 
 use Framework\Attributes\DataAnnotation\DBColumn;
 use Framework\Attributes\DataAnnotation\Key;
