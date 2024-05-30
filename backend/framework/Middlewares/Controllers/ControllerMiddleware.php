@@ -5,6 +5,7 @@ namespace Framework\Middlewares\Controllers;
 use Closure;
 use Framework\Attributes\Filters\RequestFilterAttribute;
 use Framework\Dependency\IServiceCollection;
+use Framework\Http\HttpContext;
 use Framework\Middlewares\Routing\Router;
 
 class ControllerMiddleware
@@ -17,7 +18,7 @@ class ControllerMiddleware
         $this->router = $router;
     }
 
-    public function __invoke($next): void{
+    public function __invoke(HttpContext $context): void{
         $parsed = parse_url($_SERVER['REQUEST_URI']);
 
         $routeAction = $this->router->getRouteAction($parsed["path"]);
@@ -26,9 +27,8 @@ class ControllerMiddleware
         $this->validateFilters($routeAction->action);
 
         // use model binder to apply parameters
-        call_user_func_array($routeAction->action, $routeAction->parameters);
-
-        $next();
+        // TODO: make model binder
+        $context->response = call_user_func_array($routeAction->action, $routeAction->parameters);
     }
 
     private function validateFilters(Closure $action): void{

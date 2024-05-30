@@ -6,21 +6,21 @@ use Framework\Validation\Annotation\ValidationAttribute;
 
 class Validator
 {
-    public static function isModelValid(object $model, string& $errorMessage = ""): bool{
+    public static function isModelValid(object $model, array& $errors = []): bool{
         // take each property of the model
 
         $reflectionObject = new \ReflectionObject($model);
         $properties = $reflectionObject->getProperties();
         $isValid = true;
         foreach($properties as $property){
-            $valid = self::isPropertyValid($property, $property->getValue($model), $errorMessage);
+            $valid = self::isPropertyValid($property, $property->getValue($model), $errors);
             if($valid === false) $isValid = false;
         }
 
         return $isValid;
     }
 
-    public static function isPropertyValid(\ReflectionProperty $property, $value, string& $errorMessage = ""): bool{
+    public static function isPropertyValid(\ReflectionProperty $property, $value, array& $errors = []): bool{
         $attributes = $property->getAttributes();
         foreach($attributes as $attribute){
             $instance = $attribute->newInstance();
@@ -29,7 +29,7 @@ class Validator
                 $instance->validate($value, $property->getName());
 
                 if(!$instance->isValid()){
-                    $errorMessage .= $instance->getErrorMessage() . PHP_EOL;
+                    $errors[] = $instance->getErrorMessage();
                     return false;
                 }
             }
@@ -38,8 +38,8 @@ class Validator
         return true;
     }
 
-    public static function getErrorMessage(object $model): string{
-        $err = "";
+    public static function getErrors(object $model): array{
+        $err = [];
         self::isModelValid($model, $err);
         return $err;
     }
