@@ -60,7 +60,7 @@ class AuthenticateController extends APIController
         }
         else{
             return $this->json("Invalid login")
-                ->header('WWW-Authenticate', 'Bearer')
+//                ->header('WWW-Authenticate', 'Bearer')
                 ->status(401);
         }
     }
