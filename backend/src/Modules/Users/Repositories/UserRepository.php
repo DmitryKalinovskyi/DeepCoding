@@ -51,14 +51,4 @@ class UserRepository implements IUserRepository
             ->where("Login = :login")
             ->first([':login' => $login]);
     }
-
-    public function getSubmissions(string $key): array
-    {
-        return $this->context->submissions
-            ->alias("S")
-            ->select(['S.Id', 'S.Code', 'S.ProblemId', 'S.UserId', 'S.Compiler'])
-            ->innerJoin(DeepCodeContext::USERS_TABLE." as P", "P.Id = S.UserId")
-            ->where("P.Id = :id")
-            ->execute([":id" => $key]);
-    }
 }

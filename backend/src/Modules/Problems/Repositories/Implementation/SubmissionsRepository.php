@@ -36,4 +36,14 @@ class SubmissionsRepository implements ISubmissionsRepository
             ->where("Id = :id")
             ->execute([":id" => $key]);
     }
+
+    public function getUserSubmissions($userId): array
+    {
+        return $this->context->submissions
+            ->alias("S")
+            ->select(['S.Id', 'S.Code', 'S.ProblemId', 'S.UserId', 'S.Compiler'])
+            ->innerJoin(DeepCodeContext::USERS_TABLE." as P", "P.Id = S.UserId")
+            ->where("P.Id = :id")
+            ->execute([":id" => $userId]);
+    }
 }

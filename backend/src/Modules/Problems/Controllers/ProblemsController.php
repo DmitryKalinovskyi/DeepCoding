@@ -14,9 +14,7 @@ use Framework\MVC\APIController;
 
 class ProblemsController extends APIController {
     private IProblemsRepository $repository;
-
     private HttpContext $context;
-
     private ISubmissionsRepository $submissionsRepository;
 
     public function __construct(IProblemsRepository $repository, HttpContext $context, ISubmissionsRepository $submissionsRepository){

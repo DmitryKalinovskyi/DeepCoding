@@ -18,7 +18,6 @@ class AuthenticateController extends APIController
 {
     private IJWTService $jwtService;
     private IUserRepository $userRepository;
-
     private IPasswordHashingService $hashingService;
 
     public function __construct(IJWTService $jwtService,
@@ -50,30 +49,5 @@ class AuthenticateController extends APIController
         else{
             echo json_encode("Invalid login");
         }
-    }
-
-    #[Route("register")]
-    #[HttpPost]
-    #[Unauthenticated]
-    public function Register(): void{
-        $registerViewModel = new RegisterViewModel();
-        AutoMapper::mapFromArray($_POST, $registerViewModel);
-
-        if(!Validator::isModelValid($registerViewModel)){
-            echo json_encode(Validator::getErrorMessage($registerViewModel));
-            return;
-        }
-
-        $user = new User();
-        AutoMapper::map($registerViewModel, $user);
-        // check if exist user with that login
-        if(!empty($this->userRepository->findByLogin($user->Login))){
-            echo json_encode("User with that login already exist.");
-            return;
-        }
-
-        $user->Password = $this->hashingService->hashPassword($_POST['password']);
-
-        $this->userRepository->insert($user);
     }
 }
