@@ -94,7 +94,7 @@ class NewsController extends APIController
 
         $this->newsRepository->update($newsId, $intersect);
 
-        return $this->json($intersect, 200);
+        return $this->json("Updated.", 200);
     }
 
 

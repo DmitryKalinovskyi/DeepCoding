@@ -1,6 +1,6 @@
 <?php
 
-namespace DeepCode\DTO;
+namespace DeepCode\Modules\Users\DTO;
 
 class UserDTO
 {

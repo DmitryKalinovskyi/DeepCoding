@@ -2,12 +2,10 @@
 
 namespace DeepCode\Modules\Authentication\Controllers;
 
-use DeepCode\Models\User;
 use DeepCode\Modules\Authentication\Attributes\Filters\Unauthenticated;
 use DeepCode\Modules\Authentication\Services\IJWTService;
 use DeepCode\Modules\Authentication\Validation\LoginValidation;
 use DeepCode\Modules\Users\Repositories\IUserRepository;
-use DeepCode\ViewModels\RegisterViewModel;
 use Framework\Attributes\Dependency\Resolvable;
 use Framework\Attributes\Requests\HttpPost;
 use Framework\attributes\Routing\Route;
