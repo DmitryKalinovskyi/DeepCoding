@@ -36,19 +36,11 @@ class Router{
     }
 
     public function dump_routes(): void{
-        echo "GET ROUTES: ";
-        var_dump($this->get);
-
-        echo "POST ROUTES: ";
-        var_dump($this->post);
-
-        echo "PATCH ROUTES: ";
-        var_dump($this->patch);
-
-        echo "PUT ROUTES: ";
-        var_dump($this->put);
-
-        echo "DELETE ROUTES: ";
-        var_dump($this->delete);
+        $this->get->dump_routes("Get");
+        $this->post->dump_routes("Post");
+        $this->put->dump_routes("Put");
+        $this->patch->dump_routes("Patch");
+        $this->delete->dump_routes("Delete");
+        $this->options->dump_routes("Options");
     }
 }

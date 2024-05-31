@@ -32,8 +32,18 @@ class RouterMethod
         throw new InvalidArgumentException("No route matched for $route.");
     }
 
-    public function getRouteParameters(string $route): array {
-        preg_match_all('/\{(\w+)\??}/', $route, $matches);
-        return $matches[1]; // Return the list of parameter names
+    public function haveRoutes(): bool{
+        return count($this->routesToAction) > 0;
+    }
+
+    public function dump_routes(string $method): void{
+        echo "<div>";
+        echo "$method routes: ";
+
+        foreach($this->routesToAction as $route=>$action){
+            echo "<div>". $route."</div>";
+        }
+
+        echo "</div>";
     }
 }

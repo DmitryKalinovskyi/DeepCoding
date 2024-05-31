@@ -37,7 +37,7 @@ class RolesController extends APIController
     #[HttpPost]
     public function CreateRole(): JsonResponse{
         $role = new Role();
-        AutoMapper::mapFromArray($this->context->body, $role);
+        AutoMapper::map($this->context->body, $role);
         $this->rolesRepository->insert($role);
 
         return $this->json("Created.", 200);
@@ -47,7 +47,12 @@ class RolesController extends APIController
     #[Authenticated]
     #[InRole("Admin")]
     #[HttpDelete]
-    public function DeleteRole(int $roleId): JsonResponse{
+    public function DeleteRole(string $roleId): JsonResponse{
+        if(!ctype_digit($roleId)){
+            return $this->json("Role id is not positive integer");
+        }
+        $roleId = (int)$roleId;
+
         $this->rolesRepository->delete($roleId);
 
         return $this->json("Deleted.", 200);
