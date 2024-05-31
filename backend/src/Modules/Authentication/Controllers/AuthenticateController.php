@@ -8,6 +8,7 @@ use DeepCode\Modules\Authentication\Services\IJWTService;
 use DeepCode\Modules\Authentication\Validation\LoginValidation;
 use DeepCode\Modules\Users\Repositories\IUserRepository;
 use DeepCode\ViewModels\RegisterViewModel;
+use Framework\Attributes\Dependency\Resolvable;
 use Framework\Attributes\Requests\HttpPost;
 use Framework\attributes\Routing\Route;
 use Framework\Http\HttpContext;
@@ -19,21 +20,14 @@ use Framework\Validation\Validator;
 
 class AuthenticateController extends APIController
 {
+    #[Resolvable]
     private IJWTService $jwtService;
+    #[Resolvable]
     private IUserRepository $userRepository;
+    #[Resolvable]
     private IPasswordHashingService $hashingService;
+    #[Resolvable]
     private HttpContext $context;
-
-    public function __construct(IJWTService             $jwtService,
-                                IUserRepository         $userRepository,
-                                IPasswordHashingService $hashingService,
-                                HttpContext             $context){
-
-        $this->jwtService = $jwtService;
-        $this->userRepository = $userRepository;
-        $this->hashingService = $hashingService;
-        $this->context = $context;
-    }
 
     #[Route("login")]
     #[HttpPost]

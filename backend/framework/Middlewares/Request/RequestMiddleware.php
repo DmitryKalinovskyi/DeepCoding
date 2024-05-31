@@ -9,6 +9,7 @@ class RequestMiddleware
     public function __invoke(HttpContext $context, $next): void{
         // read body and place it in the context
         $context->body = json_decode(file_get_contents("php://input"));
+        if($context->body == null) $context->body = (object)[];
         $next();
     }
 }

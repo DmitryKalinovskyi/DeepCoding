@@ -2,6 +2,7 @@
 
 namespace DeepCode\DB;
 
+use DeepCode\Models\News;
 use DeepCode\Models\Problem\Problem;
 use DeepCode\Models\Role;
 use DeepCode\Models\Submission;
@@ -13,16 +14,23 @@ use Framework\ORM\DBSet;
 class DeepCodeContext extends DBContext
 {
     public DBSet $users;
+    public const USERS_TABLE = "users";
+
 
     public DBSet $problems;
-    public DBSet $submissions;
-    public DBSet $roles;
-    public DBSet $user_roles;
-    public const USERS_TABLE = "users";
     public const PROBLEMS_TABLE = "problems";
+
+    public DBSet $submissions;
     public const SUBMISSIONS_TABLE = "submissions";
+
+    public DBSet $roles;
     public const ROLES_TABLE = "roles";
+
+    public DBSet $user_roles;
     public const USER_ROLES_TABLE = "user_roles";
+
+    public DBSet $news;
+    public const NEWS_TABLE = "news";
 
     public function __construct($connectionString)
     {
@@ -32,5 +40,6 @@ class DeepCodeContext extends DBContext
         $this->submissions = new DBSet(self::SUBMISSIONS_TABLE, Submission::class, $this);
         $this->roles = new DBSet(self::ROLES_TABLE, Role::class, $this);
         $this->user_roles = new DBSet(self::USER_ROLES_TABLE, User_Role::class, $this);
+        $this->news = new DBSet(self::NEWS_TABLE, News::class, $this);
     }
 }

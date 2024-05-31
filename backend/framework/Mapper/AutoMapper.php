@@ -2,6 +2,7 @@
 
 namespace Framework\Mapper;
 
+use Framework\Attributes\Mapping\IgnoreMapper;
 use ReflectionObject;
 
 class AutoMapper
@@ -26,20 +27,32 @@ class AutoMapper
         return $to;
     }
 
+    // TODO: speed up mapping using only one for loop
     private static function mapProperty(string $propertyName, $value, object $to, bool $caseSensitive = false): void{
-        if($caseSensitive){
-            if(property_exists($to, $propertyName)){
-                $to->$propertyName = $value;
+        $reflectionObject = new ReflectionObject($to);
+        $toProperties = $reflectionObject->getProperties();
+        foreach($toProperties as $toProperty){
+            // if it's ignored we don't map
+            $attributes = $toProperty->getAttributes();
+
+            $ignore = false;
+            foreach($attributes as $attribute){
+                $instance = $attribute->newInstance();
+
+                if($instance instanceof IgnoreMapper) $ignore = true;
             }
-        }
-        else{
-            $propertyName = strtolower($propertyName);
-            $reflectionObject = new ReflectionObject($to);
-            $toProperties = $reflectionObject->getProperties();
-            foreach($toProperties as $toProperty){
-                if($propertyName === strtolower($toProperty->getName())){
-                    $toProperty->setValue($to, $value);
-                }
+
+            if($ignore) continue;
+
+            $toPropertyName = $toProperty->getName();
+
+            if(!$caseSensitive){
+                $propertyName = strtolower($propertyName);
+                $toPropertyName = strtolower($toPropertyName);
+            }
+
+            if($propertyName === $toPropertyName){
+                $toProperty->setValue($to, $value);
             }
         }
     }

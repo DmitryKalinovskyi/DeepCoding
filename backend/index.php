@@ -11,6 +11,8 @@ use DeepCode\Modules\Authentication\Repositories\RolesRepository;
 use DeepCode\Modules\Authentication\Repositories\User_RolesRepository;
 use DeepCode\Modules\Authentication\Services\IJWTService;
 use DeepCode\Modules\Authentication\Services\JWTService;
+use DeepCode\Modules\News\Repositories\INewsRepository;
+use DeepCode\Modules\News\Repositories\NewsRepository;
 use DeepCode\Modules\Problems\Repositories\Implementation\ProblemsRepository;
 use DeepCode\Modules\Problems\Repositories\Implementation\SubmissionsRepository;
 use DeepCode\Modules\Problems\Repositories\Interfaces\IProblemsRepository;
@@ -53,7 +55,8 @@ $appBuilder->services()
     ->addScopedForInterface(IUserRepository::class, UserRepository::class)
     ->addScopedForInterface(ISubmissionsRepository::class, SubmissionsRepository::class)
     ->addScopedForInterface(IRolesRepository::class, RolesRepository::class)
-    ->addScopedForInterface(IUser_RolesRepository::class, User_RolesRepository::class);
+    ->addScopedForInterface(IUser_RolesRepository::class, User_RolesRepository::class)
+    ->addScopedForInterface(INewsRepository::class, NewsRepository::class);
 
 // configure middleware pipeline
 $appBuilder

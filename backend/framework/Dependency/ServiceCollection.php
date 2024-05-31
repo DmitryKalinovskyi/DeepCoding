@@ -3,6 +3,7 @@
 namespace Framework\Dependency;
 
 use Closure;
+use Framework\Attributes\Dependency\Resolvable;
 use Framework\Exceptions\ServiceConflictException;
 use Framework\Exceptions\ServiceNotResolvedException;
 use InvalidArgumentException;
@@ -43,12 +44,43 @@ class ServiceCollection implements IServiceCollection
         // get constructor using reflector, if class don't have constructor just create and return object.
         $constructReflector = $classReflector->getConstructor();
 
-        if($constructReflector == null) return new $class();
+        $instance = null;
+        if($constructReflector == null) $instance = new $class();
+        else{
+            $args = $this->resolveParamsForFunc($constructReflector, $constructorParams);
 
-        $args = $this->resolveParamsForFunc($constructReflector, $constructorParams);
+            // return instance with given params.
+            $instance = new $class(...$args);
+        }
 
-        // return instance with given params.
-        return new $class(...$args);
+        // resolve resolvable properties
+        $properties = $classReflector->getProperties();
+
+        foreach($properties as $property){
+            $attributes = $property->getAttributes();
+
+            $resolvable = false;
+            foreach($attributes as $attribute){
+                $attributeInstance = $attribute->newInstance();
+
+                if($attributeInstance instanceof Resolvable)
+                {
+                    $resolvable = true;
+                    break;
+                }
+            }
+
+            if(!$resolvable) continue;
+            $type = $property->getType();
+
+            if($type == null) continue;
+
+            $serviceName = $type->getName();
+
+            $property->setValue($instance, $this->getService($serviceName));
+        }
+
+        return $instance;
     }
 
     public function invokeFunction(callable $function, array $params = []): mixed
