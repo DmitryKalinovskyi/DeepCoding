@@ -43,4 +43,15 @@ class Router{
         $this->delete->dump_routes("Delete");
         $this->options->dump_routes("Options");
     }
+
+    public function getRoutes(): array{
+        return [
+            (object)["method"=>"get", "routes" => $this->get->getRoutes()],
+            (object)["method"=>"post", "routes" => $this->post->getRoutes()],
+            (object)["method"=>"put", "routes" => $this->put->getRoutes()],
+            (object)["method"=>"patch", "routes" => $this->patch->getRoutes()],
+            (object)["method"=>"delete", "routes" => $this->delete->getRoutes()],
+            (object)["method"=>"options", "routes" => $this->options->getRoutes()],
+        ];
+    }
 }

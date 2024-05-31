@@ -17,11 +17,14 @@ class RouterMethod
             throw new InvalidArgumentException("Url address $route already taken.");
         }
 
-        $this->routesToAction[$regexRoute] = $action;
+        $this->routesToAction[] = new RouteToAction($route, $regexRoute, $action);
     }
 
     public function getRouteAction(string $route): RouteAction {
-        foreach ($this->routesToAction as $pattern => $action) {
+        foreach ($this->routesToAction as $routeToAction) {
+            $pattern = $routeToAction->routeRegex;
+            $action = $routeToAction->action;
+
             if (preg_match($pattern, $route, $matches)) {
                 // Filter out numerical keys from matches
                 $params = array_filter($matches, 'is_string', ARRAY_FILTER_USE_KEY);
@@ -45,5 +48,14 @@ class RouterMethod
         }
 
         echo "</div>";
+    }
+
+    public function getRoutes(): array{
+        $routes = [];
+        foreach($this->routesToAction as $routeToAction){
+            $routes[] = $routeToAction->route;
+        }
+
+        return $routes;
     }
 }

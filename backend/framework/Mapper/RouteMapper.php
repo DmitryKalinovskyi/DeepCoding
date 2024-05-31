@@ -48,7 +48,7 @@ class RouteMapper
 
                 $fullMethodRoute = $route;
 
-                if($methodRoute !== "/" or empty($methodRoute))
+                if(!empty($methodRoute) and $methodRoute !== "/")
                     $fullMethodRoute .= "/" . $methodRoute;
 
                 // select methods based on http Attributes

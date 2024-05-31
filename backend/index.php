@@ -76,10 +76,8 @@ $appBuilder->services()->invokeFunction(function(RouteMapper $routeMapper){
     $routeMapper->mapControllers("/api", "./src/Modules/Users/Controllers");
     $routeMapper->mapControllers("/api", "./src/Modules/Authentication/Controllers");
     $routeMapper->mapControllers("/api", "./src/Modules/Problems/Controllers");
-});
-
-$appBuilder->services()->invokeFunction(function (Router $router) {
-//    $router->dump_routes();
+    $routeMapper->mapControllers("/api", "./src/Modules/News/Controllers");
+    $routeMapper->mapControllers("/api", "./src/Modules/Scheme/Controllers");
 });
 
 // seed
