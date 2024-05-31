@@ -12,5 +12,5 @@ class News
 
     public string $Content;
 
-    public DateTime $CreatedTime;
+    public int $CreatedTime;
 }

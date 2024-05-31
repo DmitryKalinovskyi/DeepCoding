@@ -10,6 +10,8 @@ class DeleteQuery implements IDeleteQueryBuilder, IDBExecutable
     private IDeleteQueryBuilder $_deleteQueryBuilder;
     private DBContext $_dbContext;
 
+    private array $params = [];
+
     public function __construct(IDeleteQueryBuilder $deleteQueryBuilder,
                                 DBContext $dbContext){
         $this->_deleteQueryBuilder = $deleteQueryBuilder;
@@ -40,6 +42,14 @@ class DeleteQuery implements IDeleteQueryBuilder, IDBExecutable
 
     public function execute($params = []): array|false
     {
+        $params = array_merge($this->params, $params);
+
         return $this->_dbContext->execute($this->build(), $params);
+    }
+
+    public function useParams(array $params): DeleteQuery
+    {
+        $this->params = array_merge($this->params, $params);
+        return $this;
     }
 }

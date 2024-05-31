@@ -9,6 +9,7 @@ class InsertQuery implements IInsertQueryBuilder, IDBExecutable
 {
     private IInsertQueryBuilder $_insertQueryBuilder;
     private DBContext $_dbContext;
+    private array $params = [];
 
     public function __construct(IInsertQueryBuilder $insertQueryBuilder,
                                 DBContext           $dbContext){
@@ -18,6 +19,8 @@ class InsertQuery implements IInsertQueryBuilder, IDBExecutable
 
     public function execute($params = []): array| false
     {
+        $params = array_merge($this->params, $params);
+
         return $this->_dbContext->execute($this->build(), $params);
     }
 
@@ -52,6 +55,12 @@ class InsertQuery implements IInsertQueryBuilder, IDBExecutable
     public function select(string $selectQuery): InsertQuery
     {
         $this->_insertQueryBuilder->select($selectQuery);
+        return $this;
+    }
+
+    public function useParams(array $params): InsertQuery
+    {
+        $this->params = array_merge($this->params, $params);
         return $this;
     }
 }

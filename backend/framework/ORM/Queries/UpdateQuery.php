@@ -9,6 +9,7 @@ class UpdateQuery implements IUpdateQueryBuilder, IDBExecutable
 {
     private IUpdateQueryBuilder $_updateQueryBuilder;
     private DBContext $_dbContext;
+    private array $params = [];
 
     public function __construct(IUpdateQueryBuilder $updateQueryBuilder,
                                 DBContext           $dbContext){
@@ -36,7 +37,7 @@ class UpdateQuery implements IUpdateQueryBuilder, IDBExecutable
 
     public function build(): string
     {
-        return $this->build();
+        return $this->_updateQueryBuilder->build();
     }
 
     public function clone(): UpdateQuery
@@ -44,8 +45,14 @@ class UpdateQuery implements IUpdateQueryBuilder, IDBExecutable
         return new UpdateQuery($this->_updateQueryBuilder->clone(), $this->_dbContext);
     }
 
-    public function execute($params = []): array|false
+    public function execute(array $params = []): array|false
     {
-        return $this->_dbContext->execute($this->build(), $params);
+        return $this->_dbContext->execute($this->build(), array_merge($this->params, $params));
+    }
+
+    public function useParams(array $params): UpdateQuery
+    {
+        $this->params = array_merge($this->params, $params);
+        return $this;
     }
 }

@@ -42,9 +42,12 @@ class MySQLUpdate implements IUpdateQueryBuilder
 
         $query .= " SET ";
 
+        $sets = [];
         foreach($this->set as $field => $value){
-            $query .= "$field = $value";
+            $sets[] = "$field = $value";
         }
+
+        $query .= join(',', $sets);
 
         if(empty($this->whereCondition) === false){
             $query .= " WHERE " . $this->whereCondition;

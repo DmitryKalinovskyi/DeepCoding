@@ -69,6 +69,20 @@ class DBSet
         return $proxy->update([$this->getTableName()]);
     }
 
+    public function dynamicUpdate(object $model): UpdateQuery{
+        $update = $this->_dbContext->query()->update([$this->getTableName()]);
+
+        $params = [];
+        foreach($model as $property=>$value){
+            $update->set($property, ":__PROP__$property");
+            $params[":__PROP__$property"] = $value;
+        }
+
+        $update->useParams($params);
+
+        return $update;
+    }
+
     public function delete(): DeleteQuery
     {
         $proxy = $this->_dbContext->query();

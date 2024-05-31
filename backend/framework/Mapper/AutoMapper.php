@@ -2,6 +2,7 @@
 
 namespace Framework\Mapper;
 
+use Error;
 use Framework\Attributes\Mapping\IgnoreMapper;
 use ReflectionObject;
 
@@ -52,8 +53,49 @@ class AutoMapper
             }
 
             if($propertyName === $toPropertyName){
-                $toProperty->setValue($to, $value);
+                try{
+                    $toProperty->setValue($to, $value);
+                }catch(Error $e){
+                    throw new \Exception("$propertyName should be of type " . $toProperty->getType()->getName());
+                }
             }
         }
+    }
+
+    /** Return object with properties that are common in both $from and $frame. Values of that object is taken from $from
+     *
+     * @param object $from
+     * @param object $frame
+     * @param bool $caseSensitive
+     * @return object
+     */
+    public static function intersect(object $from, object $frame, bool $caseSensitive = false): object{
+        $reflectionA = new ReflectionObject($from);
+        $reflectionB = new ReflectionObject($frame);
+
+        $propertiesA = $reflectionA->getProperties();
+        $propertiesB = $reflectionB->getProperties();
+
+        $propertiesANames = [];
+        $propertiesBNames = [];
+        foreach($propertiesA as $property)
+            $propertiesANames[] = $caseSensitive ? $property->getName(): strtolower( $property->getName());
+
+        foreach($propertiesB as $property)
+            $propertiesBNames[] = $caseSensitive ? $property->getName(): strtolower( $property->getName());
+
+        // take intersection
+        $props = array_intersect($propertiesANames, $propertiesBNames);
+
+        $intersectResult = [];
+        foreach($propertiesA as $property){
+            $name = $property->getName();
+            if(!$caseSensitive) $name = strtolower($name);
+
+            if(in_array($name ,$props))
+                $intersectResult[$property->getName()] = $property->getValue($from);
+        }
+
+        return (object)$intersectResult;
     }
 }

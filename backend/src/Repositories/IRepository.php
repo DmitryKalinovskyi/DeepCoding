@@ -8,7 +8,7 @@ interface IRepository
 
     public function find($key): mixed;
 
-    public function update($key, $model): void;
+    public function update($key, object $model): void;
 
     public function delete($key): void;
 }

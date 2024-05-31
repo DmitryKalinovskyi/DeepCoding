@@ -20,7 +20,7 @@ class Validator
         return $isValid;
     }
 
-    public static function isPropertyValid(\ReflectionProperty $property, $value, array& $errors = []): bool{
+    public static function isPropertyValid(\ReflectionProperty $property, mixed $value, array& $errors = []): bool{
         $attributes = $property->getAttributes();
         foreach($attributes as $attribute){
             $instance = $attribute->newInstance();

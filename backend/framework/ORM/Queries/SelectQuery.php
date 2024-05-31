@@ -9,6 +9,9 @@ class SelectQuery implements ISelectQueryBuilder, IDBExecutable
 {
     private ISelectQueryBuilder $_selectQueryBuilder;
     private DBContext $_dbContext;
+
+    private array $params = [];
+
     public function __construct(ISelectQueryBuilder $selectQueryBuilder, DBContext $dbContext){
         $this->_selectQueryBuilder = $selectQueryBuilder;
         $this->_dbContext = $dbContext;
@@ -70,13 +73,15 @@ class SelectQuery implements ISelectQueryBuilder, IDBExecutable
     }
 
     // used by default
-    public function asObject(): self{
+    public function asArray(): self{
         $this->_asClass = "";
         return $this;
     }
 
     public function execute($params = []): array|false
     {
+        $params = array_merge($this->params, $params);
+
         if(empty($this->_asClass) === false)
             return $this->_dbContext->executeAndMap($this->build(), $params, $this->_asClass);
 
@@ -147,5 +152,20 @@ class SelectQuery implements ISelectQueryBuilder, IDBExecutable
     {
         $this->_selectQueryBuilder->having($condition);
         return $this;
+    }
+
+    public function useParams(array $params): SelectQuery
+    {
+        $this->params = array_merge($this->params, $params);
+        return $this;
+    }
+
+    public function count(): int{
+        // consider that we built some query, and we want to receive count of that select
+        $clone = $this->clone();
+
+        return $clone->select(["COUNT(*) as __COUNT__"])
+            ->asArray()
+            ->first()["__COUNT__"];
     }
 }
