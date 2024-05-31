@@ -5,7 +5,7 @@ namespace DeepCode\Modules\Users\Validation;
 use Framework\Validation\Annotation\Required;
 use Framework\Validation\Annotation\StringLength;
 
-class RegisterValidation
+class UserValidation
 {
     #[Required]
     #[StringLength(4)]
@@ -18,5 +18,5 @@ class RegisterValidation
 
     #[Required]
     #[StringLength(5)]
-    public string $Password;
+    public ?string $Password = null;
 }

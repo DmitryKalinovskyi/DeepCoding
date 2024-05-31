@@ -8,9 +8,10 @@ use DeepCode\Modules\Authentication\Attributes\Filters\InRole;
 use DeepCode\Modules\Authentication\Attributes\Filters\Unauthenticated;
 use DeepCode\Modules\Users\DTO\UserDTO;
 use DeepCode\Modules\Users\Repositories\IUserRepository;
-use DeepCode\Modules\Users\Validation\RegisterValidation;
+use DeepCode\Modules\Users\Validation\UserValidation;
 use Framework\Attributes\Dependency\Resolvable;
 use Framework\Attributes\Requests\HttpDelete;
+use Framework\Attributes\Requests\HttpPatch;
 use Framework\Attributes\Requests\HttpPost;
 use Framework\Attributes\Routing\Route;
 use Framework\Http\HttpContext;
@@ -18,6 +19,7 @@ use Framework\Mapper\AutoMapper;
 use Framework\Middlewares\Response\JsonResponse;
 use Framework\MVC\APIController;
 use Framework\Services\IPasswordHashingService;
+use Framework\Validation\TemplateValidator;
 use Framework\Validation\Validator;
 
 class UsersController extends APIController
@@ -31,7 +33,7 @@ class UsersController extends APIController
 
     #[Route('my')]
     #[Authenticated]
-    public function MyProfile(): JsonResponse{
+    public function My(): JsonResponse{
         $dto = new UserDTO();
         AutoMapper::map($this->context->user, $dto);
 
@@ -39,7 +41,7 @@ class UsersController extends APIController
     }
 
     #[Route('{userId}')]
-    public function GetProfile(string $userId): JsonResponse{
+    public function GetUser(string $userId): JsonResponse{
         if(!ctype_digit($userId)){
             return $this->json("UserId should be positive integer", 422);
         }
@@ -62,8 +64,8 @@ class UsersController extends APIController
     #[HttpPost]
     #[Unauthenticated]
     public function Register(): JsonResponse{
-        $registerViewModel = new RegisterValidation();
-        AutoMapper::mapFromArray($this->context->body, $registerViewModel);
+        $registerViewModel = new UserValidation();
+        AutoMapper::map($this->context->body, $registerViewModel);
 
         if(!Validator::isModelValid($registerViewModel)){
             return $this->json((object)["errors" => Validator::getErrors($registerViewModel)]);
@@ -97,6 +99,50 @@ class UsersController extends APIController
         $this->userRepository->delete($userId);
 
         return $this->json("Deleted.", 200);
+    }
+
+    #[Route("my")]
+    #[HttpPatch]
+    #[Authenticated]
+    public function UpdateMy(): JsonResponse{
+        $userId = (int)$this->context->user->Id;
+
+        return $this->updateUserCommon($userId);
+    }
+
+    #[Route("{userId}")]
+    #[HttpPatch]
+    #[Authenticated]
+    #[InRole("Admin")]
+    public function UpdateUser(string $userId): JsonResponse{
+        if(!ctype_digit($userId)){
+            return $this->json("UserId should be positive integer", 422);
+        }
+
+        $userId = (int)$userId;
+
+        return $this->updateUserCommon($userId);
+    }
+
+    private function updateUserCommon(int $userId): JsonResponse{
+        $intersect = AutoMapper::intersect($this->context->body, new UserValidation());
+        $errors = [];
+        if(!TemplateValidator::isModelValid($intersect, UserValidation::class, false, $errors)){
+            return $this->json((object)["errors" => $errors], 422);
+        }
+
+        if(!Validator::objectNotEmpty($intersect)){
+            return $this->json((object)["errors" => "Body are empty, or specified fields are ignored."], 422);
+        }
+
+        // validation passed, we need to check is user added password and hash it.
+        if(isset($intersect->Password)){
+            $intersect->Password = $this->hashingService->hashPassword($intersect->Password);
+        }
+
+        $this->userRepository->update($userId, $intersect);
+
+        return $this->json("Updated.", 200);
     }
 
 //    #[Route("")]

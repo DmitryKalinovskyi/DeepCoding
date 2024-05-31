@@ -43,4 +43,9 @@ class Validator
         self::isModelValid($model, $err);
         return $err;
     }
+
+    public static function objectNotEmpty(object $object): bool
+    {
+        return !empty(get_object_vars($object));
+    }
 }

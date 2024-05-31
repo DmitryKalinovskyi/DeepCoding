@@ -26,9 +26,11 @@ class UserRepository implements IUserRepository
             ->first([':id' => $key]);
     }
 
-    public function update($key, $model): void
+    public function update($key, object $model): void
     {
-        // TODO: Implement update() method.
+        $this->context->users->dynamicUpdate($model)
+            ->where("Id = :id")
+            ->execute([":id" => $key]);
     }
 
     public function delete($key): void
@@ -54,5 +56,9 @@ class UserRepository implements IUserRepository
 
     public function exist(string $userId): bool
     {
+        return $this->context->users->select()
+            ->where("Id = :id")
+            ->useParams([':id' => $userId])
+            ->count();
     }
 }
