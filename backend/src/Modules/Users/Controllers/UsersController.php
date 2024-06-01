@@ -8,6 +8,7 @@ use DeepCode\Modules\Authentication\Attributes\Filters\InRole;
 use DeepCode\Modules\Authentication\Attributes\Filters\Unauthenticated;
 use DeepCode\Modules\Users\DTO\UserDTO;
 use DeepCode\Modules\Users\Repositories\IUserRepository;
+use DeepCode\Modules\Users\Repositories\UsersSearchParams;
 use DeepCode\Modules\Users\Validation\UserValidation;
 use Framework\Attributes\Dependency\Resolvable;
 use Framework\Attributes\Requests\HttpDelete;
@@ -30,6 +31,20 @@ class UsersController extends APIController
     private IUserRepository $userRepository;
     #[Resolvable]
     private IPasswordHashingService $hashingService;
+
+    #[Route('')]
+    public function Search(): JsonResponse
+    {
+        /* @var UsersSearchParams $params */
+        $params = AutoMapper::mapFromArray($_GET, new UsersSearchParams());
+        $users = array_map(fn($user) => AutoMapper::map($user, new UserDTO()),
+            $this->userRepository->search($params));
+        $result = (object)[
+            "pages" => ceil($this->userRepository->searchCount($params) / $params->pageSize),
+            "users" => $users
+        ];
+        return $this->json($result, 200);
+    }
 
     #[Route('my')]
     #[Authenticated]
