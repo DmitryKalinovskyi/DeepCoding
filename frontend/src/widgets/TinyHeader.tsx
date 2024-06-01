@@ -3,7 +3,7 @@ export default function TinyHeader(){
         <header className="h-tinyHeader">
             <div className="container">
                 <div>
-                    <a href="/">
+                    <a href="/public">
                         Home
                     </a>
                 </div>

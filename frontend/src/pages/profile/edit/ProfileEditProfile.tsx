@@ -1,4 +1,4 @@
-import Input from "../../../components/Input.tsx";
+import Input from "../../../shared/Input.tsx";
 import {Button} from "@mui/material";
 
 interface UserProperties{

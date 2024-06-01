@@ -1,9 +1,9 @@
 // import {alpha, FormControl, InputBase, InputLabel, MenuItem, Select, styled} from "@mui/material";
 // import SearchIcon from '@mui/icons-material/Search';
 import {useEffect, useRef, useState} from "react";
-import Input from "../../components/Input.tsx";
+import Input from "../../shared/Input.tsx";
 import {cn} from "../../lib/utils.ts";
-import Select from "../../components/Select.tsx";
+import Select from "../../shared/Select.tsx";
 import {Pagination} from "@mui/material";
 import {Link} from "react-router-dom";
 

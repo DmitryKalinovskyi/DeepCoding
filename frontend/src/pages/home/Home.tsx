@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import DynamicLayout from "../../partial-pages/layout/DynamicLayout.tsx";
+import DynamicLayout from "../../widgets/layout/DynamicLayout.tsx";
 import Card from "@mui/material/Card";
 
 const fetchData = async () => {

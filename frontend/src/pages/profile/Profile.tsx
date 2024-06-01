@@ -1,4 +1,4 @@
-import DynamicLayout from "../../partial-pages/layout/DynamicLayout.tsx";
+import DynamicLayout from "../../widgets/layout/DynamicLayout.tsx";
 import Card from "@mui/material/Card";
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import GitHubIcon from '@mui/icons-material/GitHub';

@@ -3,9 +3,9 @@ import {useParams} from 'react-router-dom';
 
 import SubmitEditor from "./SubmitEditor.tsx";
 import SubmissionList from "./SubmissionList.tsx";
-import {TabControl, TabPanel} from "../../components/TabControl.tsx";
+import {TabControl, TabPanel} from "../../shared/TabControl.tsx";
 import Card from '@mui/material/Card';
-import StaticLayout from "../../partial-pages/layout/StaticLayout.tsx";
+import StaticLayout from "../../widgets/layout/StaticLayout.tsx";
 import {Button} from "@mui/material";
 
 interface Problem{

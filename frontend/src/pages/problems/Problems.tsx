@@ -1,6 +1,6 @@
 import Card from "@mui/material/Card";
 import ProblemsFilter from "./SearchFilter.tsx";
-import DynamicLayout from "../../partial-pages/layout/DynamicLayout.tsx";
+import DynamicLayout from "../../widgets/layout/DynamicLayout.tsx";
 
 function Problems(){
     return (

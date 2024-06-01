@@ -1,4 +1,4 @@
-@import './components/CodeEditor.css';
+@import 'shared/CodeEditor.css';
 @import 'pages/problems/css/SubmissionList.css';
 @import 'pages/profile/css/ContributionHeatmap.css';
 
@@ -17,6 +17,11 @@
     *{
         @apply outline-indigo-600;
     }
+
+    .invalid{
+        @apply outline-red-600;
+    }
+
 
     .nav-bar{
         @apply items-stretch

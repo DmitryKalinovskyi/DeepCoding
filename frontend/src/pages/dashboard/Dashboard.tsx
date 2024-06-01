@@ -1,10 +1,10 @@
-import {TabControl, TabPanel} from "../../components/TabControl.tsx";
+import {TabControl, TabPanel} from "../../shared/TabControl.tsx";
 import {useState} from "react";
 import DashboardProblems from "./DashboardProblems.tsx";
 import DashboardUsers from "./DashboardUsers.tsx";
 import DashboardCompetitions from "./DashboardCompetitions.tsx";
 import {Button, Card} from "@mui/material";
-import StaticLayout from "../../partial-pages/layout/StaticLayout.tsx";
+import StaticLayout from "../../widgets/layout/StaticLayout.tsx";
 import {Link} from "react-router-dom";
 
 export default function Dashboard(){

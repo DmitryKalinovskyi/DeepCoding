@@ -1,6 +1,6 @@
-import StaticLayout from "../../../partial-pages/layout/StaticLayout.tsx";
+import StaticLayout from "../../../widgets/layout/StaticLayout.tsx";
 import Card from "@mui/material/Card";
-import {TabControl, TabPanel} from "../../../components/TabControl.tsx";
+import {TabControl, TabPanel} from "../../../shared/TabControl.tsx";
 import {useState} from "react";
 import ProfileEditProfile from "./ProfileEditProfile.tsx";
 import Preferences from "./Preferences.tsx";

@@ -51,7 +51,7 @@ function SubmissionList(props: SubmissionListProperties){
                 </thead>
                 <tbody>
                 {data.map((submission) =>
-                    <tr onClick={()=>window.location=`submissions?id=${submission.Id}`}>
+                    <tr onClick={()=>window.location.pathname=`submissions?id=${submission.Id}`}>
                         <td>
                                 {submission.Id}
                         </td>

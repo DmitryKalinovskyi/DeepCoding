@@ -1,8 +1,8 @@
-import Select from "../../components/Select.tsx";
+import Select from "../../shared/Select.tsx";
 import ReactCodeMirror from "@uiw/react-codemirror";
 import {Button, ButtonBase} from "@mui/material";
 import {useState} from "react";
-import CodeEditor from "../../components/CodeEditor.tsx";
+import CodeEditor from "../../shared/CodeEditor.tsx";
 
 // code editor is custom component for displaying code inside application.
 

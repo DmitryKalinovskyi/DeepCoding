@@ -1,4 +1,4 @@
-import DynamicLayout from "../../partial-pages/layout/DynamicLayout.tsx";
+import DynamicLayout from "../../widgets/layout/DynamicLayout.tsx";
 import CompetitionWidget from "./CompetitionWidget.tsx";
 
 export default function Competitions(){
