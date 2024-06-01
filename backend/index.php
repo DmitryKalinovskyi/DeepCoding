@@ -17,6 +17,8 @@ use DeepCode\Modules\Problems\Repositories\Implementation\ProblemsRepository;
 use DeepCode\Modules\Problems\Repositories\Implementation\SubmissionsRepository;
 use DeepCode\Modules\Problems\Repositories\Interfaces\IProblemsRepository;
 use DeepCode\Modules\Problems\Repositories\Interfaces\ISubmissionsRepository;
+use DeepCode\Modules\Reports\Repositories\IReportsRepository;
+use DeepCode\Modules\Reports\Repositories\ReportsRepository;
 use DeepCode\Modules\Users\Repositories\UserRepository;
 use DeepCode\Modules\Users\Repositories\IUserRepository;
 use Framework\Application\AppBuilder;
@@ -56,7 +58,8 @@ $appBuilder->services()
     ->addScopedForInterface(ISubmissionsRepository::class, SubmissionsRepository::class)
     ->addScopedForInterface(IRolesRepository::class, RolesRepository::class)
     ->addScopedForInterface(IUser_RolesRepository::class, User_RolesRepository::class)
-    ->addScopedForInterface(INewsRepository::class, NewsRepository::class);
+    ->addScopedForInterface(INewsRepository::class, NewsRepository::class)
+    ->addScopedForInterface(IReportsRepository::class, ReportsRepository::class);
 
 // configure middleware pipeline
 $appBuilder
@@ -81,6 +84,7 @@ $appBuilder->services()->invokeFunction(function(RouteMapper $routeMapper){
     $routeMapper->mapControllers("/api", "./src/Modules/Problems/Controllers");
     $routeMapper->mapControllers("/api", "./src/Modules/News/Controllers");
     $routeMapper->mapControllers("/api", "./src/Modules/Scheme/Controllers");
+    $routeMapper->mapControllers("/api", "./src/Modules/Reports/Controllers");
 });
 
 // seed

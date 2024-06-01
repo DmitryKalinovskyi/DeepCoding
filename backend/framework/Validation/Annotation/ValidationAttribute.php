@@ -2,9 +2,7 @@
 
 namespace Framework\Validation\Annotation;
 
-use Attribute;
 
-#[Attribute]
 abstract class ValidationAttribute
 {
     private bool $isValid = true;
