@@ -2,29 +2,30 @@
 
 namespace DeepCode\Modules\Problems\Controllers;
 
-use DeepCode\Models\Submission;
 use DeepCode\Modules\Authentication\Attributes\Filters\Authenticated;
-use DeepCode\Modules\Problems\Repositories\Implementation\ProblemsSearchParams;
-use DeepCode\Modules\Problems\Repositories\Interfaces\IProblemsRepository;
-use DeepCode\Modules\Problems\Repositories\Interfaces\ISubmissionsRepository;
+use DeepCode\Modules\Problems\Repositories\IProblemsRepository;
+use DeepCode\Modules\Problems\Repositories\ISubmissionsRepository;
+use DeepCode\Modules\Problems\Repositories\ProblemsSearchParams;
+use DeepCode\Modules\Problems\Validation\SubmissionValidation;
+use Framework\Attributes\Dependency\Resolvable;
 use Framework\Attributes\Requests\HttpPost;
 use Framework\Attributes\Routing\Route;
 use Framework\Http\HttpContext;
+use Framework\Mapper\AutoMapper;
+use Framework\Middlewares\Response\JsonResponse;
 use Framework\MVC\APIController;
 
 class ProblemsController extends APIController {
+
+    #[Resolvable]
     private IProblemsRepository $repository;
+    #[Resolvable]
     private HttpContext $context;
+    #[Resolvable]
     private ISubmissionsRepository $submissionsRepository;
 
-    public function __construct(IProblemsRepository $repository, HttpContext $context, ISubmissionsRepository $submissionsRepository){
-        $this->repository = $repository;
-        $this->context = $context;
-        $this->submissionsRepository = $submissionsRepository;
-    }
-
     #[Route("/")]
-    public function Index(): void{
+    public function Search(): JsonResponse{
 
         $params = new ProblemsSearchParams();
 
@@ -33,43 +34,41 @@ class ProblemsController extends APIController {
         if($search !== "")
             $params->search = $search;
 
-        $data['problems'] = $this->repository->getProblems($params);
         $data['pageCount'] = ceil($this->repository->getProblemsCount($params) / $params->pageSize);
+        $data['problems'] = $this->repository->getProblems($params);
 
-        echo json_encode($data);
+        return $this->json((object)$data, 200);
     }
 
     #[Route("{problemId}")]
-    public function GetProblem(int $problemId): void
+    public function GetProblem(string $problemId): JsonResponse
     {
         $problem = $this->repository->find($problemId);
 
-        echo json_encode($problem);
+        return $this->json($problem, 200);
     }
 
     #[Route("{problemId}/submissions")]
     #[Authenticated]
-    public function GetProblemSubmissions(int $problemId): void{
+    public function GetProblemSubmissions(string $problemId): JsonResponse{
 
         $submissions = $this->repository->getProblemSubmissionsForUser($problemId,
             $this->context->user->Id);
 
-        echo json_encode($submissions);
+        return $this->json($submissions, 200);
     }
 
     #[Route('{problemId}/submissions')]
     #[HttpPost]
     #[Authenticated]
-    public function SubmitCodeForProblem(int $problemId): void{
-        $code = $_POST['Code'];
-        $compiler = $_POST['Compiler'];
+    public function SubmitCodeForProblem(string $problemId): JsonResponse{
+        $submission = AutoMapper::map($this->context->body, new SubmissionValidation());
 
-        $submission = new Submission();
-        $submission->Code = $code;
-        $submission->Compiler = $compiler;
         $submission->ProblemId = $problemId;
         $submission->UserId = $this->context->user->Id;
 
         $this->submissionsRepository->insert($submission);
+
+        return $this->json("Submited.", 200);
     }
 }

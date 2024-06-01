@@ -3,7 +3,7 @@
 namespace DeepCode\Modules\Problems\Controllers;
 
 use DeepCode\Modules\Authentication\Attributes\Filters\Authenticated;
-use DeepCode\Modules\Problems\Repositories\Interfaces\ISubmissionsRepository;
+use DeepCode\Modules\Problems\Repositories\ISubmissionsRepository;
 use DeepCode\Modules\Users\Repositories\IUserRepository;
 use Framework\attributes\Routing\Route;
 use Framework\Http\HttpContext;

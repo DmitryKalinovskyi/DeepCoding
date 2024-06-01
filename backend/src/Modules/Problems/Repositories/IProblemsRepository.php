@@ -1,8 +1,7 @@
 <?php
 
-namespace DeepCode\Modules\Problems\Repositories\Interfaces;
+namespace DeepCode\Modules\Problems\Repositories;
 
-use DeepCode\Modules\Problems\Repositories\Implementation\ProblemsSearchParams;
 use DeepCode\Repositories\IRepository;
 
 interface IProblemsRepository extends IRepository

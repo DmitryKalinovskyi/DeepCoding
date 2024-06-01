@@ -1,9 +1,8 @@
 <?php
 
-namespace DeepCode\Modules\Problems\Repositories\Implementation;
+namespace DeepCode\Modules\Problems\Repositories;
 
 use DeepCode\DB\DeepCodeContext;
-use DeepCode\Modules\Problems\Repositories\Interfaces\IProblemsRepository;
 
 
 class ProblemsRepository implements IProblemsRepository

@@ -1,6 +1,6 @@
 <?php
 
-namespace DeepCode\Modules\Problems\Repositories\Implementation;
+namespace DeepCode\Modules\Problems\Repositories;
 
 class ProblemsSearchParams
 {
