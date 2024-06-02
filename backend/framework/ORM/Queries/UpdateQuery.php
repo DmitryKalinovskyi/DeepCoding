@@ -42,7 +42,9 @@ class UpdateQuery implements IUpdateQueryBuilder, IDBExecutable
 
     public function clone(): UpdateQuery
     {
-        return new UpdateQuery($this->_updateQueryBuilder->clone(), $this->_dbContext);
+        $clone =  new UpdateQuery($this->_updateQueryBuilder->clone(), $this->_dbContext);
+        $clone->params = $this->params;
+        return $clone;
     }
 
     public function execute(array $params = []): array|false

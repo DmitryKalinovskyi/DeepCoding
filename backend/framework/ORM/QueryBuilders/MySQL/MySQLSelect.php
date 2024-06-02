@@ -49,7 +49,7 @@ class MySQLSelect implements ISelectQueryBuilder
         if(!empty($this->orderBy)){
             $orderByParts = [];
             foreach($this->orderBy as list($columnName, $isAscending)){
-                $orderByParts[] = $columnName . ($isAscending ? "ASC" : "DESC");
+                $orderByParts[] = $columnName . ($isAscending ? " ASC" : " DESC");
             }
             $query .= " ORDER BY " . join(',', $orderByParts);
         }

@@ -43,7 +43,9 @@ class InsertQuery implements IInsertQueryBuilder, IDBExecutable
 
     public function clone(): InsertQuery
     {
-        return new InsertQuery($this->_insertQueryBuilder->clone(), $this->_dbContext);
+        $clone = new InsertQuery($this->_insertQueryBuilder->clone(), $this->_dbContext);
+        $clone->params = $this->params;
+        return $clone;
     }
 
     public function times(int $times): InsertQuery

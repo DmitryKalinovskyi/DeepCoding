@@ -38,9 +38,9 @@ class JWTAuthenticationMiddleware
             return;
         }
 
-        $userLogin = $jwtService->parseToken($token);
+        $userId = $jwtService->parseToken($token);
 
-        $context->user = $userRepository->findByLogin($userLogin);
+        $context->user = $userRepository->find($userId);
         $context->roles = $user_RolesRepository->getUserRoles($context->user->Id);
 
         $next();

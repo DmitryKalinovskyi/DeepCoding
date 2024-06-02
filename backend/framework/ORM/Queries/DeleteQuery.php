@@ -37,7 +37,9 @@ class DeleteQuery implements IDeleteQueryBuilder, IDBExecutable
 
     public function clone(): DeleteQuery
     {
-        return new DeleteQuery($this->_deleteQueryBuilder->clone(), $this->_dbContext);
+        $clone = new DeleteQuery($this->_deleteQueryBuilder->clone(), $this->_dbContext);
+        $clone->params = $this->params;
+        return $clone;
     }
 
     public function execute($params = []): array|false

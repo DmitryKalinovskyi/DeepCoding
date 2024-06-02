@@ -43,6 +43,7 @@ class NewsRepository implements INewsRepository
     public function search(NewsSearchParams $params): array
     {
         $query = $this->db->news->select()
+            ->orderBy("CreatedTime", false)
             ->offset($params->page * $params->pageSize)
             ->limit($params->pageSize);
 

@@ -12,5 +12,7 @@ class News
 
     public string $Content;
 
+    public string $Preview;
+
     public int $CreatedTime;
 }

@@ -3,6 +3,7 @@
 namespace DeepCode\Modules\Authentication\Controllers;
 
 use DeepCode\Modules\Authentication\Attributes\Filters\Unauthenticated;
+use DeepCode\Modules\Authentication\Repositories\IUser_RolesRepository;
 use DeepCode\Modules\Authentication\Services\IJWTService;
 use DeepCode\Modules\Authentication\Validation\LoginValidation;
 use DeepCode\Modules\Users\Repositories\IUserRepository;
@@ -25,19 +26,20 @@ class AuthenticateController extends APIController
     #[Resolvable]
     private IPasswordHashingService $hashingService;
     #[Resolvable]
+    private IUser_RolesRepository $user_RolesRepository;
+    #[Resolvable]
     private HttpContext $context;
 
-    #[Route("login")]
+    #[Route("")]
     #[HttpPost]
     #[Unauthenticated]
     public function Login(): JsonResponse{
         $validationModel = AutoMapper::map($this->context->body, new LoginValidation());
 
         if(!Validator::isModelValid($validationModel)){
-            return $this->json(Validator::getErrors($validationModel), 422);
+            return $this->json((object)["errors" => Validator::getErrors($validationModel)], 422);
         }
 
-        // receive credentials and use them in authentication service
         $login = $validationModel->login;
         $password = $validationModel->password;
 
@@ -48,11 +50,13 @@ class AuthenticateController extends APIController
         }
 
         if($this->hashingService->isMatch($password, $user->Password)){
-            return $this->json($this->jwtService->getToken($login), 200);
+            return $this->json((object)[
+                "accessToken" => $this->jwtService->getToken($user->Id),
+                "roles" => $this->user_RolesRepository->getUserRoles($user->Id)
+                ], 200);
         }
         else{
-            return $this->json("Invalid login")
-//                ->header('WWW-Authenticate', 'Bearer')
+            return $this->json((object)["errors" => ["Invalid credentials"]])
                 ->status(401);
         }
     }

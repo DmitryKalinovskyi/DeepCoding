@@ -49,7 +49,6 @@ class NewsController extends APIController
     }
 
     #[Route('')]
-    #[InRole("Admin")]
     public function GetNews(): JsonResponse{
         /* @var NewsSearchParams $params */
         $params = AutoMapper::mapFromArray($_GET, new NewsSearchParams());
@@ -61,7 +60,6 @@ class NewsController extends APIController
     }
 
     #[Route('{newsId}')]
-    #[InRole("Admin")]
     public function GetOneNews(string $newsId): JsonResponse{
         if(!ctype_digit($newsId)){
             return $this->json("NewsId is not positive integer");
@@ -101,6 +99,7 @@ class NewsController extends APIController
 
     #[Route('{newsId}')]
     #[HttpDelete]
+    #[InRole("Admin")]
     public function DeleteNews(string $newsId): JsonResponse{
         if(!ctype_digit($newsId)){
             return $this->json("NewsId is not positive integer");

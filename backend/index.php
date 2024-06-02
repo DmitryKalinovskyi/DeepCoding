@@ -25,7 +25,7 @@ use Framework\Application\AppBuilder;
 use Framework\Application\Configurations\DefaultConfiguration;
 use Framework\Mapper\RouteMapper;
 use Framework\Middlewares\Controllers\ControllerMiddleware;
-use Framework\Middlewares\Cors\CORS;
+use Framework\Middlewares\Cors\UNSAFE_CORS;
 use Framework\Services\IPasswordHashingService;
 use Framework\Services\PasswordHashingService;
 
@@ -61,7 +61,7 @@ $appBuilder->services()
 
 // configure middleware pipeline
 $appBuilder
-    ->use(CORS::class)
+    ->use(UNSAFE_CORS::class)
 
     // use default authorization middleware
     ->use(JWTAuthenticationMiddleware::class);

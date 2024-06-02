@@ -62,6 +62,7 @@ class SelectQuery implements ISelectQueryBuilder, IDBExecutable
     {
         $clone = new SelectQuery($this->_selectQueryBuilder->clone(), $this->_dbContext);
         $clone->_asClass = $this->_asClass;
+        $clone->params = $this->params;
         return $clone;
     }
 
@@ -166,6 +167,6 @@ class SelectQuery implements ISelectQueryBuilder, IDBExecutable
 
         return $clone->select(["COUNT(*) as __COUNT__"])
             ->asArray()
-            ->first()["__COUNT__"];
+            ->execute()[0]["__COUNT__"];
     }
 }

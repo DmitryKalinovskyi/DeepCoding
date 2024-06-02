@@ -15,8 +15,6 @@ class JWTService implements IJWTService
         $issuedAt = time();
 
         $payload = [
-            'iss' => "https",
-            'aud' => "https",
             'iat' => $issuedAt,
             'nbf' => $issuedAt,
             'data' => $data
@@ -31,11 +29,6 @@ class JWTService implements IJWTService
             // Decode the token to check its validity
             $decoded = JWT::decode($token, new Key($_ENV['JWT_SECRET'], self::ALG));
 
-            // You can add additional validation logic here if necessary
-            // For example, you can check the 'iss' and 'aud' claims
-            if ($decoded->iss !== "https" || $decoded->aud !== "https") {
-                return false;
-            }
 
             return true;
         }

@@ -62,9 +62,9 @@ class UserRepository implements IUserRepository
             ->limit($params->pageSize);
 
         if($params->login != null){
-            $titleWildcard = "%$params->login%";
-            $query->where("Title LIKE :title")
-                ->useParams([":title" => $titleWildcard]);
+            $loginWildcard = "%$params->login%";
+            $query->where("Login LIKE :login")
+                ->useParams([":login" => $loginWildcard]);
         }
 
         return $query->execute();
@@ -75,9 +75,9 @@ class UserRepository implements IUserRepository
         $query = $this->db->users->select();
 
         if($params->login != null){
-            $titleWildcard = "%$params->login%";
-            $query->where("Title LIKE :title")
-                ->useParams([":title" => $titleWildcard]);
+            $loginWildcard = "%$params->login%";
+            $query->where("Login LIKE :login")
+                ->useParams([":login" => $loginWildcard]);
         }
 
         return $query->count();

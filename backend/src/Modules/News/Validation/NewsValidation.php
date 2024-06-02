@@ -15,8 +15,10 @@ class NewsValidation
     public ?string $Title = null;
 
     #[Required]
-    #[IsJson]
     public ?string $Content = null;
+
+    #[Required]
+    public ?string $Preview = null;
 
     #[IgnoreMapper]
     public int $CreatedTime;

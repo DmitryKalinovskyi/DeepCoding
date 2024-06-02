@@ -83,14 +83,14 @@ class UsersController extends APIController
         AutoMapper::map($this->context->body, $registerViewModel);
 
         if(!Validator::isModelValid($registerViewModel)){
-            return $this->json((object)["errors" => Validator::getErrors($registerViewModel)]);
+            return $this->json((object)["errors" => Validator::getErrors($registerViewModel)], 422);
         }
 
         $user = new User();
         AutoMapper::map($registerViewModel, $user);
         // check if exist user with that login
         if(!empty($this->userRepository->findByLogin($user->Login))){
-            return $this->json("User with that login already exist.", 422);
+            return $this->json((object)["errors" => ["User with that login already exist."]], 422);
         }
 
         $user->Password = $this->hashingService->hashPassword($registerViewModel->Password);
