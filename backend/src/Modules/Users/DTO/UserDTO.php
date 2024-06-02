@@ -8,4 +8,7 @@ class UserDTO
     public string $Login;
     public string $Name;
     public string $AvatarUrl;
+    public int $RegisterDate;
+
+    public string $Description;
 }

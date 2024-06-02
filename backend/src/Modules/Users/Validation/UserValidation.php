@@ -19,4 +19,8 @@ class UserValidation
     #[Required]
     #[StringLength(5)]
     public ?string $Password = null;
+
+    public int $RegisterDate;
+
+    public ?string $Description = null;
 }

@@ -11,8 +11,11 @@ class MyUserValidation
     #[StringLength(5)]
     public ?string $Name = null;
     public string $AvatarUrl = "";
-
     #[Required]
     #[StringLength(5)]
     public ?string $Password = null;
+
+    public int $RegisterDate;
+
+    public ?string $Description = null;
 }

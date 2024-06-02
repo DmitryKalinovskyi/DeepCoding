@@ -41,7 +41,9 @@ class JWTAuthenticationMiddleware
         $userId = $jwtService->parseToken($token);
 
         $context->user = $userRepository->find($userId);
-        $context->roles = $user_RolesRepository->getUserRoles($context->user->Id);
+
+        if($context->user != null)
+        $context->roles = $user_RolesRepository->getUserRoles($userId);
 
         $next();
     }

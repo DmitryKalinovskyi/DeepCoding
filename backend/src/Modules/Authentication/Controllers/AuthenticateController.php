@@ -52,7 +52,8 @@ class AuthenticateController extends APIController
         if($this->hashingService->isMatch($password, $user->Password)){
             return $this->json((object)[
                 "accessToken" => $this->jwtService->getToken($user->Id),
-                "roles" => $this->user_RolesRepository->getUserRoles($user->Id)
+                "roles" => $this->user_RolesRepository->getUserRoles($user->Id),
+                "userId" => $user->Id
                 ], 200);
         }
         else{

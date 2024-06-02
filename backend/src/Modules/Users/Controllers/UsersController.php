@@ -88,6 +88,7 @@ class UsersController extends APIController
 
         $user = new User();
         AutoMapper::map($registerViewModel, $user);
+        $user->RegisterDate = time();
         // check if exist user with that login
         if(!empty($this->userRepository->findByLogin($user->Login))){
             return $this->json((object)["errors" => ["User with that login already exist."]], 422);
