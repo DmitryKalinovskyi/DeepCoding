@@ -9,7 +9,7 @@ abstract class ValidationAttribute
     private string $errorMessage = "";
 
 
-    /** Make validation of the value, in case of error, sets the error message
+    /** Make Validation of the value, in case of error, sets the error message
      * @param $value
      * @param string $propertyName
      * @return void
@@ -24,7 +24,7 @@ abstract class ValidationAttribute
     }
 
 
-    /** Returns error message in case of validation failed
+    /** Returns error message in case of Validation failed
      * @return string error message
      */
     public function getErrorMessage(): string{

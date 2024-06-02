@@ -151,7 +151,7 @@ class UsersController extends APIController
             return $this->json((object)["errors" => "Body are empty, or specified fields are ignored."], 422);
         }
 
-        // validation passed, we need to check is user added password and hash it.
+        // Validation passed, we need to check is user added password and hash it.
         if(isset($intersect->Password)){
             $intersect->Password = $this->hashingService->hashPassword($intersect->Password);
         }

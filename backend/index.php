@@ -11,6 +11,7 @@ use DeepCode\Modules\Authentication\Repositories\RolesRepository;
 use DeepCode\Modules\Authentication\Repositories\User_RolesRepository;
 use DeepCode\Modules\Authentication\Services\IJWTService;
 use DeepCode\Modules\Authentication\Services\JWTService;
+use DeepCode\Modules\CodeRunner\CodeRunner\CodeRunner;
 use DeepCode\Modules\Following\Repositories\FollowingRepository;
 use DeepCode\Modules\Following\Repositories\IFollowingRepository;
 use DeepCode\Modules\GroupedAPIRequests\Repositories\IUsersGroupedRepository;
@@ -63,7 +64,8 @@ $appBuilder->services()
     ->addScopedForInterface(INewsRepository::class, NewsRepository::class)
     ->addScopedForInterface(IReportsRepository::class, ReportsRepository::class)
     ->addScopedForInterface(IFollowingRepository::class, FollowingRepository::class)
-    ->addScopedForInterface(IUsersGroupedRepository::class, UsersGroupedRepository::class);
+    ->addScopedForInterface(IUsersGroupedRepository::class, UsersGroupedRepository::class)
+    ->addScoped( CodeRunner::class);
 
 // configure middleware pipeline
 $appBuilder
@@ -91,6 +93,7 @@ $appBuilder->services()->invokeFunction(function(RouteMapper $routeMapper){
     $routeMapper->mapControllers("/api", "./src/Modules/Reports/Controllers");
     $routeMapper->mapControllers("/api", "./src/Modules/Following/Controllers");
     $routeMapper->mapControllers("/api/g", "./src/Modules/GroupedAPIRequests/Controllers");
+    $routeMapper->mapControllers("/api", "./src/Modules/CodeRunner/Controllers");
 });
 
 // seed
