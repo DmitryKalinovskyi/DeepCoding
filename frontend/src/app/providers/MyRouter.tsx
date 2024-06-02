@@ -16,10 +16,10 @@ const router = createBrowserRouter([
         element: <RequireAuth/>,
         children: [
             {
-                path: "/profile", element: <Profile/>
+                path: "/profile/:userId", element: <Profile/>
             },
             {
-                path: "/profile/edit", element: <ProfileEdit/>
+                path: "/profile/:userId/edit", element: <ProfileEdit/>
             }
         ]
     },

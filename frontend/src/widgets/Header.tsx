@@ -6,10 +6,9 @@ import useAuth from "../hooks/useAuth.ts";
 import { ButtonBase } from "@mui/material";
 
 function Header(){
-    const {setAuth} = useAuth();
+    const {auth, setAuth} = useAuth();
     const isAuthenticated = useIsAuthenticated();
     const isAdmin = useIsInRole("Admin");
-
     return (
         <header className="z-20 shadow-gray-300 shadow-sm h-header">
             <div className="nav-bar flex justify-between container">
@@ -34,7 +33,7 @@ function Header(){
                     {isAuthenticated &&
                         <>
                             <div className="nav-link">
-                                <Link to="/profile">
+                                <Link to={`/profile/${auth.userId}`}>
                                     Profile
                                 </Link>
                             </div>

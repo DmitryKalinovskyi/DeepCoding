@@ -12,7 +12,7 @@ export default function ProfileEdit(){
         <StaticLayout>
             <div className="h-full flex flex-col">
                 <Card className="flex-grow">
-                    <div className="flex">
+                    <div className="flex items-stretch h-full">
                         <TabControl value={page}
                                     orientation="vertical"
                                     onChange={(_e, p) => setPage(p)}
@@ -22,13 +22,16 @@ export default function ProfileEdit(){
                                     ]}
                         />
 
-                        <TabPanel index={0} value={page} className="p-4">
+                        <div className="h-full w-full p-4 overflow-y-auto">
+
+                        <TabPanel index={0} value={page} className="h-full">
                             <ProfileEditProfile/>
                         </TabPanel>
 
-                        <TabPanel index={1} value={page}  className="p-4">
+                        <TabPanel index={1} value={page}  className="h-full">
                             <Preferences/>
                         </TabPanel>
+                        </div>
                     </div>
                 </Card>
             </div>

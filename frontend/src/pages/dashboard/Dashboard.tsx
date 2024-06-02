@@ -41,10 +41,10 @@ export default function Dashboard(){
                         {/*    <DashboardCompetitions/>*/}
                         {/*</TabPanel>*/}
 
-                        <TabPanel index={1} value={page}>
+                        <TabPanel index={1} value={page}  className="h-full">
                             <DashboardNews />
                         </TabPanel>
-                        <TabPanel index={2} value={page}>
+                        <TabPanel index={2} value={page}  className="h-full">
                             <DashboardProblems/>
                         </TabPanel>
                     </div>

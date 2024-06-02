@@ -2,7 +2,7 @@ import Table from "@mui/material/Table";
 import {useEffect, useState} from "react";
 import axios from "../../api/axios";
 import {
-    Button,
+    Button, CircularProgress,
     Container,
     Dialog,
     DialogActions,
@@ -29,10 +29,7 @@ interface User{
     Id: number,
     Login: string,
     Name: string,
-}
-
-interface UserRoles{
-
+    Roles?: string[]
 }
 
 export default function DashboardUsers(){
@@ -50,24 +47,39 @@ export default function DashboardUsers(){
 
     async function fetchUsers(){
         setIsFetching(true);
-        const params = new URLSearchParams({
-            login,
-            page: page.toString(),
-            pageSize: "10"
-        })
-        const response = await axios.get("api/users?" + params.toString())
+        try{
+            const params = new URLSearchParams({
+                login,
+                page: page.toString(),
+                pageSize: "10"
+            })
+            const response = await axios.get("api/users?" + params.toString())
+
+            const data = response.data as DashboardUsersViewModel;
+            // continue to fetch user roles.
+            await Promise.all(data.users.map(async (u) => {
+                try {
+                    const roleResponse = await axios.get(`api/users/${u.Id}/roles`, {
+                        headers: {
+                            "Authorization": `Bearer ${auth.accessToken}`
+                        }
+                    });
+
+                    u.Roles = roleResponse.data.map(role => role.Name);
+                    return u;
+                } catch (error) {
+                    // Handle errors if axios request fails
+                    console.error(`Error fetching roles for user ${u.Id}:`, error);
+                    return u; // Return u with original roles if request fails
+                }
+            }));
+            setData(data);
+        }catch(err){
+            console.log(err.message);
+        }
+
         setIsFetching(false);
-
-        // continue to fetch user roles.
-
-
-        console.log(response.data);
-        setData(response.data as DashboardUsersViewModel)
     }
-
-    useEffect(() => {
-        fetchUsers();
-    }, []);
 
     useEffect(() => {
         fetchUsers();
@@ -87,13 +99,44 @@ export default function DashboardUsers(){
             }
         });
 
+        // compose it into signle object
+
         console.log("deleted");
         fetchUsers();
     }
 
-    async function closeDeleteDialog(){
-        console.log("Deleted" + userToDelete);
-    }
+    const table = isFetching ? <div className="container flex justify-center items-center"><CircularProgress/></div> :
+        <Table className="w-full mb-4">
+            <TableHead>
+                <TableRow>
+                    <TableCell>Id</TableCell>
+                    <TableCell>Login</TableCell>
+                    <TableCell>Name</TableCell>
+                    <TableCell>Roles</TableCell>
+                    {/*<TableCell>Update</TableCell>*/}
+                    <TableCell>Delete</TableCell>
+                </TableRow>
+            </TableHead>
+            <TableBody>
+
+                {data.users.map((u) =>
+                    <TableRow key={u.Id}>
+                        <TableCell><Link to={`/profile/${u.Id}`} className="text-blue-500">{u.Id}</Link></TableCell>
+                        <TableCell>{u.Login}</TableCell>
+                        <TableCell>{u.Name}</TableCell>
+                        <TableCell>{u.Roles?.toString()}</TableCell>
+
+                        {/*<TableCell><Button variant="contained" color="warning">Update</Button></TableCell>*/}
+                        <TableCell>
+                            <Button variant="contained" color="error" onClick={() => setUserToDelete(u.Id)}>
+                                Delete
+                            </Button>
+                        </TableCell>
+                    </TableRow>
+                )}
+            </TableBody>
+        </Table>
+    ;
 
     return (
         <Container maxWidth="md">
@@ -101,45 +144,17 @@ export default function DashboardUsers(){
             <TextField placeholder={"Enter user login"}
                        className="w-full mb-4"
                        variant="standard"
+                       value={login}
                        onChange={(e) => setLogin(e.target.value)}
                        InputProps={{
                            startAdornment: <InputAdornment position="start"><SearchIcon/></InputAdornment>,
                        }}/>
             </form>
-            <Table className="w-full mb-4">
-                <TableHead>
-                    <TableRow>
-                        <TableCell>Id</TableCell>
-                        <TableCell>Login</TableCell>
-                        <TableCell>Name</TableCell>
-                        <TableCell>Roles</TableCell>
-                        {/*<TableCell>Update</TableCell>*/}
-                        <TableCell>Delete</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
 
-                        {data.users.map((u) =>
-                            <TableRow key={u.Id}>
-                                <TableCell><Link to={`/profile/${u.Id}`} className="text-blue-500">{u.Id}</Link></TableCell>
-                                <TableCell>{u.Login}</TableCell>
-                                <TableCell>{u.Name}</TableCell>
-                                <TableCell>Admin</TableCell>
-
-                                {/*<TableCell><Button variant="contained" color="warning">Update</Button></TableCell>*/}
-                                <TableCell>
-                                    <Button variant="contained" color="error" onClick={() => setUserToDelete(u.Id)}>
-                                        Delete
-                                    </Button>
-                                </TableCell>
-                            </TableRow>
-                        )}
-                </TableBody>
-            </Table>
+            {table}
 
             <Dialog
                 open={userToDelete > -1}
-                onClose={closeDeleteDialog}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >

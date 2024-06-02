@@ -4,21 +4,23 @@ import YouTubeIcon from '@mui/icons-material/YouTube';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import {Button, Divider, Skeleton} from "@mui/material";
 import ContributionHeatmap from "./ContributionHeatmap.tsx";
-import {Link} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import useAuth from "../../hooks/useAuth.ts";
 import {useEffect, useState} from "react";
 import axios from "../../api/axios.ts";
 
 import defaultAvatar from "/defaultAvatar.png"
+import HTMLFrame from "../../shared/HTMLFrame.tsx";
 
 export default function Profile(){
     const {auth} = useAuth();
     const [isLoading, setIsLoading] = useState(true);
     const [user, setUser] = useState({});
+    const routeParams = useParams<{userId: string}>();
 
     async function fetchUser(){
         try{
-            const response = await axios.get("api/users/my",
+            const response = await axios.get(`api/users/${routeParams.userId}`,
                 {
                     headers: {
                         "Authorization": "Bearer " + auth.accessToken
@@ -109,12 +111,17 @@ export default function Profile(){
                             </div>
 
                             <div className="flex gap-4 flex-wrap">
-                                <Button variant="contained">Follow</Button>
-                                <Button variant="contained">Unfollow</Button>
 
-                                <Link to="/profile/edit">
+
+                                {routeParams.userId == auth.userId ?
+                                <Link to={`/profile/${routeParams.userId}/edit`}>
                                     <Button variant="contained">Edit Profile</Button>
-                                </Link>
+                                </Link>:
+                                <>
+                                    <Button variant="contained">Follow</Button>
+                                    <Button variant="contained">Unfollow</Button>
+                                </>
+                                }
                             </div>
                             <Divider flexItem/>
                             <div>
@@ -129,10 +136,7 @@ export default function Profile(){
 
                             <div>
                                 <div>
-                                    Member since: 2022/10/20
-                                </div>
-                                <div>
-                                    Last visit : 2022/10/20
+                                    Member since: {user.RegisterDate}
                                 </div>
                             </div>
                         </div>
@@ -140,7 +144,7 @@ export default function Profile(){
                 </div>
 
                 <div className="basis-3/4">
-                    <Card className="p-4">
+                    <Card className="p-4 mb-4">
                         <div className="flex gap-4">
                             <div className="basis-1/3">
                                 <div className="font-semibold mb-4 text-xl">
@@ -169,6 +173,10 @@ export default function Profile(){
                             </div>
                         </div>
                     </Card>
+                    {user.Description != "" &&
+                    <Card className="p-4">
+                        <HTMLFrame srcDoc={user.Description}/>
+                    </Card>}
                 </div>
             </div>
         </DynamicLayout>
