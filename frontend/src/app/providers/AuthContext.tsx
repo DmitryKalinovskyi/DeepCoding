@@ -1,19 +1,33 @@
-import {useContext, useState} from "react";
+import {createContext, useState} from "react";
+import useLocalStorage from "../../hooks/useLocalStorage.ts";
 
-const AuthContext = React.createContext();
-
-interface AuthProviderProps{
-    children: React.ReactElement[]
+export interface AuthContextType{
+    auth: AuthType,
+    setAuth: React.Dispatch<React.SetStateAction<object>>,
 }
 
-export function useAuth(){
-    return useContext(AuthContext);
+interface AuthType{
+    accessToken?: string,
+    roles?: [],
+    userId?: number
+}
+
+const AuthContext = createContext<AuthContextType>({
+    auth: {},
+    setAuth: () => {}
+})
+
+interface AuthProviderProps{
+    children: React.ReactElement[] | React.ReactElement
 }
 
 export function AuthProvider(props: AuthProviderProps){
-    const [authUser, setAuthUser] = useState(null);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-
-
+    const [auth, setAuth] = useLocalStorage("__auth");
+    return (
+        <AuthContext.Provider value={{auth, setAuth}}>
+            {props.children}
+        </AuthContext.Provider>
+    )
 }
+
+export default AuthContext;

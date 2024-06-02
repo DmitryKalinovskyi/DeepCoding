@@ -2,11 +2,85 @@ import DynamicLayout from "../../widgets/layout/DynamicLayout.tsx";
 import Card from "@mui/material/Card";
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import GitHubIcon from '@mui/icons-material/GitHub';
-import {Button, Divider} from "@mui/material";
+import {Button, Divider, Skeleton} from "@mui/material";
 import ContributionHeatmap from "./ContributionHeatmap.tsx";
 import {Link} from "react-router-dom";
+import useAuth from "../../hooks/useAuth.ts";
+import {useEffect, useState} from "react";
+import axios from "../../api/axios.ts";
+
+import defaultAvatar from "/defaultAvatar.png"
 
 export default function Profile(){
+    const {auth} = useAuth();
+    const [isLoading, setIsLoading] = useState(true);
+    const [user, setUser] = useState({});
+
+    async function fetchUser(){
+        try{
+            const response = await axios.get("api/users/my",
+                {
+                    headers: {
+                        "Authorization": "Bearer " + auth.accessToken
+                    }
+                });
+
+            console.log("response")
+            console.log(response.data)
+            setUser(response.data);
+            setIsLoading(false);
+        }
+        catch(err: any){
+            console.log(err.message);
+        }
+    }
+
+    useEffect(() => {
+        fetchUser()
+    }, []);
+
+    if(isLoading){
+        // return skeleton
+        return (<DynamicLayout>
+            <div className="flex gap-4">
+                <div className="basis-1/4">
+                    <Card className="p-4">
+                        <div className="flex flex-col gap-4 mb-4">
+                            <div className="flex gap-4">
+                                <Skeleton variant="rounded" className="h-32 w-32"/>
+                                <div>
+                                <Skeleton variant="rounded" className="w-32 mb-4"/>
+                                <Skeleton variant="rounded" className="w-32"/>
+                                </div>
+                            </div>
+
+                            <Skeleton variant="rounded" className="h-12 w-full"/>
+                            <Divider flexItem/>
+                            <Skeleton variant="rounded" className="h-12 w-full"/>
+                            <Divider flexItem/>
+                            <Skeleton variant="rounded" className="h-12 w-full"/>
+                        </div>
+                    </Card>
+                </div>
+
+                <div className="basis-3/4">
+                    <Card className="p-4">
+                        <div className="flex gap-4 h-40">
+                            <div className="basis-1/3">
+                                <Skeleton variant="rounded" className="h-full w-full"/>
+                            </div>
+                            <Divider orientation="vertical" flexItem/>
+
+                            <div className="basis-2/3">
+                                <Skeleton variant="rounded" className="h-full w-full"/>
+                            </div>
+                        </div>
+                    </Card>
+                </div>
+            </div>
+        </DynamicLayout>);
+    }
+
     return (
         <DynamicLayout>
             <div className="flex gap-4">
@@ -14,20 +88,23 @@ export default function Profile(){
                     <Card className="p-4">
                         <div className="flex flex-col gap-4 mb-4">
                             <div className="flex gap-4">
-                                <img src="/testAvatar.png" className="h-32 w-32 rounded-md"/>
+                                <img src={user.AvatarUrl}
+                                     // onError={() => console.log("Image load fail.")}
+                                     onError={(e) => e.target.src = defaultAvatar}
+                                     className="h-32 w-32 object-cover rounded-md"/>
                                 <div>
                                     <div className="font-semibold text-xl">
-                                        Dmytro Kalinovskyi
+                                        {user.Name}
                                     </div>
                                     <div className="text-base">
-                                        @deeperxd
+                                        @{user.Login}
                                     </div>
-                                    <div className="flex items-center">
-                                        <YouTubeIcon/> YouTube
-                                    </div>
-                                    <div className="flex items-center">
-                                        <GitHubIcon/> GitHub
-                                    </div>
+                                    {/*<div className="flex items-center">*/}
+                                    {/*    <YouTubeIcon/> YouTube*/}
+                                    {/*</div>*/}
+                                    {/*<div className="flex items-center">*/}
+                                    {/*    <GitHubIcon/> GitHub*/}
+                                    {/*</div>*/}
                                 </div>
                             </div>
 

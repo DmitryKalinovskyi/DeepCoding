@@ -2,9 +2,10 @@ import StaticLayout from "../../widgets/layout/StaticLayout.tsx";
 import Card from "@mui/material/Card";
 import Input from "../../shared/Input.tsx";
 import {Alert, Button, CircularProgress, TextField} from "@mui/material";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useRef, useState} from "react";
 import axios from "../../api/axios.ts";
+import useAuth from "../../hooks/useAuth.ts";
 
 export default function Login(){
     const loginRef = useRef();
@@ -16,9 +17,12 @@ export default function Login(){
     const [postError, setPostError] = useState("");
 
     const [isFetching, setIsFetching] = useState(false);
+    const { setAuth} = useAuth();
+    const navigate = useNavigate();
 
     function validatePassword(){
-        return password.length >= 5;
+        return true;
+        // return password.length >= 5;
     }
 
     function validateLogin(){
@@ -40,24 +44,22 @@ export default function Login(){
         const data = Object.fromEntries(formData.entries());
 
 
-        // try to login
+        // try to log in
         try{
             setIsFetching(true);
             const response = await axios.post('/api/authenticate', data);
             setIsFetching(false);
 
-            // set token in the header
-            console.log(response.data.accessToken);
+            console.log(response.data);
+            setAuth(response.data);
+            navigate("/");
         }
-        catch(err){
+        catch(err: any){
             setIsFetching(false);
-
-            console.log(err.message);
+            if(err.response)
+            setPostError(err.response.data.errors.toString())
         }
     }
-
-
-
 
     return (
         <StaticLayout>
