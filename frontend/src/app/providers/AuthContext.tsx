@@ -1,5 +1,6 @@
 import {createContext, useState} from "react";
 import useLocalStorage from "../../hooks/useLocalStorage.ts";
+import useSessionStorage from "../../hooks/useSessionStorage.ts";
 
 export interface AuthContextType{
     auth: AuthType,
@@ -22,7 +23,7 @@ interface AuthProviderProps{
 }
 
 export function AuthProvider(props: AuthProviderProps){
-    const [auth, setAuth] = useLocalStorage("__auth");
+    const [auth, setAuth] = useSessionStorage("__auth");
     return (
         <AuthContext.Provider value={{auth, setAuth}}>
             {props.children}

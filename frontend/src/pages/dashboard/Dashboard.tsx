@@ -7,6 +7,7 @@ import {Button, Card} from "@mui/material";
 import StaticLayout from "../../widgets/layout/StaticLayout.tsx";
 import {Link} from "react-router-dom";
 import DashboardNews from "./DashboardNews.tsx";
+import DashboardRoles from "./DashboardRoles.tsx";
 
 export default function Dashboard(){
     const [page, setPage] = useState(0);
@@ -25,6 +26,7 @@ export default function Dashboard(){
                                 labels={[
                                     "Users",
                                     // "Competitions",
+                                    // "Roles",
                                     "News",
                                     "Problems",
                                     "Resources",
@@ -39,6 +41,9 @@ export default function Dashboard(){
 
                         {/*<TabPanel index={1} value={page}>*/}
                         {/*    <DashboardCompetitions/>*/}
+                        {/*</TabPanel>*/}
+                        {/*<TabPanel index={1} value={page}  className="h-full">*/}
+                        {/*    <DashboardRoles/>*/}
                         {/*</TabPanel>*/}
 
                         <TabPanel index={1} value={page}  className="h-full">

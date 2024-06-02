@@ -8,7 +8,7 @@ export default function DynamicLayout(props: LayoutProps){
     return (
         <div className="min-h-screen flex flex-col">
             <Header/>
-            <div className="flex-grow flex bg-gray-50">
+            <div className="flex-grow flex bg-gray-100">
                 <div className="container">
                     <div className="p-5 min-h-full min-w-full">
                         {props.children}

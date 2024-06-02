@@ -20,14 +20,26 @@ export default function Profile(){
 
     async function fetchUser(){
         try{
-            const response = await axios.get(`api/users/${routeParams.userId}`,
-                {
-                    headers: {
-                        "Authorization": "Bearer " + auth.accessToken
-                    }
-                });
+            // const response = await axios.get(`api/users/${routeParams.userId}`);
+            // const response2 = await axios.get(`api/users/${routeParams.userId}/followers/count`)
+            // const response3 = await axios.get(`api/users/${routeParams.userId}/followings/count`)
+            // const response4 = await axios.get(`api/users/${routeParams.userId}/following`,
+            //     {
+            //         headers: {
+            //             "Authorization": `Bearer ${auth.accessToken}`
+            //         }
+            //     })
+            // const data = response.data;
+            // data.followersCount = response2.data.count;
+            // data.followingsCount = response3.data.count;
+            // data.isFollowing = response4.data.result;
 
-            console.log("response")
+            const response = await axios.get(`api/g/users/${routeParams.userId}`,{
+                headers: {
+                    "Authorization": `Bearer ${auth.accessToken}`
+                }
+            })
+
             console.log(response.data)
             setUser(response.data);
             setIsLoading(false);
@@ -37,9 +49,25 @@ export default function Profile(){
         }
     }
 
-    useEffect(() => {
+    async function setFollow(follow: boolean){
+        setUser({
+            ...user,
+            IsFollowed: follow
+        });
+        const url = follow ? `api/users/${routeParams.userId}/follow` : `api/users/${routeParams.userId}/unfollow`;
+        await axios.post(url,{}, {
+            headers: {
+                "Authorization": `Bearer ${auth.accessToken}`
+            }
+        })
+        console.log("changed from " + user.IsFollowed + " to " + follow);
         fetchUser()
-    }, []);
+    }
+
+    useEffect(() => {
+        setIsLoading(true)
+        fetchUser()
+    }, [routeParams]);
 
     if(isLoading){
         // return skeleton
@@ -89,7 +117,7 @@ export default function Profile(){
                 <div className="basis-1/4">
                     <Card className="p-4">
                         <div className="flex flex-col gap-4 mb-4">
-                            <div className="flex gap-4">
+                            <div className="flex gap-4 flex-wrap">
                                 <img src={user.AvatarUrl}
                                      // onError={() => console.log("Image load fail.")}
                                      onError={(e) => e.target.src = defaultAvatar}
@@ -118,18 +146,19 @@ export default function Profile(){
                                     <Button variant="contained">Edit Profile</Button>
                                 </Link>:
                                 <>
-                                    <Button variant="contained">Follow</Button>
-                                    <Button variant="contained">Unfollow</Button>
+                                {user.IsFollowed?
+                                    <Button variant="contained" onClick={() => setFollow(false)}>Unfollow</Button>:
+                                    <Button variant="contained" onClick={() => setFollow(true)} >Follow</Button>}
                                 </>
                                 }
                             </div>
                             <Divider flexItem/>
                             <div>
                                 <div>
-                                    Following: 20
+                                    Following: {user.Followings}
                                 </div>
                                 <div>
-                                    Follows: 20
+                                    Follows: {user.Followers}
                                 </div>
                             </div>
                             <Divider flexItem/>

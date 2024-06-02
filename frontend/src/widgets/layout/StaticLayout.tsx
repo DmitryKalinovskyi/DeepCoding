@@ -26,7 +26,7 @@ export default function StaticLayout({haveHeader = true, haveFooter = true, chil
     return (
         <div className="min-h-screen flex flex-col">
             {haveHeader && <Header/>}
-            <div className={cn("bg-gray-50", getHeightClassName())}>
+            <div className={cn("bg-gray-100", getHeightClassName())}>
                 <div className="container h-full">
                     <div className="p-5 h-full">
                         {children}
