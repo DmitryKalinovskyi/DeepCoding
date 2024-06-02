@@ -2,6 +2,7 @@
 
 namespace DeepCode\DB;
 
+use DeepCode\Models\Following;
 use DeepCode\Models\News;
 use DeepCode\Models\Problem\Problem;
 use DeepCode\Models\Report;
@@ -16,7 +17,6 @@ class DeepCodeContext extends DBContext
 {
     public DBSet $users;
     public const USERS_TABLE = "users";
-
 
     public DBSet $problems;
     public const PROBLEMS_TABLE = "problems";
@@ -36,6 +36,9 @@ class DeepCodeContext extends DBContext
     public DBSet $reports;
     public const REPORTS_TABLE = "reports";
 
+    public DBSet $followings;
+    public const FOLLOWINGS_TABLE = "followings";
+
     public function __construct($connectionString)
     {
         parent::__construct($connectionString);
@@ -46,5 +49,6 @@ class DeepCodeContext extends DBContext
         $this->user_roles = new DBSet(self::USER_ROLES_TABLE, User_Role::class, $this);
         $this->news = new DBSet(self::NEWS_TABLE, News::class, $this);
         $this->reports = new DBSet(self::REPORTS_TABLE, Report::class, $this);
+        $this->followings = new DBSet(self::FOLLOWINGS_TABLE, Following::class, $this);
     }
 }

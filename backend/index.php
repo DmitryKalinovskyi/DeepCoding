@@ -47,7 +47,7 @@ $appBuilder->services()
 // database
 $appBuilder->services()
     ->addScoped(DeepCodeContext::class,
-        fn() => new DeepCodeContext($_ENV['DB_MYSQL']));
+        fn() => new DeepCodeContext($_ENV['DB_MYSQL'], $_ENV['DB_MYSQL_NAME'], $_ENV['DB_MYSQL_PASSWORD']));
 
 // repositories
 $appBuilder->services()
