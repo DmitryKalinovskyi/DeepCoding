@@ -13,4 +13,5 @@ interface IFollowingRepository
 //    public function getFollowers(int $userId): array;
 
     public function getFollowersCount(int $userId): int;
+    public function getFollowingsCount(int $userId): int;
 }

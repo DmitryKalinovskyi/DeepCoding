@@ -34,6 +34,20 @@ class FollowingsController extends APIController
             ], 200);
     }
 
+    #[Route("{userId}/followings/count")]
+    public function GetFollowingsCount(string $userId): JsonResponse
+    {
+        if(!ctype_digit($userId)){
+            return $this->json("UserId is not positive integer");
+        }
+
+        $userId = (int)$userId;
+
+        return $this->json((object)[
+            "count" => $this->followingRepository->getFollowingsCount($userId)
+        ], 200);
+    }
+
     #[Route('{userId}/follow')]
     #[Authenticated]
     #[HttpPost]
@@ -63,10 +77,23 @@ class FollowingsController extends APIController
         return $this->json("Unfollowed.", 200);
     }
 
-    #[Route('{userId}/unfollow')]
+    #[Route('{userId}/follower')]
     #[Authenticated]
-    #[HttpPost]
-    public function IsFollowedByMe(string $userId): JsonResponse
+    public function IsMyFollower(string $userId): JsonResponse
+    {
+        if(!ctype_digit($userId)){
+            return $this->json("UserId is not positive integer");
+        }
+
+        $userId = (int)$userId;
+        return $this->json((object)[
+            "result" => $this->followingRepository->isFollow($userId, $this->context->user->Id)
+        ]);
+    }
+
+    #[Route('{userId}/following')]
+    #[Authenticated]
+    public function IsMyFollowing(string $userId): JsonResponse
     {
         if(!ctype_digit($userId)){
             return $this->json("UserId is not positive integer");

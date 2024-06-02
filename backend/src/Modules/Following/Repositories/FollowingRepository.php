@@ -42,4 +42,12 @@ class FollowingRepository implements IFollowingRepository
                 ->useParams([":followingId" => $userId])
                 ->count();
     }
+
+    public function getFollowingsCount(int $userId): int
+    {
+        return $this->db->followings->select()
+            ->where("FollowerId = :followerId")
+            ->useParams([":followerId" => $userId])
+            ->count();
+    }
 }
