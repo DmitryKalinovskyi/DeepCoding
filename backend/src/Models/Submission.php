@@ -22,4 +22,6 @@ class Submission
     public bool $IsPassed;
     #[DBColumn]
     public string $Result;
+    #[DBColumn]
+    public int $CreatedTime;
 }

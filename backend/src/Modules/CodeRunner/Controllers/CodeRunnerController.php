@@ -36,10 +36,7 @@ class CodeRunnerController extends APIController
             ], 422);
         }
 
-        /* @var RunRules $runRules */
-
-        $runRules = AutoMapper::map($runValidation, new RunRules());
-
+        $runRules = new RunRules(['code.py' => $runValidation->Code, 'input.txt' => $runValidation->Input]);
         try{
             $codeRunner = $this->codeRunnerResolver->getCodeRunner($runValidation->Compiler);
             $runResult = $codeRunner->run($runRules);

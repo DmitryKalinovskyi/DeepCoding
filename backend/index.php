@@ -21,6 +21,8 @@ use DeepCode\Modules\GroupedAPIRequests\Repositories\IUsersGroupedRepository;
 use DeepCode\Modules\GroupedAPIRequests\Repositories\UsersGroupedRepository;
 use DeepCode\Modules\News\Repositories\INewsRepository;
 use DeepCode\Modules\News\Repositories\NewsRepository;
+use DeepCode\Modules\Problems\CodeTesting\CodeTestingService;
+use DeepCode\Modules\Problems\CodeTesting\ICodeTestingService;
 use DeepCode\Modules\Problems\Repositories\IProblemsRepository;
 use DeepCode\Modules\Problems\Repositories\ISubmissionsRepository;
 use DeepCode\Modules\Problems\Repositories\ProblemsRepository;
@@ -51,7 +53,8 @@ $appBuilder->useConfigurationInstance(
 $appBuilder->services()
     ->addTransientForInterface(IJWTService::class, JWTService::class)
     ->addTransientForInterface(IPasswordHashingService::class, PasswordHashingService::class)
-    ->addTransientForInterface(ICodeRunnerResolver::class, CodeRunnerResolver::class);
+    ->addTransientForInterface(ICodeRunnerResolver::class, CodeRunnerResolver::class)
+    ->addTransientForInterface(ICodeTestingService::class, CodeTestingService::class);
 
 // database
 $appBuilder->services()

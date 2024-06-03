@@ -9,25 +9,29 @@ use DeepCode\Modules\CodeRunner\CodeRunner\RunRules;
 class PythonCodeRunner implements ICodeRunner
 {
     public function run(RunRules $runRules): RunResult{
-        $codeFile = tempnam(sys_get_temp_dir(), 'code_');
-        $inputFile = tempnam(sys_get_temp_dir(), 'input_');
+        $files = [];
+        $v = [];
+        foreach($runRules->files as $prefix=>$content){
+            $tmpFile = tempnam(sys_get_temp_dir(), $prefix);
+            file_put_contents($tmpFile, $content);
+            $files[] = $tmpFile;
+            $v[] = "-v %s:/app/$prefix";
+        }
 
-        file_put_contents($codeFile, $runRules->code);
-        file_put_contents($inputFile, $runRules->input);
+        $v = join(' ', $v);
 
         // Construct the Docker command
         $command = sprintf(
-            "docker run --rm -v %s:/app/code.py -v %s:/app/input.txt python-runner",
-            $codeFile,
-            $inputFile
+            "docker run --rm $v python-runner",
+            ...$files
         );
 
         // Execute the command and capture the output
         $output = shell_exec($command);
 
         // Cleanup temporary files
-        unlink($codeFile);
-        unlink($inputFile);
+        foreach($files as $tmpFile)
+        unlink($tmpFile);
 
         return $this->parseOutput($output ?? "");
     }

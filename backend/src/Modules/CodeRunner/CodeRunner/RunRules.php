@@ -4,9 +4,11 @@ namespace DeepCode\Modules\CodeRunner\CodeRunner;
 
 class RunRules
 {
-    public string $code;
 
-    public string $input;
+    /**
+     * @var array Files that will be added to container, array format [File Name => File Content], code.txt is required.
+     */
+    public array $files;
 
     /** How much seconds I need to wait before interrupting process
      * @var float
@@ -19,9 +21,8 @@ class RunRules
     public float $memoryLimit;
 
 
-    public function __construct(string $code = "", string $input = "", float $runtimeLimit = 5, float $memoryLimit = 255){
-        $this->code = $code;
-        $this->input = $input;
+    public function __construct(array $files = [], float $runtimeLimit = 5, float $memoryLimit = 255){
+        $this->files = $files;
         $this->runtimeLimit = $runtimeLimit;
         $this->memoryLimit = $memoryLimit;
     }

@@ -22,37 +22,54 @@ class CodeTestingService implements ICodeTestingService
         $testResult = new TestResult();
         $testResult->testCaseResults = [];
         $testResult->isPassed = true;
+        $testResult->runningTime = 0;
+        $testResult->memoryUsed = 0;
 
         foreach($info->testCases as $testCase){
-            $runRules = new RunRules($info->code,
-                $testCase->input,
+            $runRules = new RunRules(
+                [
+                    "code.py" => $info->code,
+                    "input.txt" => $testCase->input
+                ],
                 10,
                 255);
 
             $runResult = $codeRunner->run($runRules);
             // if there are any errors, we skip testing stage.
 
-            if($runResult->errors != null){
+            if(isset($runResult->errors)){
                 $testResult->testCaseResults[] = (object)[
                     "isPassed" => false,
                     "errors" => "Runtime error."
                 ];
+                $testResult->isPassed = false;
                 continue;
             }
 
 
-            $testingRules = new RunRules($info->testingScript,
-                $runResult->output, 10, 255);
+            $testingRules = new RunRules(
+                ["input.txt" => $testCase->input,
+                    "output.txt" => $runResult->output,
+                        "code.py" => $info->testingScript], 10, 255);
 
             // in the $testingResult->output should be true or false, that denotes is test passed or not.
             $testingResult = $testingRunner->run($testingRules);
-            $isPassed = strtolower($testingResult->output) == "true";
+            if(isset($testingResult->errors))
+                throw new \Exception("Error when tried to validate test.");
+
+            $isPassed = strtolower(trim($testingResult->output)) == "true";
 
             $testResult->testCaseResults[] = (object)[
                 "runningTime" => $runResult->runningTime,
                 "memoryUsed" => $runResult->memoryUsed,
                 "isPassed" => $isPassed
             ];
+
+            $testResult->runningTime += $runResult->runningTime;
+            $testResult->memoryUsed += $runResult->memoryUsed;
+
+            if($isPassed === false)
+            $testResult->isPassed = false;
         }
 
         return $testResult;

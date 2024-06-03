@@ -2,6 +2,7 @@
 
 namespace DeepCode\Modules\Problems\Validation;
 
+use Framework\Validation\Annotation\IsJson;
 use Framework\Validation\Annotation\Required;
 
 class ProblemValidation
@@ -17,4 +18,9 @@ class ProblemValidation
 
     #[Required]
     public ?string $TestingScriptLanguage = null;
+
+    #[Required]
+    #[IsJson]
+    public ?string $Tests = null;
+
 }

@@ -2,13 +2,19 @@
 
 namespace DeepCode\Modules\Problems\Validation;
 
+use Framework\Attributes\Mapping\IgnoreMapper;
+use Framework\Validation\Annotation\Required;
+
 class SubmissionValidation
 {
-    public int $Id;
-    public int $ProblemId;
+    #[IgnoreMapper]
+    public int $ProblemId = 0;
 
-    public int $UserId;
-    public string $Code;
-    public string $Compiler;
-    public string $Status;
+    #[IgnoreMapper]
+    public int $UserId = 0;
+
+    #[Required]
+    public ?string $Code= null;
+    #[Required]
+    public ?string $Compiler = null;
 }

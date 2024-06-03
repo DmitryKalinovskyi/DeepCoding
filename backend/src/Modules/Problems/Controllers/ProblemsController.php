@@ -8,11 +8,13 @@ use DeepCode\Modules\Authentication\Attributes\Filters\Authenticated;
 use DeepCode\Modules\Authentication\Attributes\Filters\InRole;
 use DeepCode\Modules\Problems\CodeTesting\ICodeTestingService;
 use DeepCode\Modules\Problems\CodeTesting\TestInfo;
+use DeepCode\Modules\Problems\DTO\SubmissionDTO;
 use DeepCode\Modules\Problems\Repositories\IProblemsRepository;
 use DeepCode\Modules\Problems\Repositories\ISubmissionsRepository;
 use DeepCode\Modules\Problems\Repositories\ProblemsSearchParams;
 use DeepCode\Modules\Problems\Validation\ProblemValidation;
 use DeepCode\Modules\Problems\Validation\SubmissionValidation;
+use Exception;
 use Framework\Attributes\Dependency\Resolvable;
 use Framework\Attributes\Requests\HttpDelete;
 use Framework\Attributes\Requests\HttpPatch;
@@ -116,6 +118,13 @@ class ProblemsController extends APIController {
         $submissions = $this->repository->getProblemSubmissionsForUser($problemId,
             $this->context->user->Id);
 
+        $submissions = array_map(function($s) {
+            $dto = AutoMapper::map($s, new SubmissionDTO());
+            $dto->Result = (object)json_decode($s->Result);
+            return $dto;
+                }, $submissions);
+
+
         return $this->json($submissions, 200);
     }
 
@@ -145,6 +154,7 @@ class ProblemsController extends APIController {
 
         $submission->ProblemId = $problemId;
         $submission->UserId = $this->context->user->Id;
+        $submission->CreatedTime = time();
 
         // setup test
         $testInfo = new TestInfo();
@@ -154,10 +164,18 @@ class ProblemsController extends APIController {
         $testInfo->codeLanguage = $submission->Compiler;
         $testInfo->testCases = json_decode($problem->Tests);
 
-        $testResult = $this->codeTestingService->test($testInfo);
+        try{
+            $testResult = $this->codeTestingService->test($testInfo);
+        }catch (Exception $err){
+            return $this->json("Internal server error", 500);
+        }
 
         $submission->IsPassed = $testResult->isPassed;
-        $submission->Result = json_encode($testResult->testCaseResults);
+        $submission->Result = json_encode((object)[
+            "tests" => $testResult->testCaseResults,
+            "runningTime" => $testResult->runningTime,
+            "memoryUsed" => $testResult->memoryUsed,
+        ]);
         $this->submissionsRepository->insert($submission);
 
         return $this->json("Submited.", 200);
