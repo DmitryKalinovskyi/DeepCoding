@@ -10,6 +10,7 @@ import Login from "../../pages/authentication/Login.tsx";
 import Register from "../../pages/authentication/Register.tsx";
 import RequireAuth from "../gates/RequireAuth.tsx";
 import RequireRole from "../gates/RequireRole.tsx";
+import Playground from "../../pages/playground/Playground.tsx";
 
 const router = createBrowserRouter([
     {
@@ -49,6 +50,9 @@ const router = createBrowserRouter([
     },
     {
         path: '/register', element: <Register/>
+    },
+    {
+        path: '/playground', element: <Playground/>
     },
 ])
 

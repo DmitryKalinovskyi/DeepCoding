@@ -24,16 +24,21 @@ function Header(){
                         </Link>
                     </div>
                     <div className="nav-link">
-                        <Link to="/competitions">
-                            Competitions
+                        <Link to="/playground">
+                            Playground
                         </Link>
                     </div>
+                    {/*<div className="nav-link">*/}
+                    {/*    <Link to="/competitions">*/}
+                    {/*        Competitions*/}
+                    {/*    </Link>*/}
+                    {/*</div>*/}
                 </div>
                 <div className="nav-group">
                     {isAuthenticated &&
                         <>
                             <div className="nav-link">
-                                <Link to={`/profile/${auth.userId}`}>
+                            <Link to={`/profile/${auth.userId}`}>
                                     Profile
                                 </Link>
                             </div>
