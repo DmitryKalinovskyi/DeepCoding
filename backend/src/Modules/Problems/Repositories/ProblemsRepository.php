@@ -3,6 +3,7 @@
 namespace DeepCode\Modules\Problems\Repositories;
 
 use DeepCode\DB\DeepCodeContext;
+use DeepCode\Modules\Problems\DTO\ProblemDTO;
 
 
 class ProblemsRepository implements IProblemsRepository
@@ -13,24 +14,26 @@ class ProblemsRepository implements IProblemsRepository
         $this->db = $db;
     }
 
-    public function getProblems(ProblemsSearchParams $params): array
+    public function search(ProblemsSearchParams $params): array
     {
+        // first we need to build query that select
         $query = $this->db->problems->select()
+            ->asClass(ProblemDTO::class)
             ->limit($params->pageSize)
             ->offset($params->pageSize * $params->page);
 
-        if($params->search !== null)
-            $query = $query->where("name like \"$params->search%\"");
+        if($params->name !== null)
+            $query = $query->where("Name like \"$params->name%\"");
 
         return $query->execute();
     }
 
-    public function getProblemsCount(ProblemsSearchParams $params): int
+    public function searchCount(ProblemsSearchParams $params): int
     {
         $query = $this->db->query()->select(["COUNT(*) as count"])->from("problems");
 
-        if($params->search !== null)
-            $query = $query->where("name like \"$params->search%\"");
+        if($params->name !== null)
+            $query = $query->where("name like \"$params->name%\"");
 
         return $query->first()["count"];
     }
@@ -49,7 +52,10 @@ class ProblemsRepository implements IProblemsRepository
 
     public function update($key, $model): void
     {
-//        $this->db->problems->update()->where("id = :id")->
+        $query = $this->db->problems->dynamicUpdate($model)
+            ->where("Id = :id");
+
+        $query->execute([":id" => $key]);
     }
 
     public function delete($key): void

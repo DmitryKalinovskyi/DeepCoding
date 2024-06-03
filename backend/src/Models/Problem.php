@@ -1,7 +1,7 @@
 <?php
 
 
-namespace DeepCode\Models\Problem;
+namespace DeepCode\Models;
 
 use Framework\Attributes\DataAnnotation\DBColumn;
 use Framework\Attributes\DataAnnotation\Key;
@@ -16,4 +16,13 @@ class Problem
 
     #[DBColumn]
     public string $Description;
+
+    #[DBColumn]
+    public string $TestingScript;
+
+    #[DBColumn]
+    public string $TestingScriptLanguage;
+
+    #[DBColumn]
+    public string $Tests; // as JSON
 }

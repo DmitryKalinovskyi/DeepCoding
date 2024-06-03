@@ -39,8 +39,6 @@ class CodeRunnerController extends APIController
         /* @var RunRules $runRules */
 
         $runRules = AutoMapper::map($runValidation, new RunRules());
-        $runRules->MemoryLimit = 256;
-        $runRules->TimeLimit = 10;
 
         try{
             $codeRunner = $this->codeRunnerResolver->getCodeRunner($runValidation->Compiler);
@@ -52,11 +50,11 @@ class CodeRunnerController extends APIController
             ], 422);
         }
 
-        if(!empty($runResult->Errors)){
+        if(!empty($runResult->errors)){
             // our user is teapot
             return $this->json((object)[
-                "errors" => $runResult->Errors
-            ], 418);
+                "errors" => $runResult->errors
+            ], 422);
         }
         return $this->json($runResult, 200);
     }

@@ -11,6 +11,7 @@ class Submission
     public int $Id;
     #[DBColumn]
     public int $ProblemId;
+
     #[DBColumn]
     public int $UserId;
     #[DBColumn]
@@ -18,5 +19,7 @@ class Submission
     #[DBColumn]
     public string $Compiler;
     #[DBColumn]
-    public string $Status;
+    public bool $IsPassed;
+    #[DBColumn]
+    public string $Result;
 }

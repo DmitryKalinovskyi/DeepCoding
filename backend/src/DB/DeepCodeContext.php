@@ -4,7 +4,9 @@ namespace DeepCode\DB;
 
 use DeepCode\Models\Following;
 use DeepCode\Models\News;
-use DeepCode\Models\Problem\Problem;
+use DeepCode\Models\Problem;
+use DeepCode\Models\Problem_ProblemTag;
+use DeepCode\Models\ProblemTag;
 use DeepCode\Models\Report;
 use DeepCode\Models\Role;
 use DeepCode\Models\Submission;
@@ -39,6 +41,14 @@ class DeepCodeContext extends DBContext
     public DBSet $followings;
     public const FOLLOWINGS_TABLE = "followings";
 
+    public DBSet $problemTags;
+    public const PROBLEMTAGS_TABLE = "problemtags";
+
+    public DBSET $problem_problemTags;
+
+    public const PROBLEM_PROBLEMTAGS_TABLE = "problem_problemtags";
+
+
     public function __construct($connectionString)
     {
         parent::__construct($connectionString);
@@ -50,5 +60,7 @@ class DeepCodeContext extends DBContext
         $this->news = new DBSet(self::NEWS_TABLE, News::class, $this);
         $this->reports = new DBSet(self::REPORTS_TABLE, Report::class, $this);
         $this->followings = new DBSet(self::FOLLOWINGS_TABLE, Following::class, $this);
+        $this->problemTags = new DBSet(self::PROBLEMTAGS_TABLE, ProblemTag::class, $this);
+        $this->problem_problemTags = new DBSet(self::PROBLEM_PROBLEMTAGS_TABLE, Problem_ProblemTag::class, $this);
     }
 }

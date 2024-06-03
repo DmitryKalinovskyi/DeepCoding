@@ -2,13 +2,23 @@
 
 namespace DeepCode\Modules\Problems\Repositories;
 
+use Framework\Validation\Annotation\NonNegative;
+
 class ProblemsSearchParams
 {
-    public ?string $search = null;
-
+    public ?string $name = null;
+    #[NonNegative]
     public int $page = 0;
-    public int $pageSize = 25;
 
-    public ?array $tags;
-    public int $status;
+    #[NonNegative]
+    public int $pageSize = 25;
+    public ?array $tags = null;
+
+    // NeverTried|Tried|Solved
+    public ?string $status = null;
+
+    // Easy|Medium|Hard
+    public ?string $difficulty = null;
+
+    public ?string $userId = null;
 }

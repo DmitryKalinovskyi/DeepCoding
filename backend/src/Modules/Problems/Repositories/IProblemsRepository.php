@@ -6,9 +6,9 @@ use DeepCode\Repositories\IRepository;
 
 interface IProblemsRepository extends IRepository
 {
-    public function getProblems(ProblemsSearchParams $params): array;
+    public function search(ProblemsSearchParams $params): array;
 
-    public function getProblemsCount(ProblemsSearchParams $params): int;
+    public function searchCount(ProblemsSearchParams $params): int;
 
     public function getProblemSubmissions($key): array;
 
