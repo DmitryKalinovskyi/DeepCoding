@@ -3,28 +3,32 @@
 namespace DeepCode\Modules\Problems\Controllers;
 
 use DeepCode\DB\DeepCodeContext;
+use DeepCode\Models\Submission;
+use DeepCode\Modules\Problems\DTO\SubmissionDTO;
+use DeepCode\Modules\Problems\Repositories\ISubmissionsRepository;
+use Framework\Attributes\Dependency\Resolvable;
 use Framework\attributes\Routing\Route;
+use Framework\Mapper\AutoMapper;
+use Framework\Middlewares\Response\JsonResponse;
 use Framework\MVC\APIController;
 
 class SubmissionsController extends APIController
 {
-    private DeepCodeContext $_db;
-    public function __construct(DeepCodeContext $context){
-        $this->_db = $context;
-    }
+    #[Resolvable]
+    private ISubmissionsRepository $submissionsRepository;
 
     #[Route("{submissionId}")]
-    public function GetSubmission(int $submissionId): void{
-        $submission = $this->_db->submissions->select()
-            ->where("Id = :id")
-            ->first(['id' => $submissionId]);
+    public function GetSubmission(string $submissionId): JsonResponse{
+        $submission = $this->submissionsRepository->find($submissionId);
 
-        if(empty($submission))
-        {
-            $this->sendStatus(404);
-            die();
+        if($submission == null){
+            return $this->json("Not founded.", 404);
         }
 
-        echo json_encode($submission);
+        /* @var Submission $dto */
+        $dto = AutoMapper::map($submission, new SubmissionDTO());
+        $dto->Result = json_decode($submission->Result);
+
+        return $this->json($dto);
     }
 }

@@ -62,7 +62,8 @@ class CodeTestingService implements ICodeTestingService
             $testResult->testCaseResults[] = (object)[
                 "runningTime" => $runResult->runningTime,
                 "memoryUsed" => $runResult->memoryUsed,
-                "isPassed" => $isPassed
+                "isPassed" => $isPassed,
+                "name" => $testCase->name
             ];
 
             $testResult->runningTime += $runResult->runningTime;

@@ -5,42 +5,36 @@ namespace DeepCode\Modules\Problems\Controllers;
 use DeepCode\Modules\Authentication\Attributes\Filters\Authenticated;
 use DeepCode\Modules\Problems\Repositories\ISubmissionsRepository;
 use DeepCode\Modules\Users\Repositories\IUserRepository;
+use Framework\Attributes\Dependency\Resolvable;
 use Framework\attributes\Routing\Route;
 use Framework\Http\HttpContext;
+use Framework\Middlewares\Response\JsonResponse;
+use Framework\MVC\APIController;
 
 #[Route("users")]
-class UserSubmissionsController
+class UserSubmissionsController extends APIController
 {
+    #[Resolvable]
     private ISubmissionsRepository $submissionsRepository;
+    #[Resolvable]
     private IUserRepository $userRepository;
 
+    #[Resolvable]
     private HttpContext $context;
-    public function __construct(ISubmissionsRepository $submissionsRepository, IUserRepository $userRepository, HttpContext $context){
-
-        $this->submissionsRepository = $submissionsRepository;
-        $this->userRepository = $userRepository;
-        $this->context = $context;
-    }
 
     #[Route('my/submissions')]
     #[Authenticated]
-    public function GetMySubmissions(): void{
-        $submissions = $this->submissionsRepository->getUserSubmissions($this->context->user->Id);
-
-        echo json_encode($submissions);
+    public function GetMySubmissions(): JsonResponse{
+        return $this->json($this->submissionsRepository->getUserSubmissions($this->context->user->Id), 200);
     }
 
     #[Route('{userId}/submissions')]
-    public function GetSubmissions(int $userId): void{
+    public function GetSubmissions(string $userId): JsonResponse{
         $user = $this->userRepository->find($userId);
         if(empty($user)){
-            echo json_encode("profile not founded");
-            http_response_code(404);
-            return;
+            return $this->json("Not founded.", 404);
         }
 
-        $submissions = $this->submissionsRepository->getUserSubmissions($userId);
-
-        echo json_encode($submissions);
+        return $this->json($this->submissionsRepository->getUserSubmissions($userId), 200);
     }
 }

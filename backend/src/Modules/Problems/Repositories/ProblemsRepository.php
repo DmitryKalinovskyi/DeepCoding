@@ -70,7 +70,8 @@ class ProblemsRepository implements IProblemsRepository
             ->alias("S")
             ->select(['S.Id', 'S.Code', 'S.ProblemId', 'S.UserId', 'S.Compiler', 'S.IsPassed', 'S.Result', "S.CreatedTime"])
             ->innerJoin(DeepCodeContext::PROBLEMS_TABLE . " as P", "S.ProblemId = P.Id")
-            ->where("P.Id = :problemId");
+            ->where("P.Id = :problemId")
+            ->orderBy("S.CreatedTime", false);
 
         return $query->execute(['problemId' => $key]);
     }
@@ -81,7 +82,8 @@ class ProblemsRepository implements IProblemsRepository
             ->alias("S")
             ->select(['S.Id', 'S.Code', 'S.ProblemId', 'S.UserId', 'S.Compiler', 'S.IsPassed', 'S.Result', "S.CreatedTime"])
             ->innerJoin(DeepCodeContext::PROBLEMS_TABLE . " as P", "S.ProblemId = P.Id")
-            ->where("S.UserId = :userId and P.Id = :problemId");
+            ->where("S.UserId = :userId and P.Id = :problemId")
+            ->orderBy("S.CreatedTime", false);
 
         return $query->execute(['problemId' => $key, 'userId' => $userId]);
     }
