@@ -1,5 +1,9 @@
 import {useEffect, useState} from "react";
 import {CircularProgress} from "@mui/material";
+import axios from "../../api/axios";
+import useAuth from "../../hooks/useAuth.ts";
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import UnpublishedIcon from '@mui/icons-material/Unpublished';
 
 interface Submission{
     Id: number,
@@ -7,42 +11,49 @@ interface Submission{
     UserId: number,
     Code: string,
     Compiler: string,
+    IsPassed: boolean,
+    Result: object
 }
 
 interface SubmissionListProperties{
     ProblemId: number
 }
 
-const fetchSubmissions = async(problemId: number) => {
-    const url = `http://deepcode/api/problems/${problemId}/submissions`;
-
-    const response = await fetch(url);
-    return await response.json() as Submission[];
-}
-
 function SubmissionList(props: SubmissionListProperties){
-
+    const {auth} = useAuth();
     const [data, setData] = useState<Submission[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isFetching, setIsFetching] = useState(true);
+
+    async function fetchSubmissions(){
+        setIsFetching(true);
+
+        const response = await axios.get(`/api/problems/${props.ProblemId}/submissions`,
+            {
+                headers:{
+                    "Authorization" : `Bearer ${auth.accessToken}`
+                }
+            })
+
+        console.log(response.data)
+        // const data = response.data.map(s => {
+        //     s.Result = JSON.parse(s.Result);
+        //     return s;
+        // })
+        setData(response.data as Submission[]);
+        setIsFetching(false);
+    }
 
     useEffect(() => {
-        setIsLoading(true);
-        async function fetchAndSet(){
-            const submissions = await fetchSubmissions(props.ProblemId);
-            setData(submissions);
-            setIsLoading(false);
-        }
-
-        fetchAndSet().then();
-    }, [props]);
+        fetchSubmissions()
+    }, []);
 
     return (
         <div className="h-full p-2">
-            {isLoading ? <div className="h-full flex justify-center items-center"><CircularProgress /></div>:
-
+            {isFetching ? <div className="h-full flex justify-center items-center"><CircularProgress /></div>:
             <table className="submissions-table">
                 <thead>
                     <tr>
+                        <td>Id</td>
                         <td>Status</td>
                         <td>Compiler</td>
                         <td>Runtime</td>
@@ -53,16 +64,19 @@ function SubmissionList(props: SubmissionListProperties){
                 {data.map((submission) =>
                     <tr onClick={()=>window.location.pathname=`submissions?id=${submission.Id}`}>
                         <td>
-                                {submission.Id}
+                            {submission.Id}
                         </td>
                         <td>
-                            C++
+                            {submission.IsPassed ? <CheckCircleOutlineIcon color="success"/> : <UnpublishedIcon color="error"/>}
                         </td>
                         <td>
-                            20ms
+                            {submission.Compiler}
                         </td>
                         <td>
-                            20mb
+                            {submission.Result.runningTime}ms
+                        </td>
+                        <td>
+                            {submission.Result.memoryUsed}mb
                         </td>
                     </tr>
                 )}

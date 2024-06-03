@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Container, TextField, Button, Typography, Paper, CircularProgress, Alert, IconButton } from '@mui/material';
 import { Add as AddIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import axios from "../../api/axios.ts";
 import useAuth from "../../hooks/useAuth.ts";
 import HTMLFrame from "../../shared/HTMLFrame.tsx";
+import {useParams} from "react-router-dom";
 
 interface Problem {
     Name: string;
@@ -13,7 +14,7 @@ interface Problem {
     Tests: { name: string, input: string }[]; // Changed to array of objects
 }
 
-const DashboardProblems = () => {
+const ProblemEdit = () => {
     const { auth } = useAuth();
     const [problem, setProblem] = useState<Problem>({
         Name: "",
@@ -25,6 +26,22 @@ const DashboardProblems = () => {
     const [isPosting, setIsPosting] = useState(false);
     const [error, setError] = useState("");
     const [isChanged, setIsChanged] = useState(true);
+    const params = useParams<{problemId: string}>()
+    async function fetchProblem(){
+        const response = await axios.get(`api/problems/${params.problemId}`, {
+            headers: {
+                "Authorization": "Bearer " + auth.accessToken
+            }
+        });
+
+        const data = response.data;
+        data.Tests = JSON.parse(data.Tests);
+        setProblem(data);
+    }
+
+    useEffect(() => {
+        fetchProblem()
+    }, []);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -66,7 +83,7 @@ const DashboardProblems = () => {
             console.log(data);
 
             setIsPosting(true);
-            await axios.post("api/problems", data, {
+            await axios.patch(`api/problems/${params.problemId}`, data, {
                 headers: {
                     "Authorization": "Bearer " + auth.accessToken
                 }
@@ -195,4 +212,4 @@ const DashboardProblems = () => {
     );
 };
 
-export default DashboardProblems;
+export default ProblemEdit;

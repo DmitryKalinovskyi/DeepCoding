@@ -11,6 +11,9 @@ import Register from "../../pages/authentication/Register.tsx";
 import RequireAuth from "../gates/RequireAuth.tsx";
 import RequireRole from "../gates/RequireRole.tsx";
 import Playground from "../../pages/playground/Playground.tsx";
+import NewsPage from "../../pages/news/NewsPage.tsx";
+import NewsEdit from "../../pages/news/NewsEdit.tsx";
+import ProblemEdit from "../../pages/problems/ProblemEdit.tsx";
 
 const router = createBrowserRouter([
     {
@@ -21,6 +24,12 @@ const router = createBrowserRouter([
             },
             {
                 path: "/profile/:userId/edit", element: <ProfileEdit/>
+            },
+            {
+                path: '/news/:newsId/edit', element: <NewsEdit/>
+            },
+            {
+                path: '/problems/:problemId/edit', element: <ProblemEdit/>
             }
         ]
     },
@@ -30,10 +39,13 @@ const router = createBrowserRouter([
     {
         path: '/problems/:problemId', element: <Problem/>
     },
-
     {
         path: '/', element: <Home/>
     },
+    {
+        path: '/news/:newsId', element: <NewsPage/>
+    },
+
     {
         path: '/competitions', element: <Competitions/>
     },

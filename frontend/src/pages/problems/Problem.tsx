@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {useParams} from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
 
 import SubmitEditor from "./SubmitEditor.tsx";
 import SubmissionList from "./SubmissionList.tsx";
@@ -7,59 +7,80 @@ import {TabControl, TabPanel} from "../../shared/TabControl.tsx";
 import Card from '@mui/material/Card';
 import StaticLayout from "../../widgets/layout/StaticLayout.tsx";
 import {Button} from "@mui/material";
+import useIsInRole from "../../hooks/useIsInRole.ts";
+import axios from '../../api/axios.ts';
+import useAuth from "../../hooks/useAuth.ts";
+import useIsAuthenticated from "../../hooks/useIsAuthenticated.ts";
+import Select from "../../shared/Select.tsx";
+import CodeEditor from "../../shared/CodeEditor.tsx";
 
 interface Problem{
-    id: number,
-    name: string,
-    description: string
+    Id: number,
+    Name: string,
+    Description: string
 }
 
-const fetchProblem = async(id: number) => {
-    const url = `http://deepcode/api/problems/${id}`;
 
-    const response = await fetch(url);
-    const result = await response.json();
-console.log(result);
-    return {
-        id: result.Id,
-        name: result.Name,
-        description: result.Description
-    }
-}
 function Problem(){
-    const [data, setData] = useState<Problem>();
-    const [isLoading, setIsLoading] = useState(true);
+    const [problem, setProblem] = useState<Problem>();
+    // const [isLoading, setIsLoading] = useState(true);
     const [tabIndex, setTabIndex] = useState(0);
-
+    const {auth} = useAuth();
+    const isAuthenticated = useIsAuthenticated();
     const params = useParams<{problemId: string}>();
+    const isAdmin = useIsInRole("Admin");
+    const [code, setCode] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [compiler, setCompiler] = useState("Python3");
+    async function fetchProblem(){
+        const response = await axios.get(`api/problems/${params.problemId}`);
 
-
+        setProblem(response.data as Problem);
+    }
 
     useEffect(() => {
-        async function fetchAndSet(){
-            const submissions = await fetchProblem(params.problemId);
-            setData(submissions);
-            setIsLoading(false);
-        }
-
-        fetchAndSet().then();
+        fetchProblem();
     }, []);
 
+    async function submitProblem(){
+        if(!isAuthenticated) return;
+
+        console.log("submitting")
+        setIsSubmitting(true);
+        const response = await axios.post(`api/problems/${params.problemId}/submissions`,
+            {
+                code,
+                compiler: "Python3"
+            },
+            {
+                headers: {
+                    "Authorization": `Bearer ${auth.accessToken}`
+                }
+            });
+
+        console.log(response.data)
+
+        setIsSubmitting(false);
+    }
+
     return (
-        <StaticLayout useTinyHeader={false} >
+        <StaticLayout >
             <div className="h-full grid grid-cols-2 gap-8 ">
                 <Card className="relative h-full">
                     <div className="p-6 h-full overflow-y-auto mb-6">
                         <div className="text-2xl font-semibold mb-2">
-                            Problem name: {data?.name}
+                            Problem name: {problem?.Name}
                         </div>
                         <div>
-                            {data?.description}
+                            {problem?.Description}
                         </div>
                     </div>
 
                     <div className="absolute bottom-0 p-2 bg-white w-full flex">
-                        <Button className="w-20 h-6">Report</Button>
+                        {/*<Button className="w-20 h-6">Report</Button>*/}
+                        {isAdmin && <Link to={`/problems/${params.problemId}/edit`}>
+                            <Button className="w-20 h-6">Edit</Button>
+                        </Link>}
                         {/*<Rating*/}
                         {/*        name="simple-controlled"*/}
                         {/*        value={rating}*/}
@@ -82,7 +103,24 @@ function Problem(){
                         />
                         <div className="p-4 h-full">
                             <TabPanel className="h-full" index={0} value={tabIndex}>
-                                <SubmitEditor/>
+                                <div className="flex flex-col max-h-full">
+                                    <div className="bg-light rounded-2">
+                                        <div className="input-group mb-2">
+                                            <Select onChange={(e) => setCompiler(e.target.value)}
+                                                    value={compiler}>
+                                                <option>Python3</option>
+                                            </Select>
+                                        </div>
+                                    </div>
+                                    <CodeEditor
+                                        onChange={(value) => setCode(value)}
+                                        storageId={params.problemId}
+                                        className="h-[calc(100vh-var(--footer-size)-200px-var(--header-size))]"/>
+                                    <Button className="mt-4 w-20 bg-violet-700"
+                                            variant="contained"
+                                            onClick={submitProblem}
+                                    >Send</Button>
+                                </div>
                             </TabPanel>
                             <TabPanel className="h-full" value={tabIndex} index={1}>
                                 {params.problemId && <SubmissionList ProblemId={+params.problemId}/>}

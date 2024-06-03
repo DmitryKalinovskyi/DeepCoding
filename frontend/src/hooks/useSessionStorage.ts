@@ -5,7 +5,7 @@ function useSessionStorage(key: string, initialValue: any = "{}") {
 
     const getInitialValue = () => {
         const storedValue = sessionStorage.getItem(key);
-        return  JSON.parse(storedValue ?? initialValue);
+        return JSON.parse(storedValue ?? initialValue);
     };
 
     const [value, setValue] = useState(getInitialValue);

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, TextField, Button, Typography, Paper } from '@mui/material';
+import {Container, TextField, Button, Typography, Paper, Divider, CircularProgress, Alert} from '@mui/material';
 import axios from "../../api/axios.ts";
 import useAuth from "../../hooks/useAuth.ts";
 import HTMLFrame from "../../shared/HTMLFrame.tsx";
@@ -17,14 +17,17 @@ const DashboardNews = () => {
         Content: '',
         Preview: '',
     });
-    const [isLoading, setIsLoading] = useState(false);
+    const [isPosting, setIsPosting] = useState(false);
     const [error, setError] = useState("");
+    const [isChanged, setIsChanged] = useState(true);
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setNews({
             ...news,
             [name]: value,
         });
+        setIsChanged(true);
     };
 
     async function handleSubmit(e){
@@ -34,15 +37,16 @@ const DashboardNews = () => {
             const data = Object.fromEntries(formData.entries());
             console.log(data)
 
-            setIsLoading(true);
+            setIsPosting(true);
             await axios.post("api/news", data, {
                 headers:{
                     "Authorization": "Bearer " + auth.accessToken
                 }
             })
-            setIsLoading(false);
+            setIsPosting(false);
+            setIsChanged(false);
         }catch(err){
-            setIsLoading(false);
+            setIsPosting(false);
 
             if(err.response.status == 422){
                 setError(err.response.data.errors.toString());
@@ -68,6 +72,7 @@ const DashboardNews = () => {
                     value={news.Title}
                     onChange={handleChange}
                     fullWidth
+                    required
                     margin="normal"
                 />
                 <TextField
@@ -92,9 +97,16 @@ const DashboardNews = () => {
                     required
                     margin="normal"
                 />
-                <Button variant="contained" color="primary" type="submit">
-                    Submit
+                    {isChanged ?
+                <Button
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    disabled={isPosting}
+                >
+                    {isPosting ? <CircularProgress size={24} /> : 'Submit'}
                 </Button>
+                        : <Alert>Posted!</Alert>}
 
                 <Typography variant="h4" component="h1" gutterBottom className="mt-8">
                     Preview
@@ -104,6 +116,7 @@ const DashboardNews = () => {
                         {news.Title}
                     </Typography>
                     <HTMLFrame srcDoc={news.Preview}/>
+                    <Divider/>
                     <HTMLFrame srcDoc={news.Content}/>
                 </Paper>
             </form>

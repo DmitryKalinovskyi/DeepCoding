@@ -4,7 +4,7 @@ function useLocalStorage(key: string, initialValue: any = "") {
     // Get the initial value from localStorage or use the provided initialValue
     const getInitialValue = () => {
         const storedValue = localStorage.getItem(key);
-        return  JSON.parse(storedValue ? storedValue : initialValue);
+        return JSON.parse(storedValue ?? initialValue); // Parse directly here
     };
 
     const [value, setValue] = useState(getInitialValue);
