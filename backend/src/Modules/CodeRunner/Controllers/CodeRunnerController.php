@@ -2,7 +2,9 @@
 
 namespace DeepCode\Modules\CodeRunner\Controllers;
 
-use DeepCode\Modules\CodeRunner\CodeRunner\CodeRunner;
+use DeepCode\Modules\CodeRunner\CodeRunner\ICodeRunner;
+use DeepCode\Modules\CodeRunner\CodeRunner\Runners\ICodeRunnerResolver;
+use DeepCode\Modules\CodeRunner\CodeRunner\RunRules;
 use DeepCode\Modules\CodeRunner\Validation\RunValidation;
 use Framework\Attributes\Dependency\Resolvable;
 use Framework\Attributes\Requests\HttpPost;
@@ -19,7 +21,7 @@ class CodeRunnerController extends APIController
     private HttpContext $context;
 
     #[Resolvable]
-    private CodeRunner $codeRunner;
+    private ICodeRunnerResolver $codeRunnerResolver;
 
     #[Route("run")]
     #[HttpPost]
@@ -34,8 +36,28 @@ class CodeRunnerController extends APIController
             ], 422);
         }
 
-        return $this->json((object)[
-            "result" =>  $this->codeRunner->run($runValidation->Code)
-        ], 200);
+        /* @var RunRules $runRules */
+
+        $runRules = AutoMapper::map($runValidation, new RunRules());
+        $runRules->MemoryLimit = 256;
+        $runRules->TimeLimit = 10;
+
+        try{
+            $codeRunner = $this->codeRunnerResolver->getCodeRunner($runValidation->Compiler);
+            $runResult = $codeRunner->run($runRules);
+        }
+        catch(\Exception $exception){
+            return $this->json((object)[
+                "errors" => [$exception->getMessage()]
+            ], 422);
+        }
+
+        if(!empty($runResult->Errors)){
+            // our user is teapot
+            return $this->json((object)[
+                "errors" => $runResult->Errors
+            ], 418);
+        }
+        return $this->json($runResult, 200);
     }
 }

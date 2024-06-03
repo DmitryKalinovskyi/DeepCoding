@@ -11,7 +11,10 @@ use DeepCode\Modules\Authentication\Repositories\RolesRepository;
 use DeepCode\Modules\Authentication\Repositories\User_RolesRepository;
 use DeepCode\Modules\Authentication\Services\IJWTService;
 use DeepCode\Modules\Authentication\Services\JWTService;
-use DeepCode\Modules\CodeRunner\CodeRunner\CodeRunner;
+use DeepCode\Modules\CodeRunner\CodeRunner\DockerCompilers\Python\PythonCodeRunner;
+use DeepCode\Modules\CodeRunner\CodeRunner\ICodeRunner;
+use DeepCode\Modules\CodeRunner\CodeRunner\Runners\CodeRunnerResolver;
+use DeepCode\Modules\CodeRunner\CodeRunner\Runners\ICodeRunnerResolver;
 use DeepCode\Modules\Following\Repositories\FollowingRepository;
 use DeepCode\Modules\Following\Repositories\IFollowingRepository;
 use DeepCode\Modules\GroupedAPIRequests\Repositories\IUsersGroupedRepository;
@@ -47,7 +50,8 @@ $appBuilder->useConfigurationInstance(
 // basic service configuration
 $appBuilder->services()
     ->addTransientForInterface(IJWTService::class, JWTService::class)
-    ->addTransientForInterface(IPasswordHashingService::class, PasswordHashingService::class);
+    ->addTransientForInterface(IPasswordHashingService::class, PasswordHashingService::class)
+    ->addTransientForInterface(ICodeRunnerResolver::class, CodeRunnerResolver::class);
 
 // database
 $appBuilder->services()
@@ -64,8 +68,7 @@ $appBuilder->services()
     ->addScopedForInterface(INewsRepository::class, NewsRepository::class)
     ->addScopedForInterface(IReportsRepository::class, ReportsRepository::class)
     ->addScopedForInterface(IFollowingRepository::class, FollowingRepository::class)
-    ->addScopedForInterface(IUsersGroupedRepository::class, UsersGroupedRepository::class)
-    ->addScoped( CodeRunner::class);
+    ->addScopedForInterface(IUsersGroupedRepository::class, UsersGroupedRepository::class);
 
 // configure middleware pipeline
 $appBuilder

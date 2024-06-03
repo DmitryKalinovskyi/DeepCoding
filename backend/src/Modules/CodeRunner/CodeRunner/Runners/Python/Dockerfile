@@ -5,7 +5,7 @@ FROM python:3.9-slim
 WORKDIR /app
 
 # Copy the Python script into the container
-COPY script.py .
+COPY runner.py .
 
 # Define the command to run the script
-ENTRYPOINT ["python3", "script.py"]
+ENTRYPOINT ["python3", "runner.py"]

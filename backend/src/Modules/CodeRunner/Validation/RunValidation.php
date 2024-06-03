@@ -12,4 +12,6 @@ class RunValidation
     #[Required]
     public ?string $Compiler = null;
 
+    public string $Input = "";
+
 }
