@@ -19,6 +19,8 @@ use DeepCode\Modules\Following\Repositories\FollowingRepository;
 use DeepCode\Modules\Following\Repositories\IFollowingRepository;
 use DeepCode\Modules\GroupedAPIRequests\Repositories\IUsersGroupedRepository;
 use DeepCode\Modules\GroupedAPIRequests\Repositories\UsersGroupedRepository;
+use DeepCode\Modules\Logging\FileLogger;
+use DeepCode\Modules\Logging\ILoggingService;
 use DeepCode\Modules\News\Repositories\INewsRepository;
 use DeepCode\Modules\News\Repositories\NewsRepository;
 use DeepCode\Modules\Problems\CodeTesting\CodeTestingService;
@@ -54,7 +56,10 @@ $appBuilder->services()
     ->addTransientForInterface(IJWTService::class, JWTService::class)
     ->addTransientForInterface(IPasswordHashingService::class, PasswordHashingService::class)
     ->addTransientForInterface(ICodeRunnerResolver::class, CodeRunnerResolver::class)
-    ->addTransientForInterface(ICodeTestingService::class, CodeTestingService::class);
+    ->addTransientForInterface(ICodeTestingService::class, CodeTestingService::class)
+    ->addTransientForInterface(ILoggingService::class, FileLogger::class, fn() =>
+    new FileLogger($_ENV["LOG_PATH"]))
+;
 
 // database
 $appBuilder->services()

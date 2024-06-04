@@ -93,10 +93,6 @@ class DBSet
     }
 
     public function count(): int{
-        $qb = $this->_dbContext->query()
-            ->select(["COUNT(*) as __DBSET__count"])
-            ->from($this->getTableName());
-
-        return $qb->execute()[0]['__DBSET__count'];
+        return $this->select()->count();
     }
 }

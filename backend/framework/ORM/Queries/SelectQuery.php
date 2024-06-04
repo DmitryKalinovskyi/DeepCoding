@@ -179,10 +179,21 @@ class SelectQuery implements ISelectQueryBuilder, IDBExecutable
 
     public function count(): int{
         // consider that we built some query, and we want to receive count of that select
-        $clone = $this->clone();
+        // we just wrap it with another query.
 
-        return $clone->select(["COUNT(*) as __COUNT__"])
-            ->asArray()
-            ->execute()[0]["__COUNT__"];
+        $clone = $this->clone();
+        $query = $clone->build();
+        $params = $clone->params;
+
+        $fullQuery = $this->_dbContext->query()->select(["COUNT(*) as __COUNT__"])
+            ->from("(" . $query . ") as __COUNT_ALIAS__")->build();
+
+        $executeResult = $this->_dbContext->execute($fullQuery, $params);
+
+        if(empty($executeResult)) return 0;
+
+        $val = $executeResult[0]["__COUNT__"];
+        return $val;
     }
+
 }

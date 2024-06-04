@@ -27,10 +27,10 @@ class DBContext
      * @param array|null $params
      * @param bool $returnObjects Whether to return objects (default: false)
      * @param string|null $class Class name for object conversion (if $returnObjects is true)
-     * @return object|array|false
+     * @return array|false
      * @throws Exception
      */
-    public function execute(string $query, ?array $params = null, bool $returnObjects = false, ?string $class = null): object|array|false
+    public function execute(string $query, ?array $params = null, bool $returnObjects = false, ?string $class = null): array|false
     {
         try {
             $sth = $this->_pdo->prepare($query);

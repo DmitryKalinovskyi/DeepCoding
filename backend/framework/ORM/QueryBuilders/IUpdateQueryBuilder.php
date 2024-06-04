@@ -9,7 +9,6 @@ interface IUpdateQueryBuilder
     public function set(string $fieldName, string $variable): IUpdateQueryBuilder;
 
     public function where(string $condition): IUpdateQueryBuilder;
-
     public function build(): string;
 
     public function clone(): IUpdateQueryBuilder;

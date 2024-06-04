@@ -174,4 +174,5 @@ class MySQLSelect implements ISelectQueryBuilder
         $this->havingCondition = $condition;
         return $this;
     }
+
 }

@@ -65,4 +65,5 @@ class MySQLUpdate implements IUpdateQueryBuilder
 
         return $copy;
     }
+
 }

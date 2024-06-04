@@ -17,6 +17,9 @@ class UserDTO
     public bool $IsFollowed;
 
     // later add submissions
+    public int $SolvedProblemsCount;
 
+    public int $SubmissionsCount;
 
+    public array $SubmissionActivity;
 }

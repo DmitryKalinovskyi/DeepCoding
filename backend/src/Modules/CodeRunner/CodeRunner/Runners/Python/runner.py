@@ -1,6 +1,7 @@
 import sys
 import time
 import tracemalloc
+import contextlib
 
 def read_file(filename):
     with open(filename, 'r') as file:
@@ -34,9 +35,15 @@ try:
     start_time = time.time()  # Start time for execution
     tracemalloc.start()       # Start tracking memory
 
+    # Backup the original stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO(input_data)
+
     # Execute the code with the provided input, capturing the output
     with contextlib.redirect_stdout(output):
-        exec(code, {'input_data': input_data})
+        exec(code)
+    # Restore the original stdin
+    sys.stdin = original_stdin
 
     end_time = time.time()    # End time for execution
     current, peak = tracemalloc.get_traced_memory()
@@ -55,39 +62,3 @@ except Exception as e:
 finally:
     output.close()
 
-
-
-
-
-
-
-# import sys
-#
-# def read_file(filename):
-#     with open(filename, 'r') as file:
-#         return file.read()
-#
-# # Read code and input from files
-# code = read_file('/app/code.py')
-# input_data = read_file('/app/input.txt')
-#
-# # Expected structure in case of exception
-# # Started
-# # .. garbage output
-# # Exception
-# # Exception description
-#
-# # In case of executed
-# # Started
-# # Output
-# # Runtime: *ms
-# # Memory: *mb
-#
-#
-# print("Started")
-# try:
-#     # Execute the code with the provided input
-#     exec(code, {'input_data': input_data})
-# except Exception as e:
-#     print("Exception")
-#     print(str(e))

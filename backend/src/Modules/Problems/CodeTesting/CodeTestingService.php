@@ -29,7 +29,7 @@ class CodeTestingService implements ICodeTestingService
             $runRules = new RunRules(
                 [
                     "code.py" => $info->code,
-                    "input.txt" => $testCase->input
+                    "input.txt" => $testCase->input,
                 ],
                 10,
                 255);
@@ -40,7 +40,8 @@ class CodeTestingService implements ICodeTestingService
             if(isset($runResult->errors)){
                 $testResult->testCaseResults[] = (object)[
                     "isPassed" => false,
-                    "errors" => "Runtime error."
+                    "errors" => "Runtime error.",
+                    "name" => $testCase->name
                 ];
                 $testResult->isPassed = false;
                 continue;
@@ -54,8 +55,10 @@ class CodeTestingService implements ICodeTestingService
 
             // in the $testingResult->output should be true or false, that denotes is test passed or not.
             $testingResult = $testingRunner->run($testingRules);
-            if(isset($testingResult->errors))
-                throw new \Exception("Error when tried to validate test.");
+            if(isset($testingResult->errors)){
+                $err = join(",", $testingResult->errors);
+                throw new \Exception("Error when tried to validate test. $err");
+            }
 
             $isPassed = strtolower(trim($testingResult->output)) == "true";
 

@@ -6,6 +6,7 @@ use DeepCode\Models\Problem;
 use DeepCode\Models\Submission;
 use DeepCode\Modules\Authentication\Attributes\Filters\Authenticated;
 use DeepCode\Modules\Authentication\Attributes\Filters\InRole;
+use DeepCode\Modules\Logging\ILoggingService;
 use DeepCode\Modules\Problems\CodeTesting\ICodeTestingService;
 use DeepCode\Modules\Problems\CodeTesting\TestInfo;
 use DeepCode\Modules\Problems\DTO\SubmissionDTO;
@@ -36,15 +37,17 @@ class ProblemsController extends APIController {
     private HttpContext $context;
     #[Resolvable]
     private ISubmissionsRepository $submissionsRepository;
-
     #[Resolvable]
     private ICodeTestingService $codeTestingService;
+
+    #[Resolvable]
+    private ?ILoggingService $loggingService = null;
 
     #[Route("/")]
     public function Search(): JsonResponse{
 
         /* @var ProblemsSearchParams $params */
-        $params = AutoMapper::map($this->context->body, new ProblemsSearchParams());
+        $params = AutoMapper::mapFromArray($_GET, new ProblemsSearchParams());
         if(!Validator::isModelValid($params)){
             return $this->json((object)["errors" => Validator::getErrors($params)], 422);
         }
@@ -167,6 +170,13 @@ class ProblemsController extends APIController {
         try{
             $testResult = $this->codeTestingService->test($testInfo);
         }catch (Exception $err){
+            $message = $err->getMessage();
+            // in case of error we need to somehow report it.
+            if($this->loggingService){
+                $log = "$problemId, $problem->Name, internal server error. $message";
+                $this->loggingService->log($log);
+            }
+
             return $this->json("Internal server error", 500);
         }
 
