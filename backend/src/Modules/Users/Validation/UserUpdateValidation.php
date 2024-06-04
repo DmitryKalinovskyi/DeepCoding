@@ -5,22 +5,18 @@ namespace DeepCode\Modules\Users\Validation;
 use Framework\Validation\Annotation\Required;
 use Framework\Validation\Annotation\StringLength;
 
-class UserValidation
+class UserUpdateValidation
 {
-    #[Required]
-    #[StringLength(4)]
-    public ?string $Login = null;
-
     #[Required]
     #[StringLength(5)]
     public ?string $Name = null;
-    public string $AvatarUrl = "";
+    #[Required]
+    public ?string $AvatarUrl = null;
 
     #[Required]
     #[StringLength(5)]
     public ?string $Password = null;
 
-    public int $RegisterDate;
-
+    #[Required]
     public ?string $Description = null;
 }

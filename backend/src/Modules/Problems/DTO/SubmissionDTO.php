@@ -17,4 +17,8 @@ class SubmissionDTO
     public object $Result;
 
     public int $CreatedTime;
+
+    public string $UserLogin;
+
+    public string $ProblemName;
 }

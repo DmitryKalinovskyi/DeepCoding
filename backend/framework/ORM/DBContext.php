@@ -21,55 +21,47 @@ class DBContext
     }
 
     /**
+     * Executes a query and returns the results.
+     *
+     * @param string $query
+     * @param array|null $params
+     * @param bool $returnObjects Whether to return objects (default: false)
+     * @param string|null $class Class name for object conversion (if $returnObjects is true)
+     * @return object|array|false
      * @throws Exception
      */
-    public function execute(string $query, $params): array|false{
-        try{
-
+    public function execute(string $query, ?array $params = null, bool $returnObjects = false, ?string $class = null): object|array|false
+    {
+        try {
             $sth = $this->_pdo->prepare($query);
             $sth->execute($params);
 
-            return $sth->fetchAll(PDO::FETCH_ASSOC);
-        }catch(Exception $e){
-            echo "Builded query: ".$query;
-
-            throw $e;
-        }
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function executeAndMap(string $query, $params, string $class): array{
-        try{
-
-            $sth = $this->_pdo->prepare($query);
-            $sth->execute($params);
-
-            $results = [];
-            while ($row = $sth->fetch(PDO::FETCH_ASSOC)) {
-                $instance = new $class();
-
-                foreach($row as $property => $value)
-                    if(property_exists($instance, $property))
-                    $instance->$property = $value;
-
-                $results[] = $instance;
+            if ($returnObjects) {
+                $results = [];
+                while ($row = $sth->fetch(PDO::FETCH_ASSOC)) {
+                    if ($class) {
+                        $instance = new $class();
+                        foreach ($row as $property => $value) {
+                            $instance->$property = $value;
+                        }
+                        $results[] = $instance;
+                    } else {
+                        $results[] = (object)$row;
+                    }
+                }
+                return $results;
+            } else {
+                return $sth->fetchAll(PDO::FETCH_ASSOC);
             }
-
-            return $results;
-        }
-        catch(Exception $e){
-            echo "Builded query: ".$query;
-
+        } catch (Exception $e) {
+            echo "Built query: " . $query;
             throw $e;
         }
-
     }
 
     private string $_queryBuilderClass;
 
-    public function setQueryBuilder(string $queryBuilderClass){
+    public function setQueryBuilder(string $queryBuilderClass): void{
         if(is_subclass_of($queryBuilderClass, IQueryBuilder::class)){
             $this->_queryBuilderClass = $queryBuilderClass;
         }

@@ -18,7 +18,7 @@ class ProblemsRepository implements IProblemsRepository
     {
         // first we need to build query that select
         $query = $this->db->problems->select()
-            ->asClass(ProblemDTO::class)
+            ->asObject()
             ->limit($params->pageSize)
             ->offset($params->pageSize * $params->page);
 
@@ -68,8 +68,11 @@ class ProblemsRepository implements IProblemsRepository
     {
         $query = $this->db->submissions
             ->alias("S")
-            ->select(['S.Id', 'S.Code', 'S.ProblemId', 'S.UserId', 'S.Compiler', 'S.IsPassed', 'S.Result', "S.CreatedTime"])
-            ->innerJoin(DeepCodeContext::PROBLEMS_TABLE . " as P", "S.ProblemId = P.Id")
+            ->select(['S.Id', 'S.Code', 'S.ProblemId', 'S.UserId', 'S.Compiler', 'S.IsPassed', 'S.Result', 'S.CreatedTime',
+                 'U.Login as UserLogin', 'P.Name as ProblemName'])
+            ->asObject()
+            ->rightJoin(DeepCodeContext::PROBLEMS_TABLE . " as P", "S.ProblemId = P.Id")
+            ->innerJoin(DeepCodeContext::USERS_TABLE . " as U", "S.UserId = U.Id")
             ->where("P.Id = :problemId")
             ->orderBy("S.CreatedTime", false);
 
@@ -80,8 +83,11 @@ class ProblemsRepository implements IProblemsRepository
     {
         $query = $this->db->submissions
             ->alias("S")
-            ->select(['S.Id', 'S.Code', 'S.ProblemId', 'S.UserId', 'S.Compiler', 'S.IsPassed', 'S.Result', "S.CreatedTime"])
-            ->innerJoin(DeepCodeContext::PROBLEMS_TABLE . " as P", "S.ProblemId = P.Id")
+            ->select(['S.Id', 'S.Code', 'S.ProblemId', 'S.UserId', 'S.Compiler', 'S.IsPassed', 'S.Result', 'S.CreatedTime',
+                'U.Login as UserLogin', 'P.Name as ProblemName'])
+            ->asObject()
+            ->rightJoin(DeepCodeContext::PROBLEMS_TABLE . " as P", "S.ProblemId = P.Id")
+            ->innerJoin(DeepCodeContext::USERS_TABLE . " as U", "S.UserId = U.Id")
             ->where("S.UserId = :userId and P.Id = :problemId")
             ->orderBy("S.CreatedTime", false);
 

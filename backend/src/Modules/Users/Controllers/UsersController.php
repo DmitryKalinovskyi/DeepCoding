@@ -9,7 +9,8 @@ use DeepCode\Modules\Authentication\Attributes\Filters\Unauthenticated;
 use DeepCode\Modules\Users\DTO\UserDTO;
 use DeepCode\Modules\Users\Repositories\IUserRepository;
 use DeepCode\Modules\Users\Repositories\UsersSearchParams;
-use DeepCode\Modules\Users\Validation\UserValidation;
+use DeepCode\Modules\Users\Validation\RegisterValidation;
+use DeepCode\Modules\Users\Validation\UserUpdateValidation;
 use Framework\Attributes\Dependency\Resolvable;
 use Framework\Attributes\Requests\HttpDelete;
 use Framework\Attributes\Requests\HttpPatch;
@@ -79,7 +80,7 @@ class UsersController extends APIController
     #[HttpPost]
     #[Unauthenticated]
     public function Register(): JsonResponse{
-        $registerViewModel = new UserValidation();
+        $registerViewModel = new RegisterValidation();
         AutoMapper::map($this->context->body, $registerViewModel);
 
         if(!Validator::isModelValid($registerViewModel)){
@@ -141,9 +142,9 @@ class UsersController extends APIController
     }
 
     private function updateUserCommon(int $userId): JsonResponse{
-        $intersect = AutoMapper::intersect($this->context->body, new UserValidation());
+        $intersect = AutoMapper::intersect($this->context->body, new UserUpdateValidation());
         $errors = [];
-        if(!TemplateValidator::isModelValid($intersect, UserValidation::class, false, $errors)){
+        if(!TemplateValidator::isModelValid($intersect, RegisterValidation::class, false, $errors)){
             return $this->json((object)["errors" => $errors], 422);
         }
 

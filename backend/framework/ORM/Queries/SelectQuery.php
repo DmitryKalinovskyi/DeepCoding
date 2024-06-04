@@ -61,21 +61,33 @@ class SelectQuery implements ISelectQueryBuilder, IDBExecutable
     public function clone(): self
     {
         $clone = new SelectQuery($this->_selectQueryBuilder->clone(), $this->_dbContext);
-        $clone->_asClass = $this->_asClass;
+        $clone->_selectAs = $this->_selectAs;
+        $clone->_select_class = $this->_select_class;
         $clone->params = $this->params;
         return $clone;
     }
 
-    private string $_asClass = "";
+    private const ARRAY_TYPE = "array";
+    private const OBJECT_TYPE = "object";
+    private const CLASS_TYPE = "class";
+
+    private string $_selectAs = self::ARRAY_TYPE;
+    private string $_select_class = "";
 
     public function asClass($class): self{
-        $this->_asClass = $class;
+        $this->_selectAs = self::CLASS_TYPE;
+        $this->_select_class = $class;
+        return $this;
+    }
+
+    public function asObject(): self{
+        $this->_selectAs = self::OBJECT_TYPE;
         return $this;
     }
 
     // used by default
     public function asArray(): self{
-        $this->_asClass = "";
+        $this->_selectAs = self::ARRAY_TYPE;
         return $this;
     }
 
@@ -83,10 +95,14 @@ class SelectQuery implements ISelectQueryBuilder, IDBExecutable
     {
         $params = array_merge($this->params, $params);
 
-        if(empty($this->_asClass) === false)
-            return $this->_dbContext->executeAndMap($this->build(), $params, $this->_asClass);
+        if($this->_selectAs == self::ARRAY_TYPE)
+            return $this->_dbContext->execute($this->build(), $params);
+        else if($this->_selectAs == self::OBJECT_TYPE)
+            return $this->_dbContext->execute($this->build(), $params, true);
+        else if($this->_selectAs == self::CLASS_TYPE)
+            return $this->_dbContext->execute($this->build(), $params, true, $this->_select_class);
 
-        return $this->_dbContext->execute($this->build(), $params);
+        return false;
     }
 
     public function first($params = []): mixed{

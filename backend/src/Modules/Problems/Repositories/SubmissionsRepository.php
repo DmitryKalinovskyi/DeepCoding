@@ -3,6 +3,7 @@
 namespace DeepCode\Modules\Problems\Repositories;
 
 use DeepCode\DB\DeepCodeContext;
+use DeepCode\Modules\Problems\DTO\SubmissionDTO;
 
 class SubmissionsRepository implements ISubmissionsRepository
 {
@@ -19,8 +20,14 @@ class SubmissionsRepository implements ISubmissionsRepository
 
     public function find($key): mixed
     {
-        return $this->context->submissions->select()
-            ->where("Id = :id")
+        return $this->context->submissions
+            ->alias("S")
+            ->select(['S.Id', 'S.Code', 'S.ProblemId', 'S.UserId', 'S.Compiler', 'S.CreatedTime', 'S.IsPassed',
+                'S.Result', 'U.Login as UserLogin', 'P.Name as ProblemName'])
+            ->asObject()
+            ->innerJoin(DeepCodeContext::USERS_TABLE." as U", "U.Id = S.UserId")
+            ->innerJoin(DeepCodeContext::PROBLEMS_TABLE." as P", "P.Id = S.ProblemId")
+            ->where("S.Id = :id")
             ->first([":id" => $key]);
     }
 
@@ -40,9 +47,12 @@ class SubmissionsRepository implements ISubmissionsRepository
     {
         return $this->context->submissions
             ->alias("S")
-            ->select(['S.Id', 'S.Code', 'S.ProblemId', 'S.UserId', 'S.Compiler'])
-            ->innerJoin(DeepCodeContext::USERS_TABLE." as P", "P.Id = S.UserId")
-            ->where("P.Id = :id")
+            ->select(['S.Id', 'S.Code', 'S.ProblemId', 'S.UserId', 'S.Compiler', 'S.CreatedTime', 'S.IsPassed',
+                'S.Result', 'U.Login as UserLogin', 'P.Name as ProblemName'])
+            ->asObject()
+            ->innerJoin(DeepCodeContext::USERS_TABLE." as U", "U.Id = S.UserId")
+            ->innerJoin(DeepCodeContext::PROBLEMS_TABLE." as P", "P.Id = S.ProblemId")
+            ->where("U.Id = :id")
             ->execute([":id" => $userId]);
     }
 }
