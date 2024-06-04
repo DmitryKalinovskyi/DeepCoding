@@ -15,7 +15,7 @@ interface UserProperties {
 export default function ProfileEditProfile() {
     const { auth } = useAuth();
     const [isLoading, setIsLoading] = useState(true);
-    const [isPatching, setIsPacthing] = useState(false);
+    const [isPatching, useIsPatching] = useState(false);
     const [user, setUser] = useState<UserProperties>({ Name: '', Password: '', Description: '' });
     const routeParams = useParams<{ userId: string }>();
     const [changed, setChanged] = useState(true);
@@ -53,7 +53,7 @@ export default function ProfileEditProfile() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            setIsPacthing(true);
+            useIsPatching(true);
             const response = await axios.patch(`api/users/my`, user, {
                 headers: {
                     "Authorization": "Bearer " + auth.accessToken
@@ -64,7 +64,7 @@ export default function ProfileEditProfile() {
         } catch (err: any) {
             console.log("Update failed", err.message);
         }
-        setIsPacthing(false);
+        useIsPatching(false);
     };
 
     if (isLoading) {

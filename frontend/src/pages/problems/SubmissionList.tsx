@@ -56,7 +56,7 @@ function SubmissionList(props: SubmissionListProperties){
     }, []);
 
     return (
-        <div className="h-full p-2">
+        <div className="p-2">
             {isFetching ? <div className="h-full flex justify-center items-center"><CircularProgress /></div>:
             <table className="submissions-table">
                 <thead>

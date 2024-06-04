@@ -47,6 +47,8 @@ function Problem(){
     async function submitProblem(){
         if(!isAuthenticated) return;
 
+        try{
+
         console.log("submitting")
         setIsSubmitting(true);
         const response = await axios.post(`api/problems/${params.problemId}/submissions`,
@@ -61,8 +63,13 @@ function Problem(){
             });
 
         console.log(response.data)
-
-        setIsSubmitting(false);
+        }
+        catch(err){
+            console.log(err)
+        }
+        finally {
+            setIsSubmitting(false);
+        }
     }
 
     return (
@@ -132,7 +139,7 @@ function Problem(){
                                     </Button>}
                                 </div>
                             </TabPanel>
-                            <TabPanel className="h-full" value={tabIndex} index={1}>
+                            <TabPanel className="h-[calc(100%-40px)] overflow-y-auto" value={tabIndex} index={1}>
                                 {params.problemId && <SubmissionList ProblemId={+params.problemId}/>}
                             </TabPanel>
                         </div>

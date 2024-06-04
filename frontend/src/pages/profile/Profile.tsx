@@ -3,7 +3,7 @@ import Card from "@mui/material/Card";
 // import YouTubeIcon from '@mui/icons-material/YouTube';
 // import GitHubIcon from '@mui/icons-material/GitHub';
 import {Button, Divider, Skeleton} from "@mui/material";
-import ContributionHeatmap from "./ContributionHeatmap.tsx";
+import ContributionHeatmap, {Contribution} from "./ContributionHeatmap.tsx";
 import {Link, useParams} from "react-router-dom";
 import useAuth from "../../hooks/useAuth.ts";
 import {useEffect, useState} from "react";
@@ -18,6 +18,29 @@ export default function Profile(){
     const [isLoading, setIsLoading] = useState(true);
     const [user, setUser] = useState({});
     const routeParams = useParams<{userId: string}>();
+
+    function toContributions(a){
+        const map = new Map<string, number>();
+
+        for (const item of a) {
+            const date = new Date(item.CreatedTime * 1000); // Convert Unix timestamp to milliseconds
+            const dateString = moment(date).format("YYYY-MM-DD"); // Get the date string in 'YYYY-MM-DD' format
+
+            const el = map.get(dateString);
+            if(el === undefined)
+                map.set(dateString, 1);
+            else
+                map.set(dateString, el + 1);
+        }
+
+        const result: Contribution[] = [];
+        for(const [key, value] of map)
+            result.push({date: key, count:value})
+
+        console.log("Parsed");
+        console.log(result)
+        return result;
+    }
 
     async function fetchUser(){
         try{
@@ -186,11 +209,11 @@ export default function Profile(){
                                         <div className="text-center">
                                             Solved problems
                                         </div>
-                                        <div className="text-center">10</div>
+                                        <div className="text-center">{user.SolvedProblemsCount}</div>
                                     </div>
                                     <div className="bg-blue-100 rounded-md p-2 text-lg basis-1/2">
                                         <div className="text-center">Submissions</div>
-                                        <div className="text-center">10</div>
+                                        <div className="text-center">{user.SubmissionsCount}</div>
                                     </div>
                                 </div>
                             </div>
@@ -200,7 +223,7 @@ export default function Profile(){
                                 <div className="font-semibold mb-4 text-xl">
                                 Recent activity
                                 </div>
-                                <ContributionHeatmap/>
+                                <ContributionHeatmap contributions={toContributions(user.SubmissionActivity)}/>
                             </div>
                         </div>
                     </Card>

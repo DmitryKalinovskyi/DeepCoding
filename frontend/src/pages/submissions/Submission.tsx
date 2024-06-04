@@ -85,7 +85,7 @@ export default function Submission() {
                             </Link>
                         </div>
                         <div>
-                            <div className="font-bold text-xl">Submitted</div>
+                            <div className="font-bold text-xl">Sent</div>
                             <div>
                                 {getElapsedTime()}
                             </div>
@@ -151,8 +151,8 @@ export default function Submission() {
                                             {test.isPassed ? <CheckCircleOutlineIcon color="success"/> : <UnpublishedIcon color="error"/>}
                                         </TableCell>
                                         <TableCell >{test.name}</TableCell>
-                                        <TableCell >{test.runningTime} ms</TableCell>
-                                        <TableCell >{test.memoryUsed} mb</TableCell>
+                                        <TableCell >{Math.floor(test.runningTime* 100)/100} ms</TableCell>
+                                        <TableCell >{Math.floor(test.memoryUsed * 100)/100} mb</TableCell>
                                     </TableRow>
                                 ))}
                                 <TableRow
@@ -162,8 +162,8 @@ export default function Submission() {
                                         {submission.IsPassed ? <CheckCircleOutlineIcon color="success"/> : <UnpublishedIcon color="error"/>}
                                     </TableCell>
                                     <TableCell >All tests</TableCell>
-                                    <TableCell >{submission.Result.runningTime} ms</TableCell>
-                                    <TableCell >{submission.Result.memoryUsed} mb</TableCell>
+                                    <TableCell >{Math.floor(submission.Result.runningTime * 100)/100} ms</TableCell>
+                                    <TableCell >{Math.floor(submission.Result.memoryUsed * 100)/100} mb</TableCell>
                                 </TableRow>
                             </TableBody>
                         </Table>
