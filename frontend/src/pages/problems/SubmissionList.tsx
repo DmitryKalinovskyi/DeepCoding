@@ -4,6 +4,8 @@ import axios from "../../api/axios";
 import useAuth from "../../hooks/useAuth.ts";
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import UnpublishedIcon from '@mui/icons-material/Unpublished';
+import {useNavigate} from "react-router-dom";
+import useIsAuthenticated from "../../hooks/useIsAuthenticated.ts";
 
 interface Submission{
     Id: number,
@@ -23,8 +25,14 @@ function SubmissionList(props: SubmissionListProperties){
     const {auth} = useAuth();
     const [data, setData] = useState<Submission[]>([]);
     const [isFetching, setIsFetching] = useState(true);
+    const navigate = useNavigate();
+    const isAuthenticated = useIsAuthenticated();
 
     async function fetchSubmissions(){
+        if(!isAuthenticated){
+            setIsFetching(false);
+            return;
+        }
         setIsFetching(true);
 
         const response = await axios.get(`/api/problems/${props.ProblemId}/submissions`,
@@ -62,7 +70,7 @@ function SubmissionList(props: SubmissionListProperties){
                 </thead>
                 <tbody>
                 {data.map((submission) =>
-                    <tr onClick={()=>window.location.pathname=`submissions?id=${submission.Id}`}>
+                    <tr key={submission.Id} onClick={() => navigate( `/submissions/${submission.Id}`)}>
                         <td>
                             {submission.Id}
                         </td>
@@ -73,10 +81,10 @@ function SubmissionList(props: SubmissionListProperties){
                             {submission.Compiler}
                         </td>
                         <td>
-                            {submission.Result.runningTime}ms
+                            {Math.floor(submission.Result.runningTime*100)/100} ms
                         </td>
                         <td>
-                            {submission.Result.memoryUsed}mb
+                            {Math.floor(submission.Result.memoryUsed*100)/100} mb
                         </td>
                     </tr>
                 )}

@@ -14,6 +14,7 @@ import Playground from "../../pages/playground/Playground.tsx";
 import NewsPage from "../../pages/news/NewsPage.tsx";
 import NewsEdit from "../../pages/news/NewsEdit.tsx";
 import ProblemEdit from "../../pages/problems/ProblemEdit.tsx";
+import Submission from "../../pages/submissions/Submission.tsx";
 
 const router = createBrowserRouter([
     {
@@ -66,6 +67,9 @@ const router = createBrowserRouter([
     {
         path: '/playground', element: <Playground/>
     },
+    {
+        path: '/submissions/:submissionId', element: <Submission/>
+    }
 ])
 
 export default function MyRouter(){

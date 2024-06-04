@@ -39,7 +39,7 @@ async function fetchProblems(search = "", page= 0, pageSize = 25) {
 }
 
 
-function ProblemsFilter(params: SearchFilterParams){
+function SearchFilter(params: SearchFilterParams){
     const [isLoaded, setIsLoaded] = useState(false);
     const [isSearching, setIsSearching] = useState(false);
     const [problemsPage, setProblemsPage] = useState(1);
@@ -125,7 +125,7 @@ function ProblemsFilter(params: SearchFilterParams){
                        placeholder="Enter problem name"/>
             </div>
 
-            <div>
+            <div className="mb-4">
                 <table className={cn("w-full problems-table", isSearching ? "is-searching" : "")}>
                     <thead>
                         <tr>
@@ -156,7 +156,7 @@ function ProblemsFilter(params: SearchFilterParams){
                 </table>
             </div>
 
-            {searchResult.pageCount > 0 &&
+            {searchResult.pageCount > 1 &&
                 <div className="flex justify-center">
 
                 <Pagination count={searchResult.pageCount}
@@ -171,5 +171,5 @@ function ProblemsFilter(params: SearchFilterParams){
     );
 }
 
-export default ProblemsFilter;
+export default SearchFilter;
 

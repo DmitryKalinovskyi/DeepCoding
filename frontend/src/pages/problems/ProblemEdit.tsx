@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import { Container, TextField, Button, Typography, Paper, CircularProgress, Alert, IconButton } from '@mui/material';
+import { Container, TextField, Button, Typography, Paper, CircularProgress, Alert, IconButton, Card } from '@mui/material';
 import { Add as AddIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import axios from "../../api/axios.ts";
 import useAuth from "../../hooks/useAuth.ts";
 import HTMLFrame from "../../shared/HTMLFrame.tsx";
 import {useParams} from "react-router-dom";
+import DynamicLayout from '../../widgets/layout/DynamicLayout.tsx';
 
 interface Problem {
     Name: string;
@@ -102,11 +103,12 @@ const ProblemEdit = () => {
     }
 
     return (
-        <div className="h-full">
+        <DynamicLayout>
+            <Card className="py-8">
             <Container maxWidth="md">
                 <form method="post" onSubmit={handleSubmit}>
                     <Typography variant="h4" component="h1" gutterBottom>
-                        Create Problem
+                        Edit Problem
                     </Typography>
                     <TextField
                         label="Name"
@@ -191,9 +193,9 @@ const ProblemEdit = () => {
                             type="submit"
                             disabled={isPosting}
                         >
-                            {isPosting ? <CircularProgress size={24} /> : 'Submit'}
+                            {isPosting ? <CircularProgress size={24} /> : 'Update'}
                         </Button>
-                        : <Alert>Posted!</Alert>}
+                        : <Alert>Updated!</Alert>}
 
                     {error !== "" && <Alert severity="error">{error}</Alert>}
 
@@ -208,7 +210,10 @@ const ProblemEdit = () => {
                     </Paper>
                 </form>
             </Container>
-        </div>
+            </Card>
+
+        </DynamicLayout>
+
     );
 };
 

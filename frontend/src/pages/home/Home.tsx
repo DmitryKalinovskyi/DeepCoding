@@ -6,6 +6,7 @@ import HTMLFrame from '../../shared/HTMLFrame.tsx';
 import {Button, CircularProgress, Pagination} from '@mui/material';
 import Input from '../../shared/Input.tsx';
 import { Link } from 'react-router-dom';
+import moment from "moment";
 
 
 interface HomeViewModel{
@@ -29,7 +30,12 @@ export default function Home(){
 
     async function getData() {
         setIsFetching(true);
-
+        console.log("Params")
+        console.log({
+            title: search,
+            page: page.toString(),
+            pageSize: '5'
+        })
         const response = await axios.get("api/news?" + new URLSearchParams({
             title: search,
             page: page.toString(),
@@ -43,10 +49,7 @@ export default function Home(){
         setIsFetching(false);
     }
 
-    useEffect(() => {
-        getData()
 
-    }, []);
 
     async function onSearch(e){
         e.preventDefault();
@@ -78,7 +81,9 @@ export default function Home(){
                                         <HTMLFrame srcDoc={news.Preview}/>
                                         <div className="flex justify-between">
                                             {/*<div><Button>Like</Button></div>*/}
-                                            <div>{(new Date(news.CreatedTime * 1000)).toUTCString()}</div>
+                                            <div>
+                                                {moment(new Date(news?.CreatedTime * 1000 ?? 0)).format("MMMM Do YYYY")}
+                                            </div>
                                         </div>
                                     </div>
                                 </Card>

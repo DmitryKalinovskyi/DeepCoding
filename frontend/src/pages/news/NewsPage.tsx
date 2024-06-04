@@ -7,6 +7,7 @@ import HTMLFrame from "../../shared/HTMLFrame.tsx";
 import useAuth from '../../hooks/useAuth.ts';
 import useIsInRole from "../../hooks/useIsInRole.ts";
 import {Button, Dialog, DialogActions, DialogTitle, Skeleton} from '@mui/material';
+import moment from "moment/moment";
 
 
 
@@ -80,7 +81,10 @@ export default function NewsPage(){
                                 <HTMLFrame srcDoc={news.Content}/>
                                 <div className="flex justify-between">
                                     {/*<div><Button>Like</Button></div>*/}
-                                    <div>{(new Date(news.CreatedTime * 1000)).toUTCString()}</div>
+                                    <div>
+
+                                    {moment(new Date(news?.CreatedTime * 1000 ?? 0)).format("MMMM Do YYYY")}
+                                    </div>
                                 </div>
                             </div>
                         }

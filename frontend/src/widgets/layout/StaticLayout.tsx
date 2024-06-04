@@ -5,7 +5,7 @@ import {cn} from "../../lib/utils.ts";
 interface LayoutProps{
     haveHeader?: boolean,
     haveFooter?: boolean,
-    children: JSX.Element[] | JSX.Element
+    children: JSX.Element[] | JSX.Element | null
 }
 export default function StaticLayout({haveHeader = true, haveFooter = true, children}: LayoutProps){
     function getHeightClassName(): string{

@@ -1,7 +1,7 @@
 import DynamicLayout from "../../widgets/layout/DynamicLayout.tsx";
 import Card from "@mui/material/Card";
-import YouTubeIcon from '@mui/icons-material/YouTube';
-import GitHubIcon from '@mui/icons-material/GitHub';
+// import YouTubeIcon from '@mui/icons-material/YouTube';
+// import GitHubIcon from '@mui/icons-material/GitHub';
 import {Button, Divider, Skeleton} from "@mui/material";
 import ContributionHeatmap from "./ContributionHeatmap.tsx";
 import {Link, useParams} from "react-router-dom";
@@ -9,6 +9,7 @@ import useAuth from "../../hooks/useAuth.ts";
 import {useEffect, useState} from "react";
 import axios from "../../api/axios.ts";
 
+import moment from "moment"
 import defaultAvatar from "/defaultAvatar.png"
 import HTMLFrame from "../../shared/HTMLFrame.tsx";
 
@@ -54,6 +55,7 @@ export default function Profile(){
             ...user,
             IsFollowed: follow
         });
+        console.log("start fetching")
         const url = follow ? `api/users/${routeParams.userId}/follow` : `api/users/${routeParams.userId}/unfollow`;
         await axios.post(url,{}, {
             headers: {
@@ -165,7 +167,7 @@ export default function Profile(){
 
                             <div>
                                 <div>
-                                    Member since: {user.RegisterDate}
+                                    Member since: {moment(new Date(user.RegisterDate * 1000 ?? 0)).format("MMMM Do YYYY")}
                                 </div>
                             </div>
                         </div>

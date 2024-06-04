@@ -2,7 +2,7 @@ import Header from "../Header.tsx";
 import Footer from "../Footer.tsx";
 
 interface LayoutProps{
-    children: JSX.Element[] | JSX.Element
+    children: JSX.Element[] | JSX.Element | null
 }
 export default function DynamicLayout(props: LayoutProps){
     return (
@@ -12,7 +12,6 @@ export default function DynamicLayout(props: LayoutProps){
                 <div className="container">
                     <div className="p-5 min-h-full min-w-full">
                         {props.children}
-
                         </div>
                     </div>
             </div>

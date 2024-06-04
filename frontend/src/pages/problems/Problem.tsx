@@ -6,18 +6,20 @@ import SubmissionList from "./SubmissionList.tsx";
 import {TabControl, TabPanel} from "../../shared/TabControl.tsx";
 import Card from '@mui/material/Card';
 import StaticLayout from "../../widgets/layout/StaticLayout.tsx";
-import {Button} from "@mui/material";
+import {Button, CircularProgress} from "@mui/material";
 import useIsInRole from "../../hooks/useIsInRole.ts";
 import axios from '../../api/axios.ts';
 import useAuth from "../../hooks/useAuth.ts";
 import useIsAuthenticated from "../../hooks/useIsAuthenticated.ts";
 import Select from "../../shared/Select.tsx";
 import CodeEditor from "../../shared/CodeEditor.tsx";
+import HTMLFrame from '../../shared/HTMLFrame.tsx';
 
 interface Problem{
     Id: number,
     Name: string,
-    Description: string
+    Description: string,
+    Status: string
 }
 
 
@@ -71,9 +73,7 @@ function Problem(){
                         <div className="text-2xl font-semibold mb-2">
                             Problem name: {problem?.Name}
                         </div>
-                        <div>
-                            {problem?.Description}
-                        </div>
+                        <HTMLFrame srcDoc={problem?.Description}/>
                     </div>
 
                     <div className="absolute bottom-0 p-2 bg-white w-full flex">
@@ -96,10 +96,10 @@ function Problem(){
                     <div className="flex flex-col h-full">
                         <TabControl value={tabIndex}
                                     onChange={(_e, i) => setTabIndex(i)}
-                                    labels={[
+                                    labels={isAuthenticated ? [
                                         "Editor",
                                         "Submissions"
-                                    ]}
+                                    ]: ["Editor"]}
                         />
                         <div className="p-4 h-full">
                             <TabPanel className="h-full" index={0} value={tabIndex}>
@@ -116,10 +116,20 @@ function Problem(){
                                         onChange={(value) => setCode(value)}
                                         storageId={params.problemId}
                                         className="h-[calc(100vh-var(--footer-size)-200px-var(--header-size))]"/>
-                                    <Button className="mt-4 w-20 bg-violet-700"
-                                            variant="contained"
-                                            onClick={submitProblem}
-                                    >Send</Button>
+                                    {/*<Button className="mt-4 w-20 bg-violet-700"*/}
+                                    {/*        variant="contained"*/}
+                                    {/*        onClick={submitProblem}*/}
+                                    {/*>Send</Button>*/}
+                                    {isAuthenticated &&
+                                    <Button
+                                        className="mt-4 w-20"
+                                        variant="contained"
+                                        color="secondary"
+                                        onClick={submitProblem}
+                                        disabled={isSubmitting}
+                                    >
+                                        {isSubmitting ? <CircularProgress size={24} /> : 'Send'}
+                                    </Button>}
                                 </div>
                             </TabPanel>
                             <TabPanel className="h-full" value={tabIndex} index={1}>

@@ -54,7 +54,7 @@ export default function ProfileEditProfile() {
         e.preventDefault();
         try {
             setIsPacthing(true);
-            const response = await axios.patch(`api/users/${routeParams.userId}`, user, {
+            const response = await axios.patch(`api/users/my`, user, {
                 headers: {
                     "Authorization": "Bearer " + auth.accessToken
                 }
