@@ -4,7 +4,7 @@ import {useEffect, useRef, useState} from "react";
 import Input from "../../shared/Input.tsx";
 import {cn} from "../../lib/utils.ts";
 import Select from "../../shared/Select.tsx";
-import {Pagination} from "@mui/material";
+import {Button, Pagination} from "@mui/material";
 import {Link} from "react-router-dom";
 import axios from "../../api/axios.ts";
 import useAuth from "../../hooks/useAuth.ts";
@@ -42,6 +42,7 @@ function SearchFilter(params: SearchFilterParams){
     const [result, setResult ] = useState();
     const [status, setStatus] = useState("");
     const [difficulty, setDifficulty] = useState("")
+    const [orderBy, setOrderBy] = useState("")
 
     let delayedSearchTimeout: number = 0;
     function setDelayedSearch(value){
@@ -62,7 +63,8 @@ function SearchFilter(params: SearchFilterParams){
                     page: page.toString(),
                     pageSize: params.pageSize.toString(),
                     difficulty,
-                    status
+                    status,
+                    orderBy
                 });
                 // const url = `/api/problems?` + searchParams;
                 // window.location.search = searchParams.toString();
@@ -88,7 +90,7 @@ function SearchFilter(params: SearchFilterParams){
         }
 
         fetch();
-    }, [page, search, status, difficulty]);
+    }, [page, search, status, difficulty, orderBy]);
 
     const previewTable = [...Array(params.pageSize).keys()].map((_e, index) => {
         return <tr key={index}>
@@ -111,18 +113,32 @@ function SearchFilter(params: SearchFilterParams){
         <div>
             <div className="flex items-stretch gap-4"
             >
-                <Select onChange={(e) => setDifficulty(e.target.value)}>
+
+                <Select onChange={(e) => setDifficulty(e.target.value)}
+                    value={difficulty}
+                >
                     <option value={""}>Difficulty</option>
                     <option>Easy</option>
                     <option>Medium</option>
                     <option>Hard</option>
                 </Select>
 
-                <Select onChange={(e) => setStatus(e.target.value)}>
+                <Select onChange={(e) => setStatus(e.target.value)}
+                    value={status}
+                >
                     <option value={""}>Status</option>
                     <option>Never tried</option>
                     <option>Tried</option>
                     <option>Solved</option>
+                </Select>
+                <Select onChange={(e) => setOrderBy(e.target.value)}
+                    value={orderBy}
+                >
+                    <option value={""}>Order by</option>
+                    <option value={"Popularity Descending"}>Popularity</option>
+                    <option value={"Popularity"}>Popularity Descending</option>
+                    <option>Acceptance</option>
+                    <option>Acceptance Descending</option>
                 </Select>
 
                 {/*<Select>*/}
@@ -135,6 +151,13 @@ function SearchFilter(params: SearchFilterParams){
                 <Input onChange={(e) => setDelayedSearch(e.target.value)}
                        name="search"
                        placeholder="Enter problem name"/>
+                <Button variant="contained"
+                        onClick={() => {
+                            setDifficulty("");
+                            setStatus("");
+                            setOrderBy("");
+                        }}
+                >Reset</Button>
             </div>
 
             <div className="mb-4">
@@ -188,8 +211,8 @@ function SearchFilter(params: SearchFilterParams){
                 <div className="flex justify-center">
 
                 <Pagination count={result?.pageCount}
-                            page={page}
-                            onChange={(p) => setPage(p)}
+                            page={page + 1}
+                            onChange={(p, value) => setPage(value - 1)}
 
                 />
                 </div>

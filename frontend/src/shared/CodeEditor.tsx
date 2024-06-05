@@ -13,7 +13,7 @@ export interface CodeEditorProps{
 }
 
 function getDefaultCodeTemplate() {
-    return `"#import required libraries\\nimport math\\n\\ndef read_input():\\n  with open(\\\"input.txt\\\", \\\"r\\\") as input_txt:\\n    return input_txt.readlines()\\n\\nlines = read_input()\\n\\nname = lines[0];\\n\\nprint(\\\"My name is \\\" + name)\\n"`;
+    return "\"print('Hello world!')\""
 }
 
 

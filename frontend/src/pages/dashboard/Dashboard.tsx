@@ -29,8 +29,8 @@ export default function Dashboard(){
                                     // "Roles",
                                     "News",
                                     "Problems",
-                                    "Resources",
-                                    "Settings",
+                                    // "Resources",
+                                    // "Settings",
                                 ]}
                     />
 

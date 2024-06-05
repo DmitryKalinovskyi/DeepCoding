@@ -39,8 +39,8 @@ export default function Playground(){
             if(err.response.status === 422){
                 console.log(err.response.data);
                 const data = err.response.data;
-                data.Output = data.errors.join("\n");
-                delete data.Errors;
+                data.output = data.errors.join("\n");
+                delete data.errors;
                 setCodeResult(data);
             }
         }

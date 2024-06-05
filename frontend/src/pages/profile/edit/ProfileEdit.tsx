@@ -12,13 +12,13 @@ export default function ProfileEdit(){
         <StaticLayout>
             <div className="h-full flex flex-col">
                 <Card className="flex-grow">
-                    <div className="flex items-stretch h-full">
+                    <div className="flex items-stretch h-full py-8">
                         <TabControl value={page}
                                     orientation="vertical"
                                     onChange={(_e, p) => setPage(p)}
                                     labels={[
                                         "Profile",
-                                        "Preferences",
+                                        // "Preferences",
                                     ]}
                         />
 
@@ -28,9 +28,9 @@ export default function ProfileEdit(){
                             <ProfileEditProfile/>
                         </TabPanel>
 
-                        <TabPanel index={1} value={page}  className="h-full">
-                            <Preferences/>
-                        </TabPanel>
+                        {/*<TabPanel index={1} value={page}  className="h-full">*/}
+                        {/*    <Preferences/>*/}
+                        {/*</TabPanel>*/}
                         </div>
                     </div>
                 </Card>

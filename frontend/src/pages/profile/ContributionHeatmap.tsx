@@ -12,9 +12,10 @@ interface ContributionHeatmapProps{
 
 export default function ContributionHeatmap(props: ContributionHeatmapProps){
     const today = new Date();
-    const maxContribution = props.contributions
+
+    const maxContribution = props.contributions.length > 0 ? props.contributions
         .map(c => c.count)
-        .reduce((a,b) => Math.max(a, b));
+        .reduce((a,b) => Math.max(a, b)): 1;
 
     const normalize = (a) => Math.round(a / maxContribution * 5);
 
