@@ -53,8 +53,6 @@ class NewsRepository implements INewsRepository
                 ->useParams([":title" => $titleWildcard]);
         }
 
-        $builded = $query->build();
-
         return $query->execute();
     }
 

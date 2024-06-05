@@ -48,33 +48,55 @@ class ProblemsRepository implements IProblemsRepository
                 ELSE 'Easy'
                 END AS Difficulty",
                 "COUNT(s.Id) as TotalAttempts",
-                "SUM(S.IsPassed) as TotalPassedAttempts"
-            ])
+                "SUM(S.IsPassed) as TotalPassedAttempts",
+                "
+    CASE
+        WHEN COUNT(S.Id) = 0 THEN 0
+        ELSE SUM(S.IsPassed) / COUNT(S.Id)
+    END AS Acceptance"
+            ]
+            )
             ->asObject()
             ->limit($params->pageSize)
             ->offset($params->pageSize * $params->page)
             ->leftJoin(DeepCodeContext::SUBMISSIONS_TABLE." as S", "S.ProblemId = P.Id")
-            ->where("S.UserId = :userId")
+//            ->where("S.UserId = :userId or S.UserId = NULL")
             ->groupBy(["P.Id"])
             ->useParams([":userId" => $params->userId ?? -1])
         ;
 
-        if($params->name !== null)
+        if(!empty($params->name))
             $query->where("Name like \"$params->name%\"");
 
-        if(!empty($params->status))
-            $query->having("Status = :status")
-                ->useParams([":status" => $params->status]);
+        $having = [];
 
-        if(!empty($params->difficulty)){
-            if(!empty($params->status))
-                $query->having("Status = :status AND Difficulty = :difficulty");
-            else
-                $query->having("Difficulty = :difficulty");
-
-                $query->useParams([":difficulty" => $params->difficulty]);
+        if(!empty($params->status)){
+            $having[] = "Status = :status";
+            $query->useParams([":status" => $params->status]);
         }
 
+        if(!empty($params->difficulty)){
+            $having[] = "Difficulty = :difficulty";
+            $query->useParams([":difficulty" => $params->difficulty]);
+        }
+
+        if($params->orderBy === "Acceptance"){
+            $query->orderBy("Acceptance");
+        }
+        else if($params->orderBy === "Popularity"){
+            $query->orderBy("TotalAttempts");
+        }
+        if($params->orderBy === "Acceptance Descending"){
+            $query->orderBy("Acceptance", false);
+        }
+        else if($params->orderBy === "Popularity Descending") {
+            $query->orderBy("TotalAttempts", false);
+        }
+
+//        $built = $query->build();
+
+        if(!empty($having))
+        $query->having(join(" AND ", $having));
 
 //        echo $query->build();
         return $query->execute();

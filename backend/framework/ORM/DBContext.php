@@ -12,7 +12,7 @@ use Framework\ORM\QueryBuilders\MySQL\MySQLDelete;
 use Framework\ORM\Queries\Query;
 use PDO;
 
-class DBContext
+class DBContext implements IDBContext
 {
     private PDO $_pdo;
     public function __construct($connectionString, $username = "root", $password = ""){

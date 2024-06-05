@@ -22,7 +22,10 @@ class PythonCodeRunner implements ICodeRunner
 
         // Construct the Docker command
         $command = sprintf(
-            "docker run --rm $v python-runner",
+            "docker run --rm --memory %dm --memory-swap %dm --stop-timeout %d $v python-runner",
+            $runRules->memoryLimit,
+            $runRules->memoryLimit,
+            $runRules->runtimeLimit,
             ...$files
         );
 

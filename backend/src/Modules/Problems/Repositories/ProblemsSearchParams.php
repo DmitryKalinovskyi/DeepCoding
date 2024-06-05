@@ -21,4 +21,6 @@ class ProblemsSearchParams
     public ?string $difficulty = null;
 
     public ?string $userId = null;
+
+    public ?string $orderBy = null;
 }

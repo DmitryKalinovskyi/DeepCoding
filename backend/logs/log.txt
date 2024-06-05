@@ -1,1 +1,18 @@
 63, Factorial, internal server error. Error when tried to validate test. invalid literal for int() with base 10: ''
+
+61, Hello world!, internal server error. Error when tried to validate test. invalid syntax (<string>, line 8)
+
+64, I love PHP, internal server error. Probably docker not started.
+64, I love PHP, internal server error. Probably docker not started.
+64, I love PHP, internal server error. Probably docker not started.
+64, I love PHP, internal server error. Probably docker not started.
+64, I love PHP, internal server error. Probably docker not started.
+64, I love PHP, internal server error. Probably docker not started.
+64, I love PHP, internal server error. Probably docker not started.
+85, Problem 17, internal server error. Error when tried to validate test. name 'result' is not defined
+
+66, A - B, internal server error. Error when tried to validate test. invalid syntax (<string>, line 12)
+
+65, A + B, internal server error. Error when tried to validate test. invalid syntax (<string>, line 13)
+
+69, Problem 1, internal server error. Python 3 is not supported code runner.
