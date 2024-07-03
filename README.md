@@ -2,6 +2,12 @@
 DeepCoding - competitive platform for learning and problem solving. Here you will discover different algorithms, data structures in different topics.  
 Actually this is my second year course work, in Zhytomyr Polytechic State University. The main purpose of that project is to make custom framework with tools like ORM, Routing, Service Injection and etc for the backend part of that platform.
 
+![image](https://github.com/DmitryKalinovskyi/DeepCoding/assets/117343778/a443b554-714a-44ee-9003-0fca57345f60)
+![image](https://github.com/DmitryKalinovskyi/DeepCoding/assets/117343778/b24aaa1a-4080-48fa-922e-4f1d36c083b7)
+![image](https://github.com/DmitryKalinovskyi/DeepCoding/assets/117343778/3b759617-6fef-4829-9e59-5e59080c85c2)
+![image](https://github.com/DmitryKalinovskyi/DeepCoding/assets/117343778/fb2c8fe9-5b4c-4afc-b1e6-9adf1338fb25)
+
+
 # Backend
 Backend is Restfull API written in PHP 8.2. Backend consist of 2 main parts - framework and src (actual platform logic).
 Also in development was used several tools:
